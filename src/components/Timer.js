@@ -1,4 +1,4 @@
-import Countdown from "react-countdown";
+import Countdown, {zeroPad} from "react-countdown";
 import {useState, useRef} from 'react';
 
 const Time = () => {
@@ -20,7 +20,7 @@ const Time = () => {
         if (start === false) {
             return (
                 <button 
-                    className="btn btn-outline-light btn-block w-100"
+                    className="btn btn-outline-light btn-block w-50"
                     onClick={() => startButton()}
                 >
                     Start
@@ -30,7 +30,7 @@ const Time = () => {
         if (start === true) {
             return (
                 <button 
-                    className="btn btn-outline-light btn-block w-100"
+                    className="btn btn-outline-light btn-block w-50"
                     onClick={() => stopButton()}
                 >
                     Stop
@@ -38,22 +38,32 @@ const Time = () => {
             );
         }
     };
-    
+
+    const Completionist = () => <span>Time to take a break!</span>;
+
+    const renderer = ({ minutes, seconds, completed }) => {
+        if (completed) {
+            // Render a completed state
+            return <Completionist />;
+        } else {
+            // Render a countdown
+            return <span>{zeroPad(minutes, 2)}:{zeroPad(seconds, 2)}</span>;
+        }
+    };
+
 	return (
-		<div>
-			<p style={{ fontSize: "550%" }} className="text-light text-center">
+		<div className="text-center">
+			<p style={{ fontSize: "550%" }} className="text-light">
                 <Countdown
-                    date={Date.now() + 1500000}
+                    date={Date.now() + 1500000} //1500000
                     intervalDelay={0}
-                    precision={3}
+                    precision={2}
                     autoStart={false}
                     ref={countdown}
-                    renderer={(props) => (
-                        <div>
-                            {props.minutes}:{props.seconds}:{props.milliseconds}
-                        </div>
-                    )}
-                />
+                    renderer={renderer}
+                >
+
+                </Countdown>
             </p>
             {renderButton()}
 		</div>
