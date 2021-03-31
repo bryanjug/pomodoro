@@ -1,5 +1,25 @@
 import Countdown, {zeroPad} from "react-countdown";
 import {useState, useRef} from 'react';
+import '../css/Timer.css';
+
+//TODO:
+//COMPLETION METHOD
+//COUNTING COMPLETIONS
+//STOPPING === NO COUNTED COMPLETION
+//COMPLETION COUNTER AT TOP OF SCREEN
+//PAUSING BUTTON
+//IMPORT REACT-ROUTER
+//CREATE LINKS
+//CREATE SERVER FOR STATISTICS
+//CREATE STATISTICS PAGE -> GRAPHS EACH HOUR SPENT WORKING OR RESTING (DAY, WEEK, MONTH, YEAR)
+//3D BACKGROUND WITH PET
+//ADD COUNTER FOR FEEDING PET AT END OF EACH COMPLETION
+//ADD FEEDING ANIMATION
+//ADD GROWTH COUNTER
+//ANIMATE PET GROWING WITH GROWTH COUNTER
+//ADD SIZE STATE AND DISPLAY ON SCREEN
+//SIZE STATE CHANGES AFTER EACH GROWTH COUNTER
+//CHANGE 3D WORLDS ONCE SIZE REACHES CERTAIN NUMBER
 
 const Time = () => {
     const [start, setStart] = useState(false);
@@ -18,9 +38,9 @@ const Time = () => {
 
     const renderButton = () => {
         if (start === false) {
-            return (
+            return ( //renders start button
                 <button 
-                    className="btn btn-outline-light btn-block w-50"
+                    className="btn btn-circle btn-xl cyanButton text-light"
                     onClick={() => startButton()}
                 >
                     Start
@@ -28,9 +48,9 @@ const Time = () => {
             );
         }
         if (start === true) {
-            return (
+            return ( //renders stop button
                 <button 
-                    className="btn btn-outline-light btn-block w-50"
+                    className="btn btn-circle btn-xl cyanButton text-light"
                     onClick={() => stopButton()}
                 >
                     Stop
@@ -61,9 +81,7 @@ const Time = () => {
                     autoStart={false}
                     ref={countdown}
                     renderer={renderer}
-                >
-
-                </Countdown>
+                />
             </p>
             {renderButton()}
 		</div>
