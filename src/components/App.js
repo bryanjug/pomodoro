@@ -1,7 +1,6 @@
 import Timer from "./Timer";
 import Pet from "./Pet";
 import "../css/App.css";
-import { useState } from "react";
 
 const App = () => {
 	return (
@@ -16,10 +15,8 @@ const App = () => {
 				}}
 			>
 				<div className="col-sm-12">
-					<p className="text-light text-center">Start feeding your pet!</p>
-					<br />
+					<p className="text-light text-center pb-5">Start feeding your pet!</p>
 					<Pet />
-					<br />
 					<Timer />
 				</div>
 			</div>

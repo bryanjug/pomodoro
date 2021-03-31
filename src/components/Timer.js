@@ -1,11 +1,15 @@
-import Countdown, {zeroPad} from "react-countdown";
-import {useState, useRef} from 'react';
+// import Countdown, {zeroPad} from "react-countdown";
+import React, {useState, useRef, useEffect} from 'react';
+import Countdown, {zeroPad} from 'react-countdown';
 import '../css/Timer.css';
 
 //TODO:
-//COMPLETION METHOD
-//COUNTING COMPLETIONS
-//STOPPING === NO COUNTED COMPLETION
+//(DONE) COMPLETION METHOD -> CREATE TIMER
+//(DONE) RENDER TEXT OF CURRENT ACTIVITY (RESTING OR WORKING)
+//CREATE USEEFFECT FOR SETTING LONG BREAK + SHORT BREAK + WORK ON TIME VARIABLE BASED ON POMODORO COUNT AND ACTIVITY STATES
+//START SOUND
+//(DONE) COUNTING COMPLETIONS
+//(DONE) STOPPING === NO COUNTED COMPLETION
 //COMPLETION COUNTER AT TOP OF SCREEN
 //PAUSING BUTTON
 //IMPORT REACT-ROUTER
@@ -23,9 +27,12 @@ import '../css/Timer.css';
 
 const Time = () => {
     const [start, setStart] = useState(false);
-    
+    const [activity, setActivity] = useState("Working Mode");
+    const [time, setTime] = useState(3000);
+    const [completedCount, setCompletedCount] = useState(0);
+    const [pomodoro, setPomodoro] = useState(0);
     const countdown = useRef(null);
-    
+
     const startButton = () => {
         setStart(true);
         countdown.current.start();
@@ -58,13 +65,194 @@ const Time = () => {
             );
         }
     };
+    
+    const Work = () => {
+        if (completedCount === 0) {
+            return (
+                <span>
+                    {setTime(2000)} 
+                    {setStart(false)}
+                    {setActivity("Working Mode")}
+                </span>
+            );
+        }
+        if (completedCount === 1) {
+            return (
+                <span>
+                    {setTime(2000)} 
+                    {setStart(false)}
+                    {setPomodoro(pomodoro + 1)}
+                    {setActivity("Resting Mode")}
+                </span>
+            );
+        } 
+        if (completedCount === 2) { //finish working mode
+            return (
+                <span>
+                    {setTime(2000)} 
+                    {setStart(false)}
+                    {setActivity("Resting Mode")}
+                </span>
+            );
+        }
+        if (completedCount === 3) {
+            return (
+                <span>
+                    {setTime(4000)} 
+                    {setStart(false)}
+                    {setActivity("Working Mode")}
+                </span>
+            );
+        } 
+        if (completedCount === 4) {
+            return (
+                <span>
+                    {setTime(4000)} 
+                    {setStart(false)}
+                    {setPomodoro(pomodoro + 1)}
+                    {setActivity("Working Mode")}
+                </span>
+            );
+        }
+        if (completedCount === 5) {
+            return (
+                <span>
+                    {setTime(2000)} 
+                    {setStart(false)}
+                    {setActivity("Resting Mode")}
+                </span>
+            );
+        }
+        if (completedCount === 6) {
+            return (
+                <span>
+                    {setTime(2000)} 
+                    {setStart(false)}
+                    {setActivity("Resting Mode")}
+                </span>
+            );
+        } 
+        if (completedCount === 7) {
+            return (
+                <span>
+                    {setTime(4000)} 
+                    {setStart(false)}
+                    {setActivity("Working Mode")}
+                </span>
+            );
+        }
+        if (completedCount === 8) {
+            return (
+                <span>
+                    {setTime(4000)} 
+                    {setStart(false)}
+                    {setActivity("Working Mode")}
+                </span>
+            );
+        }
+        if (completedCount === 9) {
+            return (
+                <span>
+                    {setTime(2000)} 
+                    {setStart(false)}
+                    {setPomodoro(pomodoro + 1)}
+                    {setActivity("Resting Mode")}
+                </span>
+            );
+        }
+        if (completedCount === 10) {
+            return (
+                <span>
+                    {setTime(2000)} 
+                    {setStart(false)}
+                    {setActivity("Resting Mode")}
+                </span>
+            );
+        }
+        if (completedCount === 11) {
+            return (
+                <span>
+                    {setTime(4000)} 
+                    {setStart(false)}
+                    {setActivity("Working Mode")}
+                </span>
+            );
+        }
+        if (completedCount === 12) {
+            return (
+                <span>
+                    {setTime(4000)} 
+                    {setStart(false)}
+                    {setActivity("Working Mode")}
+                </span>
+            );
+        }
+        if (completedCount === 13) {
+            return (
+                <span>
+                    {setTime(2000)} 
+                    {setStart(false)}
+                    {setActivity("Resting Mode")}
+                    {setPomodoro(pomodoro + 1)}
+                </span>
+            );
+        }
+        if (completedCount === 14) {
+            return (
+                <span>
+                    {setTime(2000)} 
+                    {setStart(false)}
+                    {setActivity("Resting Mode")}
+                </span>
+            );
+        }
+        if (completedCount === 15) {
+            return (
+                <span>
+                    {setTime(4000)} 
+                    {setStart(false)}
+                    {setActivity("Working Mode")}
+                </span>
+            );
+        }
+        if (completedCount === 16) {
+            return (
+                <span>
+                    {setTime(4000)} 
+                    {setStart(false)}
+                    {setActivity("Working Mode")}
+                </span>
+            );
+        }
+        if (completedCount === 17) {
+            return (
+                <span>
+                    {setTime(2000)} 
+                    {setStart(false)}
+                    {setActivity("Resting Mode")}
+                    {setPomodoro(pomodoro + 1)}
+                </span>
+            );
+        }
+        if (completedCount === 18) {
+            return (
+                <span>
+                    {setTime(2000)} 
+                    {setStart(false)}
+                    {setActivity("Resting Mode")}
+                    {setCompletedCount(3)}
+                </span>
+            );
+        }
+    };
 
-    const Completionist = () => <span>Time to take a break!</span>;
+    console.log(completedCount);
 
-    const renderer = ({ minutes, seconds, completed }) => {
+    const Renderer = ({ minutes, seconds, completed }) => {
         if (completed) {
-            // Render a completed state
-            return <Completionist />;
+            //Render a completed state
+            {setCompletedCount(completedCount + 1)}
+            return Work();
         } else {
             // Render a countdown
             return <span>{zeroPad(minutes, 2)}:{zeroPad(seconds, 2)}</span>;
@@ -73,17 +261,21 @@ const Time = () => {
 
 	return (
 		<div className="text-center">
-			<p style={{ fontSize: "550%" }} className="text-light">
+            <p style={{ fontSize: "550%" }} className="text-light">
                 <Countdown
-                    date={Date.now() + 1500000} //1500000
+                    date={Date.now() + time} //1500000
                     intervalDelay={0}
-                    precision={2}
                     autoStart={false}
                     ref={countdown}
-                    renderer={renderer}
+                    renderer={Renderer}
                 />
             </p>
             {renderButton()}
+            <div className="text-light pt-4">
+                {activity}
+                <br />
+                {pomodoro}
+            </div>
 		</div>
 	);
 };
