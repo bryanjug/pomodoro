@@ -12,10 +12,70 @@ html, body {
     border: none;
 }
 
-.navigationDivider {
-    border-left: 2px solid #28343a;
+.navigationDividerLeft {
+    border-left: 1px solid #28343a;
+}
+
+.navigationDividerRight {
+    border-right: 1px solid #28343a;
 }
 
 .navigation:hover {
     background-color: #4B9C96;
+}
+
+.navigation:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    background-color: #4B9C96;
+}
+
+.pomodoroCounter {
+    background-color: #54AEA9;
+    float: left;
+    padding-left: 3%;
+    padding-right: 4%;
+    border-radius: 0 10px 10px 0;
+}
+
+.pomodoroText {
+    padding-left: 2%;
+    float: left;
+}
+
+.btn-circle.btn-sm {
+    width: 30px;
+    height: 30px;
+    padding: 6px 0px;
+    border-radius: 15px;
+    text-align: center;
+}
+.btn-circle.btn-md {
+    width: 50px;
+    height: 50px;
+    padding: 7px 10px;
+    border-radius: 25px;
+    text-align: center;
+}
+.btn-circle.btn-xl {
+    width: 70px;
+    height: 70px;
+    padding: 10px 16px;
+    border-radius: 35px;
+    text-align: center;
+    border: none;
+}
+
+.cyanButton {
+    background-color: #54AEA9;
+}
+
+.cyanButton:hover { 
+    background-color: #458d89;
+    border: none;
+}
+
+.cyanButton:focus {
+    outline: none !important;
+    box-shadow: none !important;
 }

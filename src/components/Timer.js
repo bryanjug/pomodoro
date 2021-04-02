@@ -1,40 +1,14 @@
-// import Countdown, {zeroPad} from "react-countdown";
 import React, {useState, useRef, useEffect} from 'react';
 import Countdown, {zeroPad} from 'react-countdown';
-import '../css/Timer.css';
-
-//TODO:
-//(DONE) COMPLETION METHOD -> CREATE TIMER
-//(DONE) RENDER TEXT OF CURRENT ACTIVITY (RESTING OR WORKING)
-//(DONE) CREATE USEEFFECT FOR SETTING LONG BREAK + SHORT BREAK + WORK ON TIME VARIABLE BASED ON POMODORO COUNT AND ACTIVITY STATES
-//(DONE) SEND USER NOTIFICATIONS
-//(DONE) START SOUND
-//(DONE) SHORTEN IF STATEMENTS FOR COMPLETION
-//(DONE) CREATE USESTATE FOR LONG KEY WORD AND ADD IT NEXT TO THE ACTIVITY
-//(DONE) COUNTING COMPLETIONS
-//(DONE) STOPPING === NO COUNTED COMPLETION
-//() COMPLETION COUNTER AT TOP OF SCREEN
-//() PAUSING BUTTON
-//() IMPORT REACT-ROUTER
-//() CREATE LINKS
-//() CREATE SERVER FOR STATISTICS
-//() CREATE STATISTICS PAGE -> GRAPHS EACH HOUR SPENT WORKING OR RESTING (DAY, WEEK, MONTH, YEAR)
-//() 3D BACKGROUND WITH PET
-//() ADD COUNTER FOR FEEDING PET AT END OF EACH COMPLETION
-//() ADD FEEDING ANIMATION
-//() ADD GROWTH COUNTER
-//() ANIMATE PET GROWING WITH GROWTH COUNTER
-//() ADD SIZE STATE AND DISPLAY ON SCREEN
-//() SIZE STATE CHANGES AFTER EACH GROWTH COUNTER
-//() CHANGE 3D WORLDS ONCE SIZE REACHES CERTAIN NUMBER
+import '../css/App.css';
 
 const Time = () => {
     const [start, setStart] = useState(false);
     const [activity, setActivity] = useState("Working Mode");
     const [time, setTime] = useState(3000);
     const [completedCount, setCompletedCount] = useState(0);
-    const [pomodoro, setPomodoro] = useState(0);
     const [long, setLong] = useState("");
+    const [pomodoro, setPomodoro] = useState(0);
     const countdown = useRef(null);
 
     //ask user permission for notifications
@@ -186,6 +160,7 @@ const Time = () => {
             //Render a completed state
             {setCompletedCount(completedCount + 1)}
 
+            //plays a sounds
             const audioEl = document.getElementsByClassName("audio-element")[0]
             audioEl.play()
 
@@ -197,26 +172,50 @@ const Time = () => {
     };
 
 	return (
-        <div className="text-center">
-            <audio className="audio-element">
-                <source src="http://soundbible.com/grab.php?id=1599&type=mp3"></source>
-            </audio>
-            <p style={{ fontSize: "550%" }} className="text-light">
-                <Countdown
-                    date={Date.now() + time} //1500000 = 25:00 minutes
-                    intervalDelay={0}
-                    autoStart={false}
-                    ref={countdown}
-                    renderer={Renderer}
-                />
-            </p>
-            {renderButton()}
-            <div className="text-light pt-4">
-                {long} {activity}
-                <br />
-                {pomodoro}
+        <div>
+            <div className="justify-left pt-2">
+                <p className="text-light pomodoroCounter">
+                    {pomodoro}
+                </p>
+                <p className="pomodoroText text-light">
+                    <small>Pomodoros</small>
+                </p>
             </div>
-		</div>
+            <div 
+                className="container"
+                style={{
+                    position: "absolute",
+                    left: "50%",
+                    top: "50%",
+                    transform: "translate(-50%, -50%)",
+                }}
+            >
+                <div className="text-center">
+                    <audio className="audio-element">
+                        <source src="http://soundbible.com/grab.php?id=1599&type=mp3"></source>
+                    </audio>
+                    <p className="text-light text-center">Start feeding your pet!</p>
+                    <p style={{ fontSize: "550%" }} className="text-light">
+                        <Countdown
+                            date={Date.now() + time} //1500000 = 25:00 minutes
+                            intervalDelay={0}
+                            autoStart={false}
+                            ref={countdown}
+                            renderer={Renderer}
+                        />
+                    </p>
+                    <img
+                        src="../../img/white_cat.png"
+                        className="w-25 mx-auto d-block pb-5"
+                        alt=""
+                    />
+                    {renderButton()}
+                    <div className="text-light pt-4">
+                        {long} {activity}
+                    </div>
+                </div>
+            </div>
+        </div>
 	);
 };
 
