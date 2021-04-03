@@ -64,7 +64,6 @@ const Time = () => {
 		let getResponse = await axios.get("http://localhost:3001/lifetime/1");
 
 		let getData = getResponse.data.total;
-
 		const total = getData + 1;
 
 		setPomodoroLifeTime(total);
@@ -74,27 +73,51 @@ const Time = () => {
 		await axios.patch("http://localhost:3001/lifetime/1", payload);
 	}
 
-	//updates hourly pomodoro work count to server
+	//updates hourly pomodoro and hourly total pomodoro count to server
 	async function updateDay() {
-		let currentHour = new Date().getHours();
-
-		let workHour = currentHour + "work";
-
+        let currentHour = new Date().getHours();
+        
 		let getResponse = await axios.get(`http://localhost:3001/day/1/`);
 
-		let getData = getResponse.data[workHour];
+        let getData = getResponse.data[currentHour];
+        let count = getData + 1;
+        
+        let getDataTotal = getResponse.data.total;
+        let totalCount = getDataTotal + 1;
 
-		const total = getData + 1;
-
-		let payload = { [workHour]: total };
+		let payload = { [currentHour]: count, total: totalCount };
 
 		await axios.patch("http://localhost:3001/day/1/", payload);
-	}
+    }
 
-	//sends pomodoro data to server once pomodoro updates
+    //function for resetting day's data back to 0 once new day starts
+    async function resetDay() {
+        const date = ((new Date().getMonth() + 1) + "-" + (new Date().getDate()) + "-" + (new Date().getFullYear()));
+        
+        let getResponse = await axios.get('http://localhost:3001/day/1/');
+
+        let getData = getResponse.data.date;
+
+        //if date has changed, reset data to 0
+        if (date !== getData) {
+            var i;
+
+            for (i = 0; i < 26; i++) {
+                let payload = { [i]: 0, total: 0, date: date };
+                await axios.patch("http://localhost:3001/day/1/", payload);
+            }
+        }
+    }
+
+    //resets day's data back to 0 once new day starts
+    useEffect(() => {
+        resetDay();
+    })
+
+	//gets + updates data to server once pomodoro updates
 	useEffect(() => {
 		if (pomodoro === 0) {
-			fetchLifeTime();
+            fetchLifeTime();
 		}
 
 		if (pomodoro >= 1) {
