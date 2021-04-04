@@ -102,7 +102,7 @@ const Time = () => {
         if (date !== getData) {
             var i;
 
-            for (i = 1; i < 26; i++) {
+            for (i = 1; i < 25; i++) {
                 let payload = { [i]: 0, total: 0, date: date };
                 await axios.patch("http://localhost:3001/day/1/", payload);
             }
@@ -185,11 +185,47 @@ const Time = () => {
         }
     }
 
+    //updates yearly counts and yearly total count 
+    async function updateYear() {
+        const currentMonth = new Date().getMonth() + 1;
+        
+        let getResponse = await axios.get('http://localhost:3001/year/1/');
+
+        let getMonth = getResponse.data[currentMonth];
+        let count = getMonth + 1;
+
+        let getTotal = getResponse.data.total;
+        let totalCount = getTotal + 1;
+
+        let payload = { [currentMonth]: count, total: totalCount, currentMonth: currentMonth };
+
+        await axios.patch("http://localhost:3001/year/1/", payload);
+    }
+
+    async function resetYear() {
+        const currentMonth = new Date().getMonth() + 1;
+
+        let getResponse = await axios.get('http://localhost:3001/year/1/');
+
+        let getCurrentMonth = getResponse.data.currentMonth;
+
+        //if current month has changed to 1 and is not the same date as previously saved, reset data to 0
+        if (currentMonth === 1 && currentMonth !== getCurrentMonth) {
+            var i;
+
+            for (i = 1; i < 13; i++) {
+                let payload = { [i]: 0, total: 0, currentMonth: currentMonth };
+                await axios.patch("http://localhost:3001/year/1/", payload);
+            }
+        }
+    }
+
     //resets data back to 0 on page load
     useEffect(() => {
         resetDay();
         resetWeek();
         resetMonth();
+        resetYear();
     })
 
 	//fetches + updates data to server once pomodoro updates
@@ -203,6 +239,7 @@ const Time = () => {
             updateDay();
             updateWeek();   
             updateMonth();
+            updateYear();
 		}
 	}, [pomodoro]);
 
@@ -319,9 +356,7 @@ const Time = () => {
 	const Renderer = ({ minutes, seconds, completed }) => {
 		if (completed) {
 			//Render a completed state
-			{
-				setCompletedCount(completedCount + 1);
-			}
+			{setCompletedCount(completedCount + 1)}
 
 			//plays a sounds
 			const audioEl = document.getElementsByClassName("audio-element")[0];
