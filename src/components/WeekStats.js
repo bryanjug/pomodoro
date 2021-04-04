@@ -1,48 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import {Line, Chart} from 'react-chartjs-2';
+import axios from 'axios';
+import StatsNavigation from './StatsNavigation';
 
-// import axios from 'axios';
-
-// async function fetchDay() {
-// 	let res = await axios.get('http://localhost:3001/day');
-
-// 	let data = res.data;
-	
-// 	console.log(data);
-// }
-
-// fetchDay();
-
-// async function fetchWeek() {
-// 	let res = await axios.get('http://localhost:3001/week');
-
-// 	let data = res.data;
-	
-// 	console.log(data);
-// }
-
-// fetchWeek();
-
-// async function fetchMonth() {
-// 	let res = await axios.get('http://localhost:3001/month');
-
-// 	let data = res.data;
-	
-// 	console.log(data);
-// }
-
-// fetchMonth();
-
-// async function fetchYear() {
-// 	let res = await axios.get('http://localhost:3001/year');
-
-// 	let data = res.data;
-	
-// 	console.log(data);
-// }
-
-// fetchYear();
-const Stats = () => {
+const DayStats = () => {
 	const [chartData, setChartData] = useState({});
 	Chart.defaults.global.defaultFontColor = "#F8F9FA";
 
@@ -65,8 +26,9 @@ const Stats = () => {
 	}, [])
 	
 	return (
-		<div>
-			<div style={{height: '500px', width: '500px'}}>
+		<div className="container">
+			<StatsNavigation />
+			<div className="graph" style={{width: '100%', height: '100%'}}>
 				<Line data={chartData} options={{
 					responsive: true,
 					title: {text: 'Week', display: true},
@@ -97,4 +59,4 @@ const Stats = () => {
 	);
 };
 
-export default Stats;
+export default DayStats;

@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import Countdown, { zeroPad } from "react-countdown";
 import axios from "axios";
-import "../css/App.css";
 
 const Time = () => {
 	const [start, setStart] = useState(false);
@@ -406,7 +405,7 @@ const Time = () => {
 					</p>
 					<img
 						src="../../img/white_cat.png"
-						className="w-25 mx-auto d-block pb-5"
+						className="pet mx-auto d-block pb-5"
 						alt=""
 					/>
 					{renderButton()}

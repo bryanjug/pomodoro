@@ -1,6 +1,6 @@
-import { Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Timer from "./Timer";
-import Stats from "./Stats";
+import DayStats from "./WeekStats";
 import "../css/App.css";
 
 //TODO:
@@ -29,7 +29,13 @@ import "../css/App.css";
 //(DONE) REMOVE OLD DATA ONCE NEW MONTH STARTS
 //(DONE) ADD POMODORO TOTALS FOR CURRENT YEAR AND TOTAL YEAR COUNT TO SERVER
 //(DONE) REMOVE OLD DATA ONCE NEW YEAR STARTS
-//() GRAPH EACH TIME SPENT WORKING (DAY, WEEK, MONTH, YEAR)
+//(DONE) CREATE PLACEHOLDER DAY GRAPH
+//(DONE) STYLE NAVIGATION BUTTONS FOR STATS
+//(DONE) MOVE ROUTES TO INDEX.JS
+//(DONE) SET UP NAVIGATION WITH ROUTES + LINKS FOR EACH GRAPH
+//(DONE) RESPONSIVE DESIGN GRAPHS
+//() CREATE ALL PLACEHOLDER GRAPHS
+//() CONNECT GRAPHS TO SERVER (DAY, WEEK, MONTH, YEAR)
 //() STYLE STATS PAGE
 //() 3D BACKGROUND WITH PET
 //() ADD COUNTER FOR FEEDING PET AT END OF EACH COMPLETION
@@ -40,16 +46,12 @@ import "../css/App.css";
 //() SIZE STATE CHANGES AFTER EACH GROWTH COUNTER
 //() CHANGE 3D WORLDS ONCE SIZE REACHES CERTAIN NUMBER
 //() (OPTIONAL) ADD LEADERBOARDS
-//() RESPONSIVE STYLING
+//() RESPONSIVE TIMER STYLING
 //() SET COUNTDOWN TIMERS TO 25 and 5
 
 const App = () => {
 	return (
 		<div>
-			<div>
-				<Route exact path="/" component={Timer} />
-				<Route path="/stats" component={Stats} />
-			</div>
 			<div className="row fixed-bottom">
                 <div className="col-sm-12 btn-group" role="group">
                     <Link to="/" className="w-100 navigation">
@@ -67,7 +69,7 @@ const App = () => {
                             </svg>
                         </button>
                     </Link>
-                    <Link to="/stats" className="w-100 navigation">
+                    <Link to="/stats/day" className="w-100 navigation">
                         <button
                             type="button"
                             className="btn btn-secondary w-100 navigation navigationDividerLeft"
