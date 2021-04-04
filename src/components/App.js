@@ -41,6 +41,7 @@ import "../css/App.css";
 //() CHANGE 3D WORLDS ONCE SIZE REACHES CERTAIN NUMBER
 //() (OPTIONAL) ADD LEADERBOARDS
 //() RESPONSIVE STYLING
+//() SET COUNTDOWN TIMERS TO 25 and 5
 
 const App = () => {
 	return (
