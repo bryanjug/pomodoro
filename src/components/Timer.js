@@ -225,7 +225,7 @@ const Time = () => {
         resetWeek();
         resetMonth();
         resetYear();
-    })
+    }, [])
 
 	//fetches + updates data to server once pomodoro updates
 	useEffect(() => {

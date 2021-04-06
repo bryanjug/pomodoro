@@ -4,8 +4,23 @@ import axios from "axios";
 import StatsNavigation from "./StatsNavigation";
 
 const DayStats = () => {
+	const [hour, setHour] = useState({});
 	const [chartData, setChartData] = useState({});
 	Chart.defaults.global.defaultFontColor = "#F8F9FA";
+
+    //requests server data and sets state
+	async function getDayStats() {
+		let getResponse = await axios.get("http://localhost:3001/day/1/");
+
+		let getHours = getResponse.data;
+
+		setHour(getHours);
+	}
+
+    //loads stats from server once page loads
+	useEffect(() => {
+		getDayStats();
+	}, []);
 
 	const chart = () => {
 		setChartData({
@@ -39,30 +54,30 @@ const DayStats = () => {
 				{
 					label: "Pomodoros Completed",
 					data: [
-						32,
-						45,
-						13,
-						44,
-						10,
-						5,
-						22,
-						2,
-						32,
-						45,
-						13,
-						44,
-						10,
-						5,
-						22,
-						2,
-						32,
-						45,
-						13,
-						44,
-						10,
-						5,
-						22,
-						2,
+						hour[1],
+						hour[2],
+						hour[3],
+						hour[4],
+						hour[5],
+						hour[6],
+						hour[7],
+						hour[8],
+						hour[9],
+						hour[10],
+						hour[11],
+						hour[12],
+						hour[13],
+						hour[14],
+						hour[15],
+						hour[16],
+						hour[17],
+						hour[18],
+						hour[19],
+						hour[20],
+						hour[21],
+						hour[22],
+						hour[23],
+						hour[24],
 					],
 					backgroundColor: ["#54AEA9"],
 					borderWidth: 4,
@@ -71,44 +86,45 @@ const DayStats = () => {
 		});
 	};
 
+    //load chart once request to server is finished
 	useEffect(() => {
 		chart();
-	}, []);
+	}, [hour]);
 
 	return (
 		<div className="container">
-            <StatsNavigation />
-            <div className="graph" style={{width: '100%', height: '100%'}}>
-                <Line
-                    data={chartData}
-                    options={{
-                        responsive: true,
-                        title: { text: "Day", display: true },
-                        scales: {
-                            yAxes: [
-                                {
-                                    ticks: {
-                                        autoSkip: true,
-                                        maxTicksLimit: 10,
-                                        beginAtZero: true,
-                                    },
-                                    gridLines: {
-                                        display: false,
-                                    },
-                                },
-                            ],
-                            xAxes: [
-                                {
-                                    gridLines: {
-                                        display: false,
-                                    },
-                                },
-                            ],
-                        },
-                    }}
-                />
-            </div>
-        </div>
+			<StatsNavigation />
+			<div className="graph" style={{ width: "100%", height: "100%" }}>
+				<Line
+					data={chartData}
+					options={{
+						responsive: true,
+						title: { text: "Day", display: true },
+						scales: {
+							yAxes: [
+								{
+									ticks: {
+										autoSkip: true,
+										maxTicksLimit: 10,
+										beginAtZero: true,
+									},
+									gridLines: {
+										display: false,
+									},
+								},
+							],
+							xAxes: [
+								{
+									gridLines: {
+										display: false,
+									},
+								},
+							],
+						},
+					}}
+				/>
+			</div>
+		</div>
 	);
 };
 

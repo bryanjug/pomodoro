@@ -3,22 +3,22 @@ import { Line, Chart } from "react-chartjs-2";
 import axios from "axios";
 import StatsNavigation from "./StatsNavigation";
 
-const MonthStats = () => {
+const YearStats = () => {
 	const [chartData, setChartData] = useState({});
 	Chart.defaults.global.defaultFontColor = "#F8F9FA";
-	const [day, setDay] = useState({});
+	const [month, setMonth] = useState({});
 
-	async function getMonthStats() {
-		let getResponse = await axios.get("http://localhost:3001/month/1/");
+	async function getYearStats() {
+		let getResponse = await axios.get("http://localhost:3001/year/1/");
 
-		let getDays = getResponse.data;
+		let getMonths = getResponse.data;
 
-		setDay(getDays);
+		setMonth(getMonths);
 	}
 
     //loads stats from server once page loads
 	useEffect(() => {
-		getMonthStats();
+		getYearStats();
 	}, []);
 	
 	const chart = () => {
@@ -36,61 +36,23 @@ const MonthStats = () => {
 				"10",
 				"11",
 				"12",
-				"13",
-				"14",
-				"15",
-				"16",
-				"17",
-				"18",
-				"19",
-				"20",
-				"21",
-				"22",
-				"23",
-                "24",
-                "25",
-                "26",
-                "27",
-                "28",
-                "29",
-                "30",
-                "31",
 			],
 			datasets: [
 				{
 					label: "Pomodoros Completed",
 					data: [
-						day[1],
-						day[2],
-						day[3],
-						day[4],
-						day[5],
-						day[6],
-						day[7],
-						day[8],
-						day[9],
-						day[10],
-						day[11],
-						day[12],
-						day[13],
-						day[14],
-						day[15],
-						day[16],
-						day[17],
-						day[18],
-						day[19],
-						day[20],
-						day[21],
-						day[22],
-						day[23],
-                        day[24],
-                        day[25],
-						day[26],
-						day[27],
-						day[28],
-						day[29],
-						day[30],
-						day[31],
+						month[1],
+						month[2],
+						month[3],
+						month[4],
+						month[5],
+						month[6],
+						month[7],
+						month[8],
+						month[9],
+						month[10],
+						month[11],
+						month[12],
 					],
 					backgroundColor: ["#54AEA9"],
 					borderWidth: 4,
@@ -101,7 +63,7 @@ const MonthStats = () => {
 
 	useEffect(() => {
 		chart();
-	}, [day]);
+	}, [month]);
 
 	return (
 		<div className="container">
@@ -111,7 +73,7 @@ const MonthStats = () => {
                     data={chartData}
                     options={{
                         responsive: true,
-                        title: { text: "Month", display: true },
+                        title: { text: "Year", display: true },
                         scales: {
                             yAxes: [
                                 {
@@ -140,4 +102,4 @@ const MonthStats = () => {
 	);
 };
 
-export default MonthStats;
+export default YearStats;
