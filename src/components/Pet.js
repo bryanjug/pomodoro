@@ -8,7 +8,7 @@ const unityContext = new UnityContext({
 	loaderUrl: "/Pet/Build/Pet.loader.js",
 });
 
-const App = () => {
+const App = ({activity}) => {
 	const [isLoaded, setIsLoaded] = useState(false);
 	const [message, setMessage] = useState("-");
 	const [feedPet, setFeedPet] = useState(false);
@@ -41,25 +41,17 @@ const App = () => {
 				unityContext.send("pet", "ScaleResolution", 6); //original scale = 5, scale by +1
 				unityContext.send("pet", "ChangePosition", 0.45); //from y = .369 to y = .45 -> position change by each scale of 1 = .081 y difference
 				unityContext.send("pet", "Eat", "false"); //gameobject, function name, variable passed to unity
-				clearInterval(myVar);
 				setFeedPet(false);
+				clearInterval(myVar);
 			}, 6000);
 		}
 	}, [feedPet]);
 
-	const handleClick = () => {
-		setFeedPet(true);
-	};
-
-    // <button
-    // style={{ marginTop: "5%", position: "absolute", zIndex: "1" }}
-    // onClick={handleClick}
-    // >
-    //     Complete
-    // </button>
-    // <button style={{ marginTop: "10%", position: "absolute", zIndex: "1" }}>
-    //     Reset
-    // </button>
+	useEffect(() => {
+		if (activity === "Resting Mode") {
+			setFeedPet(true);
+		}
+	}, [activity]);
 
 	return (
 		<div>

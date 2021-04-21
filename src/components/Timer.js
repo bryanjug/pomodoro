@@ -430,8 +430,6 @@ const Time = () => {
 		}
 	};
 
-	// {renderButton()}
-
 	return (
 		<div>
 			<div className="pomodoroCounterContainer pt-2">
@@ -467,7 +465,7 @@ const Time = () => {
 					</div>
 				</div>
 			</div>
-			<Pet />
+			<Pet activity={activity} />
 		</div>
 	);
 };
