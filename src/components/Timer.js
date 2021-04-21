@@ -465,7 +465,7 @@ const Time = () => {
 					</div>
 				</div>
 			</div>
-			<Pet activity={activity} />
+			<Pet activity={activity} pomodoroLifeTime={pomodoroLifeTime} />
 		</div>
 	);
 };
