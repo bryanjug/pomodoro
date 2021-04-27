@@ -77,7 +77,7 @@ const App = ({activity, pomodoroLifeTime}) => {
 		}
 	}, [activity]);
 
-	//sets pet size, position, scene, and camera zoom once unity starts loading
+	//sets pet size, position, scene, world, and camera zoom once unity starts loading
 	useEffect(() => {
 		if (isLoaded === true) {
 			let scaleResolution = (pomodoroLifeTime / 2) + 5;
@@ -85,6 +85,7 @@ const App = ({activity, pomodoroLifeTime}) => {
 			let scaleCamera = (pomodoroLifeTime / 5) + 3; //default scale = 3, scale by 1 at each 5th pomodoro
 			let remainder = pomodoroLifeTime % 5;
 
+			//checks if pomodoro count is a numerator of 5
 			if (remainder === 0) {
 				unityContext.send("pet", "ChangeCameraSizeOnLoad", scaleCamera); //sets camera size without slowing down
 			}
@@ -92,14 +93,18 @@ const App = ({activity, pomodoroLifeTime}) => {
 			//removes decimal from scale camera when pomodoro count is not a multiple of 5
 			if (remainder != 0) {
 				let reducedScaleCamera = ~~scaleCamera;
+
 				unityContext.send("pet", "ChangeCameraSizeOnLoad", reducedScaleCamera);
 			}
 
-			//if (pomodoroLifeTime <= ?) {
-			unityContext.send("pet", "ShowMountain");
-			//} else {
-			//	unityContext.send("pet", "ShowEarth");
-			//}
+			//once pet size scale is above 205 => show earth, otherwise show mountain
+			if (scaleResolution <= 205) { 
+				unityContext.send("pet", "ShowMountain");
+			}
+
+			if (scaleResolution > 205) {
+				unityContext.send("pet", "ShowEarth");
+			}
 
 			unityContext.send("pet", "ScaleResolution", scaleResolution); 
 			unityContext.send("pet", "ChangePosition", changePosition); 
