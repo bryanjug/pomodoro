@@ -10,24 +10,11 @@ const unityContext = new UnityContext({
 
 const App = ({activity, pomodoroLifeTime}) => {
 	const [isLoaded, setIsLoaded] = useState(false);
-	const [message, setMessage] = useState("-");
 	const [feedPet, setFeedPet] = useState(false);
 
 	useEffect(() => {
-		unityContext.on("Sayx", (message) => {
-			setMessage(message);
-		});
-
 		unityContext.on("loaded", () => {
 			setIsLoaded(true);
-		});
-
-		unityContext.on("error", (message) => {
-			console.log("AN ERROR OCCURED", message);
-		});
-
-		unityContext.on("debug", (message) => {
-			console.log("GOT A LOG", message);
 		});
 	}, []);
 
@@ -35,7 +22,7 @@ const App = ({activity, pomodoroLifeTime}) => {
 	useEffect(() => {
 		let scaleResolution = (pomodoroLifeTime / 2) + 5; //default scale = 5, scale by 1/2
 		let changePosition = (.0405 * pomodoroLifeTime) + .369; //default scale y = .369, scale by .0405
-		let scaleCloud = (.1 * pomodoroLifeTime) + 1.2; //default scale = 1.2, scale by .1
+		let scaleCloud = (.1 * pomodoroLifeTime) + 1.2 + 100; //default scale = 1.2, scale by .1
 		let scaleCamera = (pomodoroLifeTime / 5) + 3; //default scale = 3, scale by 1 at each 5th pomodoro
 		var remainder = pomodoroLifeTime % 5;
 
@@ -43,22 +30,24 @@ const App = ({activity, pomodoroLifeTime}) => {
 			unityContext.send("pet", "Eat", "true");
 
 			//dependant on unity animation timing
-			let first = setTimeout(() => {
-				unityContext.send("pet", "ScaleCloud", scaleCloud); //set cloud size
+			setTimeout(() => {
+				if (scaleResolution > 205) { //changes at 401 pomodoro total
+					unityContext.send("pet", "ShowCloud"); //start cloud anim
+					setTimeout(() => {
+						unityContext.send("pet", "ShowEarth");
+					}, 2500);
+					// unityContext.send("pet", "ScaleCloud", scaleCloud); //set cloud size
+				}
 
+				//check to see if pomodoro count is a numerator of 5
 				if (remainder === 0) {
 					unityContext.send("pet", "ChangeCameraSize", scaleCamera);
 				}
-
-				unityContext.send("pet", "ShowCloud"); //start cloud anim
 				unityContext.send("pet", "Eat", "false"); //gameobject, function name, variable passed to unity
+				unityContext.send("pet", "SlowScaleResolution", scaleResolution);
+				unityContext.send("pet", "SlowChangePosition", changePosition);
 				setFeedPet(false);
-			}, 5145);
-
-			let second = setTimeout(() => {
-				unityContext.send("pet", "ScaleResolution", scaleResolution);
-				unityContext.send("pet", "ChangePosition", changePosition);
-			}, 5350);
+			}, 5200);
 		}
 
 		if (feedPet === false) {
@@ -79,11 +68,14 @@ const App = ({activity, pomodoroLifeTime}) => {
 
 	//sets pet size, position, scene, world, and camera zoom once unity starts loading
 	useEffect(() => {
+		let scaleResolution = (pomodoroLifeTime / 2) + 5;
+		let changePosition = (.0405 * pomodoroLifeTime) + .369;
+		let scaleCamera = (pomodoroLifeTime / 5) + 3; //default scale = 3, scale by 1 at each 5th pomodoro
+		let remainder = pomodoroLifeTime % 5;
+		
 		if (isLoaded === true) {
-			let scaleResolution = (pomodoroLifeTime / 2) + 5;
-			let changePosition = (.0405 * pomodoroLifeTime) + .369;
-			let scaleCamera = (pomodoroLifeTime / 5) + 3; //default scale = 3, scale by 1 at each 5th pomodoro
-			let remainder = pomodoroLifeTime % 5;
+			unityContext.send("pet", "ScaleResolution", scaleResolution); 
+			unityContext.send("pet", "ChangePosition", changePosition); 
 
 			//checks if pomodoro count is a numerator of 5
 			if (remainder === 0) {
@@ -91,7 +83,7 @@ const App = ({activity, pomodoroLifeTime}) => {
 			}
 
 			//removes decimal from scale camera when pomodoro count is not a multiple of 5
-			if (remainder != 0) {
+			if (remainder !== 0) {
 				let reducedScaleCamera = ~~scaleCamera;
 
 				unityContext.send("pet", "ChangeCameraSizeOnLoad", reducedScaleCamera);
@@ -105,9 +97,6 @@ const App = ({activity, pomodoroLifeTime}) => {
 			if (scaleResolution > 205) {
 				unityContext.send("pet", "ShowEarth");
 			}
-
-			unityContext.send("pet", "ScaleResolution", scaleResolution); 
-			unityContext.send("pet", "ChangePosition", changePosition); 
 		}
 	}, [isLoaded])
 
