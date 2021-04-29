@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Line, Chart } from "react-chartjs-2";
+import { Line, Chart, defaults } from "react-chartjs-2";
 import axios from "axios";
 import StatsNavigation from "./StatsNavigation"; 
 
@@ -91,15 +91,41 @@ const DayStats = () => {
 		chart();
 	}, [hour]);
 
+	useEffect(() => {
+		if (window.innerWidth < 1781) {
+			Chart.defaults.global.defaultFontSize = 10;
+		} else {
+			Chart.defaults.global.defaultFontSize = 30;
+		}
+	}, [window.innerWidth])
+
+	window.addEventListener('resize', () => {
+		if (window.innerWidth < 1781) {
+			Chart.defaults.global.defaultFontSize = 10;
+		} else {
+			Chart.defaults.global.defaultFontSize = 30;
+		}
+	});
+
 	return (
 		<div className="container">
 			<StatsNavigation />
-			<div className="graph" style={{ width: "100%", height: "100%" }}>
+			<div id="chartJSContainer" className="graph" style={{ width: "100%", height: "100%" }}>
 				<Line
 					data={chartData}
 					options={{
 						responsive: true,
-						title: { text: "Day", display: true },
+						maintainAspectRatio: false,
+						title: { 
+							text: "Day",
+							display: true,
+							// fontSize: window.innerWidth >= 1781 ? 18 : 15
+						},
+						// legend: {
+						// 	labels: {
+						// 		fontSize: window.innerWidth >= 1781 ? 18 : 15
+						// 	}
+						// },
 						scales: {
 							yAxes: [
 								{
@@ -107,6 +133,7 @@ const DayStats = () => {
 										autoSkip: true,
 										maxTicksLimit: 10,
 										beginAtZero: true,
+										// fontSize: window.innerWidth >= 1781 ? 18 : 15
 									},
 									gridLines: {
 										display: false,
@@ -115,6 +142,9 @@ const DayStats = () => {
 							],
 							xAxes: [
 								{
+									// ticks: {
+									// 	fontSize: window.innerWidth >= 1781 ? 18 : 15
+									// },
 									gridLines: {
 										display: false,
 									},

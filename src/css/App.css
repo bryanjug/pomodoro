@@ -39,7 +39,6 @@ body {
 
 .navButton {
     width: 100% !important;
-
 }
 
 .activity {
@@ -148,47 +147,170 @@ body {
     padding-right: 20px;
 }
 
-.graph {
-    margin: auto;
-}
-
 .countdown {
     line-height: 90%;
     margin-top: 280px !important;
 }
 
-@media only screen and (min-width: 320px) {
+.graph {
+    position: relative !important;
+    margin: auto !important;
+    height: 70vh !important;
+    width: 100% !important;
+}
+
+@media only screen and (min-width: 1425px) {
     .graph {
-        margin-top: 30%;
+        font-size: 36px !important;
     }
 }
 
-@media only screen and (min-width: 375px) {
-    .graph {
-        margin-top: 25%;
+@media only screen and (min-width: 1583px) { 
+    .navButton svg {
+        width: 4%;
+        height: 4%;
+        padding-top: .1%;
+        padding-bottom: .1%;
     }
-}
-
-@media only screen and (min-width: 425px) {
-    .graph {
-        margin-top: 20%;
+    .activity {
+        font-size: 120%;
     }
-}
-
-@media only screen and (min-width: 768px) {
-    .graph {
-        margin-top: auto;
+    .countdownContainer p {
+        font-size: 700% !important;
     }
-}
-
-/* @media screen and (min-width: 1023px) {
-    .unity {
-        transform: scale(1.3);
+    .btn-circle.btn-xl {
+        width: 80px;
+        height: 80px;
+        padding: 20px 18.8px;
+        border-radius: 65px;
+        font-size: 120%;
     }
-} */
-
-@media only screen and (min-width: 1024px) { 
-    .graph {
-        width: 90% !important;
+    .pomodoroCounter {
+        font-size: 150%;
     }
 } 
+
+@media only screen and (min-width: 1781px) { 
+    .activity {
+        font-size: 130%;
+    }
+    .countdownContainer p {
+        font-size: 750% !important;
+    }
+    .btn-circle.btn-xl {
+        width: 90px;
+        height: 90px;
+        padding: 20px 18.8px;
+        border-radius: 65px;
+        font-size: 130%;
+    }
+    .pomodoroCounter {
+        font-size: 160%;
+    }
+    .navButton svg {
+        width: 4.5%;
+        height: 4.5%;
+        padding-top: .1%;
+        padding-bottom: .1%;
+    }
+} 
+
+@media only screen and (min-width: 1900px) { 
+    .activity {
+        font-size: 140%;
+    }
+    .countdownContainer p {
+        font-size: 800% !important;
+    }
+    .btn-circle.btn-xl {
+        width: 100px;
+        height: 100px;
+        padding: 20px 18.8px;
+        border-radius: 65px;
+        text-align: center;
+        border: none;
+        font-size: 130%;
+    }
+    .pomodoroCounter {
+        font-size: 170%;
+    }
+} 
+
+@media only screen and (min-width: 2137px) { 
+    .activity {
+        font-size: 150%;
+    }
+    .countdownContainer p {
+        font-size: 850% !important;
+    }
+    .btn-circle.btn-xl {
+        width: 110px;
+        height: 110px;
+        padding: 20px 18.8px;
+        border-radius: 65px;
+        text-align: center;
+        border: none;
+        font-size: 140%;
+    }
+    .pomodoroCounter {
+        font-size: 180%;
+        padding-left: 15px;
+        padding-right: 22px;
+    }
+    .navButton svg {
+        padding-top: .4%;
+        padding-bottom: .4%;
+    }
+} 
+
+@media only screen and (min-width: 2850px) { 
+    .activity {
+        font-size: 200%;
+    }
+    .countdownContainer p {
+        font-size: 1200% !important;
+    }
+    .btn-circle.btn-xl {
+        width: 160px;
+        height: 160px;
+        padding: 20px 0;
+        border-radius: 105px;
+        text-align: center;
+        border: none;
+        font-size: 200%;
+    }
+    .pomodoroCounter {
+        font-size: 250%;
+        padding-left: 20px;
+        padding-right: 28px;
+        padding-bottom: 5px;
+    }
+} 
+
+@media only screen and (min-width: 4275px) { 
+    .activity {
+        font-size: 300%;
+    }
+    .countdownContainer p {
+        font-size: 2000% !important;
+    }
+    .btn-circle.btn-xl {
+        width: 230px;
+        height: 230px;
+        padding: 20px 0;
+        border-radius: 205px;
+        text-align: center;
+        border: none;
+        font-size: 300%;
+    }
+    .pomodoroCounter {
+        font-size: 400%;
+        padding-left: 30px;
+        padding-right: 38px;
+        border-radius: 0 50px 50px 0;
+    }
+    .navButton svg {
+        padding-top: .6%;
+        padding-bottom: .6%;
+    }
+}
