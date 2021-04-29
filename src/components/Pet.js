@@ -31,7 +31,7 @@ const App = ({activity, pomodoroLifeTime}) => {
 
 			//dependant on unity animation timing
 			setTimeout(() => {
-				if (scaleResolution > 205) { //changes at 401 pomodoro total
+				if (scaleResolution === 205) { //changes at 401 pomodoro total
 					unityContext.send("pet", "ShowCloud"); //start cloud anim
 					setTimeout(() => {
 						unityContext.send("pet", "ShowEarth");

@@ -9,21 +9,51 @@ body {
 }
 
 .pomodoroContainer {
-    z-index: 9999 !important;
-    position: absolute !important;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    z-index: 999;
+    position: absolute;
+    height: 100%;
+    width: 100%;
 }
 
 .pomodoroCounterContainer {
-    z-index: 9999 !important;
-    position: absolute !important;
+    z-index: 9999;
+    position: absolute;
 }
 
 .navigation {
     background-color: #2F3D43;
     border: none;
+    border-radius: 0;
+    z-index: 9999;
+}
+
+.buttonContainer {
+    padding: 0;
+    margin: auto;
+}
+
+.navContainer {
+    margin: auto;
+    width: 100%;
+}
+
+.navButton {
+    width: 100% !important;
+
+}
+
+.activity {
+    top: 15%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    position: fixed;
+}
+
+.countdownContainer {
+    bottom: 10%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    position: fixed;
 }
 
 .navigationDividerLeft {
@@ -151,29 +181,14 @@ body {
     }
 }
 
-@media screen and (min-width: 1023px) {
+/* @media screen and (min-width: 1023px) {
     .unity {
         transform: scale(1.3);
     }
-}
+} */
 
-@media only screen and (min-width: 1024px) {
+@media only screen and (min-width: 1024px) { 
     .graph {
         width: 90% !important;
-    }
-    .countdown {
-        margin-top: 340px !important;
-    }
-} 
-
-@media only screen and (min-width: 1440px) {
-    .countdown {
-        margin-top: 400px !important;
-    }
-} 
-
-@media only screen and (min-width: 2560px) {
-    .countdown {
-        margin-top: 600px !important;
     }
 } 

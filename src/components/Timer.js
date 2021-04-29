@@ -436,14 +436,14 @@ const Time = () => {
 				<p className="text-light pomodoroCounter">{pomodoroLifeTime}</p>
 			</div>
 			<div className="pomodoroContainer">
-				<div className="container">
-					<div className="text-center">
-						<audio className="audio-element">
-							<source src="http://soundbible.com/grab.php?id=1599&type=mp3"></source>
-						</audio>
-						<div className="text-light activity">
-							{long} {activity}
-						</div>
+				<div className="text-center">
+					<audio className="audio-element">
+						<source src="http://soundbible.com/grab.php?id=1599&type=mp3"></source>
+					</audio>
+					<div className="text-light activity">
+						{long} {activity}
+					</div>
+					<div className="countdownContainer">
 						<p
 							style={{ fontSize: "500%", fontWeight: "100" }}
 							className="text-light countdown"
