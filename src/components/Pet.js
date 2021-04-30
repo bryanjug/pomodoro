@@ -35,6 +35,7 @@ const App = ({activity, pomodoroLifeTime}) => {
 					unityContext.send("pet", "ShowCloud"); //start cloud anim
 					setTimeout(() => {
 						unityContext.send("pet", "ShowEarth");
+						unityContext.send("pet", "ChangeSkybox");
 					}, 2500);
 					// unityContext.send("pet", "ScaleCloud", scaleCloud); //set cloud size
 				}
@@ -96,6 +97,7 @@ const App = ({activity, pomodoroLifeTime}) => {
 
 			if (scaleResolution > 205) {
 				unityContext.send("pet", "ShowEarth");
+				unityContext.send("pet", "ChangeSkybox");
 			}
 		}
 	}, [isLoaded])

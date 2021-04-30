@@ -6,7 +6,7 @@ import Pet from "./Pet";
 const Time = () => {
 	const [start, setStart] = useState(false);
 	const [activity, setActivity] = useState("Working Mode");
-	const [time, setTime] = useState(3000);
+	const [time, setTime] = useState(1500000);
 	const [completedCount, setCompletedCount] = useState(0);
 	const [long, setLong] = useState("");
 	const [pomodoro, setPomodoro] = useState(0);
@@ -16,7 +16,7 @@ const Time = () => {
 	//ask user permission for notifications
 	useEffect(() => {
 		if (!("Notification" in window)) {
-			console.log("This browser does not support desktop notification");
+			console.log("This browser does not support desktop notifications");
 		} else {
 			Notification.requestPermission();
 		}
@@ -40,11 +40,11 @@ const Time = () => {
 		//check pomodoro multiple and set long resting mode
 		if (remainder === 0) {
 			if (activity === "Resting Mode") {
-				setTime(9000);
+				setTime(900000); //15 minutes
 				setLong("Long");
 			}
 			if (activity === "Working Mode") {
-				setTime(4000);
+				setTime(1500000);
 				setLong("");
 			}
 		}
@@ -98,7 +98,6 @@ const Time = () => {
 			.then(function (response) {
 				let date =
 					new Date().getMonth() +
-					1 +
 					"-" +
 					new Date().getDate() +
 					"-" +
@@ -110,7 +109,7 @@ const Time = () => {
 				if (date !== getData) {
 					var i;
 		
-					for (i = 1; i < 25; i++) {
+					for (i = 0; i < 24; i++) {
 						let payload = { [i]: 0, total: 0, date: date };
 						axios.patch("http://localhost:3001/day/1/", payload);
 					}
@@ -122,10 +121,9 @@ const Time = () => {
 	function updateWeek() {
 		axios.get("http://localhost:3001/week/1/")
 			.then(function (response) {
-				let currentDay = new Date().getDay() + 1; //sunday first day
+				let currentDay = new Date().getDay();
 				let date =
 					new Date().getMonth() +
-					1 +
 					"-" +
 					new Date().getDate() +
 					"-" +
@@ -152,10 +150,9 @@ const Time = () => {
 	function resetWeek() {
 		axios.get("http://localhost:3001/week/1/")
 			.then(function (response) {
-				let currentDay = new Date().getDay() + 1; //sunday first day
+				let currentDay = new Date().getDay();
 				const date =
 					new Date().getMonth() +
-					1 +
 					"-" +
 					new Date().getDate() +
 					"-" +
@@ -163,11 +160,11 @@ const Time = () => {
 
 				let getDate = response.data.date;
 
-				//if current day has changed to 1 and is not the same date as previously saved, reset data to 0
-				if (currentDay === 1 && date !== getDate) {
+				//if current day has changed to 0 and is not the same date as previously saved, reset data to 0
+				if (currentDay === 0 && date !== getDate) {
 					var i;
 
-					for (i = 1; i < 8; i++) {
+					for (i = 0; i < 7; i++) {
 						let payload = { [i]: 0, total: 0, currentDay: currentDay, date: date };
 						axios.patch("http://localhost:3001/week/1/", payload);
 					}
@@ -182,11 +179,10 @@ const Time = () => {
 				let currentDay = new Date().getDate(); //day of month
 				const date =
 					new Date().getMonth() +
-					1 +
 					"-" +
 					new Date().getDate() +
 					"-" +
-					new Date().getFullYear();		
+					new Date().getFullYear();
 
 				let getData = response.data[currentDay];
 				let count = getData + 1;
@@ -212,7 +208,6 @@ const Time = () => {
 				let currentDay = new Date().getDate(); //day of month
 				const date =
 					new Date().getMonth() +
-					1 +
 					"-" +
 					new Date().getDate() +
 					"-" +
@@ -236,7 +231,7 @@ const Time = () => {
 	function updateYear() {
 		axios.get("http://localhost:3001/year/1/")
 			.then(function (response) {
-				const currentMonth = new Date().getMonth() + 1;
+				const currentMonth = new Date().getMonth();
 
 				let getMonth = response.data[currentMonth];
 				let count = getMonth + 1;
@@ -257,15 +252,15 @@ const Time = () => {
 	function resetYear() {
 		axios.get("http://localhost:3001/year/1/")
 			.then(function (response) {
-				const currentMonth = new Date().getMonth() + 1;
+				const currentMonth = new Date().getMonth();
 
 				let getCurrentMonth = response.data.currentMonth;
 
-				//if current month has changed to 1 and is not the same date as previously saved, reset data to 0
-				if (currentMonth === 1 && currentMonth !== getCurrentMonth) {
+				//if current month has changed to 0 and is not the same date as previously saved, reset data to 0
+				if (currentMonth === 0 && currentMonth !== getCurrentMonth) {
 					var i;
 
-					for (i = 1; i < 13; i++) {
+					for (i = 0; i < 12; i++) {
 						let payload = { [i]: 0, total: 0, currentMonth: currentMonth };
 						axios.patch("http://localhost:3001/year/1/", payload);
 					}
@@ -335,13 +330,11 @@ const Time = () => {
 	};
 
 	//Ran when timer = 00:00
-	//Using multiple IF statements because countdown-react.js requires use of a function
-	//Will NOT let you only set a state or run useEffect
 	const Work = () => {
 		if (completedCount === 0) {
 			return (
 				<span>
-					{setTime(2000)}
+					{setTime(300000)}
 					{setStart(false)}
 					{setActivity("Working Mode")}
 				</span>
@@ -350,7 +343,7 @@ const Time = () => {
 		if (completedCount === 1) {
 			return (
 				<span>
-					{setTime(2000)}
+					{setTime(300000)}
 					{setStart(false)}
 					{setPomodoro(pomodoro + 1)}
 					{setActivity("Resting Mode")}
@@ -361,7 +354,7 @@ const Time = () => {
 			//finish working mode
 			return (
 				<span>
-					{setTime(2000)}
+					{setTime(300000)}
 					{setStart(false)}
 					{setActivity("Resting Mode")}
 				</span>
@@ -370,7 +363,7 @@ const Time = () => {
 		if (completedCount === 3) {
 			return (
 				<span>
-					{setTime(4000)}
+					{setTime(1500000)}
 					{setStart(false)}
 					{setActivity("Working Mode")}
 				</span>
@@ -379,7 +372,7 @@ const Time = () => {
 		if (completedCount === 4) {
 			return (
 				<span>
-					{setTime(4000)}
+					{setTime(1500000)}
 					{setStart(false)}
 					{setPomodoro(pomodoro + 1)}
 					{setActivity("Working Mode")}
@@ -389,7 +382,7 @@ const Time = () => {
 		if (completedCount === 5) {
 			return (
 				<span>
-					{setTime(2000)}
+					{setTime(300000)}
 					{setStart(false)}
 					{setActivity("Resting Mode")}
 				</span>
@@ -398,7 +391,7 @@ const Time = () => {
 		if (completedCount === 6) {
 			return (
 				<span>
-					{setTime(2000)}
+					{setTime(300000)}
 					{setStart(false)}
 					{setActivity("Resting Mode")}
 					{setCompletedCount(3)}

@@ -6,6 +6,10 @@ import StatsNavigation from "./StatsNavigation";
 const DayStats = () => {
 	const [hour, setHour] = useState({});
 	const [chartData, setChartData] = useState({});
+	const [pointRadius, setPointRadius] = useState(4);
+	const [pointHoverRadius, setPointHoverRadius] = useState(4);
+	const [borderWidth, setBorderWidth] = useState(4);
+	const [total, setTotal] = useState(0);
 	Chart.defaults.global.defaultFontColor = "#F8F9FA";
 
     //requests server data and sets state
@@ -13,8 +17,10 @@ const DayStats = () => {
 		let getResponse = await axios.get("http://localhost:3001/day/1/");
 
 		let getHours = getResponse.data;
+		let getTotal = getResponse.data.total;
 
 		setHour(getHours);
+		setTotal(getTotal);
 	}
 
     //loads stats from server once page loads
@@ -54,6 +60,7 @@ const DayStats = () => {
 				{
 					label: "Pomodoros Completed",
 					data: [
+						hour[0],
 						hour[1],
 						hour[2],
 						hour[3],
@@ -77,63 +84,112 @@ const DayStats = () => {
 						hour[21],
 						hour[22],
 						hour[23],
-						hour[24],
 					],
 					backgroundColor: ["#54AEA9"],
-					borderWidth: 4,
+					borderWidth: borderWidth,
+					pointRadius: pointRadius,
+					pointHoverRadius: pointHoverRadius,
 				},
 			],
 		});
 	};
 
-    //load chart once request to server is finished
-	useEffect(() => {
-		chart();
-	}, [hour]);
+    //checks if user changes screen sizes manually and sets responsive chart
+	const AsyncResponsiveChart = () => {
+		window.addEventListener('resize', () => {
+			if (window.innerWidth < 1781) {
+				Chart.defaults.global.defaultFontSize = 12;
+				setPointRadius(4);
+				setPointHoverRadius(4);
+				setBorderWidth(4);
+			}
+			if (window.innerWidth >= 1781 && window.innerWidth < 1900) {
+				Chart.defaults.global.defaultFontSize = 15;
+				setPointRadius(6);
+				setPointHoverRadius(6);
+				setBorderWidth(6);
+			}
+			if (window.innerWidth >= 1900 && window.innerWidth < 2137) {
+				Chart.defaults.global.defaultFontSize = 18;
+				setPointRadius(7);
+				setPointHoverRadius(7);
+				setBorderWidth(7);
+			}
+			if (window.innerWidth >= 2137 && window.innerWidth < 2850) {
+				Chart.defaults.global.defaultFontSize = 20;
+				setPointRadius(8);
+				setPointHoverRadius(8);
+				setBorderWidth(8);
+			}
+			if (window.innerWidth >= 2850 && window.innerWidth < 4275) {
+				Chart.defaults.global.defaultFontSize = 25;
+				setPointRadius(9);
+				setPointHoverRadius(9);
+				setBorderWidth(9);
+			}
+			if (window.innerWidth >= 4275) {
+				Chart.defaults.global.defaultFontSize = 40;
+				setPointRadius(12);
+				setPointHoverRadius(12);
+				setBorderWidth(15);
+			}
+		});
+	}
 
-	//checks window size on mount and sets responsive chart fonts
-	useEffect(() => {
+	//checks window size on mount and sets responsive chart
+	const MountResponsiveChart = () => {
 		if (window.innerWidth < 1781) {
 			Chart.defaults.global.defaultFontSize = 12;
+			setPointRadius(4);
+			setPointHoverRadius(4);
+			setBorderWidth(4);
 		} 
 		if (window.innerWidth >= 1781 && window.innerWidth < 1900) {
 			Chart.defaults.global.defaultFontSize = 15;
+			setPointRadius(6);
+			setPointHoverRadius(6);
+			setBorderWidth(6);
 		}
 		if (window.innerWidth >= 1900 && window.innerWidth < 2137) {
 			Chart.defaults.global.defaultFontSize = 18;
+			setPointRadius(7);
+			setPointHoverRadius(7);
+			setBorderWidth(7);
 		}
 		if (window.innerWidth >= 2137 && window.innerWidth < 2850) {
 			Chart.defaults.global.defaultFontSize = 20;
+			setPointRadius(8);
+			setPointHoverRadius(8);
+			setBorderWidth(8);
 		}
 		if (window.innerWidth >= 2850 && window.innerWidth < 4275) {
 			Chart.defaults.global.defaultFontSize = 25;
+			setPointRadius(9);
+			setPointHoverRadius(9);
+			setBorderWidth(9);
 		}
 		if (window.innerWidth >= 4275) {
-			Chart.defaults.global.defaultFontSize = 35;
+			Chart.defaults.global.defaultFontSize = 40;
+			setPointRadius(12);
+			setPointHoverRadius(12);
+			setBorderWidth(15);
+		}
+	}
+
+	//runs responsive functions on mount and removes event listener on dismount
+	useEffect(() => {
+		AsyncResponsiveChart();
+		MountResponsiveChart();
+
+		return () => {
+			window.removeEventListener('resize', AsyncResponsiveChart);
 		}
 	}, [])
 
-	//checks if user changes screen sizes manually and sets responsive chart fonts
-	window.addEventListener('resize', () => {
-		if (window.innerWidth < 1781) {
-			Chart.defaults.global.defaultFontSize = 12;
-		}
-		if (window.innerWidth >= 1781 && window.innerWidth < 1900) {
-			Chart.defaults.global.defaultFontSize = 15;
-		}
-		if (window.innerWidth >= 1900 && window.innerWidth < 2137) {
-			Chart.defaults.global.defaultFontSize = 18;
-		}
-		if (window.innerWidth >= 2137 && window.innerWidth < 2850) {
-			Chart.defaults.global.defaultFontSize = 20;
-		}
-		if (window.innerWidth >= 2850 && window.innerWidth < 4275) {
-			Chart.defaults.global.defaultFontSize = 25;
-		}
-		if (window.innerWidth >= 4275) {
-			Chart.defaults.global.defaultFontSize = 35;
-		}
-	});
+	//updates chart once data is fetched and when screen size changes
+	useEffect(() => {
+		chart();
+	}, [hour, pointRadius]);
 
 	return (
 		<div>
@@ -145,7 +201,7 @@ const DayStats = () => {
 						responsive: true,
 						maintainAspectRatio: false,
 						title: { 
-							text: "Day",
+							text: `Day Total: ${total}`,
 							display: true,
 						},
 						scales: {
