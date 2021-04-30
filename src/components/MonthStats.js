@@ -103,14 +103,59 @@ const MonthStats = () => {
 		chart();
 	}, [day]);
 
+	//checks window size on mount and sets responsive chart fonts
+	useEffect(() => {
+		if (window.innerWidth < 1781) {
+			Chart.defaults.global.defaultFontSize = 12;
+		} 
+		if (window.innerWidth >= 1781 && window.innerWidth < 1900) {
+			Chart.defaults.global.defaultFontSize = 15;
+		}
+		if (window.innerWidth >= 1900 && window.innerWidth < 2137) {
+			Chart.defaults.global.defaultFontSize = 18;
+		}
+		if (window.innerWidth >= 2137 && window.innerWidth < 2850) {
+			Chart.defaults.global.defaultFontSize = 20;
+		}
+		if (window.innerWidth >= 2850 && window.innerWidth < 4275) {
+			Chart.defaults.global.defaultFontSize = 25;
+		}
+		if (window.innerWidth >= 4275) {
+			Chart.defaults.global.defaultFontSize = 35;
+		}
+	}, [])
+
+	//checks if user changes screen sizes manually and sets responsive chart fonts
+	window.addEventListener('resize', () => {
+		if (window.innerWidth < 1781) {
+			Chart.defaults.global.defaultFontSize = 12;
+		}
+		if (window.innerWidth >= 1781 && window.innerWidth < 1900) {
+			Chart.defaults.global.defaultFontSize = 15;
+		}
+		if (window.innerWidth >= 1900 && window.innerWidth < 2137) {
+			Chart.defaults.global.defaultFontSize = 18;
+		}
+		if (window.innerWidth >= 2137 && window.innerWidth < 2850) {
+			Chart.defaults.global.defaultFontSize = 20;
+		}
+		if (window.innerWidth >= 2850 && window.innerWidth < 4275) {
+			Chart.defaults.global.defaultFontSize = 25;
+		}
+		if (window.innerWidth >= 4275) {
+			Chart.defaults.global.defaultFontSize = 35;
+		}
+	});
+
 	return (
-		<div className="container">
+		<div>
             <StatsNavigation />
             <div className="graph" style={{width: '100%', height: '100%'}}>
                 <Line
                     data={chartData}
                     options={{
-                        responsive: true,
+						responsive: true,
+						maintainAspectRatio: false,
                         title: { text: "Month", display: true },
                         scales: {
                             yAxes: [

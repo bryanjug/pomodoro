@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Line, Chart, defaults } from "react-chartjs-2";
+import { Line, Chart } from "react-chartjs-2";
 import axios from "axios";
 import StatsNavigation from "./StatsNavigation"; 
 
@@ -91,26 +91,54 @@ const DayStats = () => {
 		chart();
 	}, [hour]);
 
+	//checks window size on mount and sets responsive chart fonts
 	useEffect(() => {
 		if (window.innerWidth < 1781) {
-			Chart.defaults.global.defaultFontSize = 10;
-		} else {
-			Chart.defaults.global.defaultFontSize = 30;
+			Chart.defaults.global.defaultFontSize = 12;
+		} 
+		if (window.innerWidth >= 1781 && window.innerWidth < 1900) {
+			Chart.defaults.global.defaultFontSize = 15;
 		}
-	}, [window.innerWidth])
+		if (window.innerWidth >= 1900 && window.innerWidth < 2137) {
+			Chart.defaults.global.defaultFontSize = 18;
+		}
+		if (window.innerWidth >= 2137 && window.innerWidth < 2850) {
+			Chart.defaults.global.defaultFontSize = 20;
+		}
+		if (window.innerWidth >= 2850 && window.innerWidth < 4275) {
+			Chart.defaults.global.defaultFontSize = 25;
+		}
+		if (window.innerWidth >= 4275) {
+			Chart.defaults.global.defaultFontSize = 35;
+		}
+	}, [])
 
+	//checks if user changes screen sizes manually and sets responsive chart fonts
 	window.addEventListener('resize', () => {
 		if (window.innerWidth < 1781) {
-			Chart.defaults.global.defaultFontSize = 10;
-		} else {
-			Chart.defaults.global.defaultFontSize = 30;
+			Chart.defaults.global.defaultFontSize = 12;
+		}
+		if (window.innerWidth >= 1781 && window.innerWidth < 1900) {
+			Chart.defaults.global.defaultFontSize = 15;
+		}
+		if (window.innerWidth >= 1900 && window.innerWidth < 2137) {
+			Chart.defaults.global.defaultFontSize = 18;
+		}
+		if (window.innerWidth >= 2137 && window.innerWidth < 2850) {
+			Chart.defaults.global.defaultFontSize = 20;
+		}
+		if (window.innerWidth >= 2850 && window.innerWidth < 4275) {
+			Chart.defaults.global.defaultFontSize = 25;
+		}
+		if (window.innerWidth >= 4275) {
+			Chart.defaults.global.defaultFontSize = 35;
 		}
 	});
 
 	return (
-		<div className="container">
+		<div>
 			<StatsNavigation />
-			<div id="chartJSContainer" className="graph" style={{ width: "100%", height: "100%" }}>
+			<div className="graph" style={{ width: "100%", height: "100%" }}>
 				<Line
 					data={chartData}
 					options={{
@@ -119,13 +147,7 @@ const DayStats = () => {
 						title: { 
 							text: "Day",
 							display: true,
-							// fontSize: window.innerWidth >= 1781 ? 18 : 15
 						},
-						// legend: {
-						// 	labels: {
-						// 		fontSize: window.innerWidth >= 1781 ? 18 : 15
-						// 	}
-						// },
 						scales: {
 							yAxes: [
 								{
@@ -133,7 +155,6 @@ const DayStats = () => {
 										autoSkip: true,
 										maxTicksLimit: 10,
 										beginAtZero: true,
-										// fontSize: window.innerWidth >= 1781 ? 18 : 15
 									},
 									gridLines: {
 										display: false,
@@ -142,9 +163,6 @@ const DayStats = () => {
 							],
 							xAxes: [
 								{
-									// ticks: {
-									// 	fontSize: window.innerWidth >= 1781 ? 18 : 15
-									// },
 									gridLines: {
 										display: false,
 									},
