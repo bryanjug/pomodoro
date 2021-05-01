@@ -12,9 +12,11 @@ const WeekStats = () => {
 	const [total, setTotal] = useState(0);
 	Chart.defaults.global.defaultFontColor = "#F8F9FA";
 
+	const SERVER = `${process.env.REACT_APP_NODE_SERVER}`;
+
 	//requests server data and sets state
 	async function getWeekStats() {
-		let getResponse = await axios.get("http://localhost:3001/week/1/");
+		let getResponse = await axios.get(SERVER + "/week/1/");
 
 		let getWeek = getResponse.data;
 		let getTotal = getResponse.data.total;

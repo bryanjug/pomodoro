@@ -13,6 +13,8 @@ const Time = () => {
 	const [pomodoroLifeTime, setPomodoroLifeTime] = useState(0);
 	const countdown = useRef(null);
 
+	const SERVER = `${process.env.REACT_APP_NODE_SERVER}`;
+
 	//ask user permission for notifications
 	useEffect(() => {
 		if (!("Notification" in window)) {
@@ -52,7 +54,7 @@ const Time = () => {
 
 	//finds lifetime pomodoro count from server
 	function fetchLifeTime() {
-		axios.get("http://localhost:3001/lifetime/1")
+		axios.get(SERVER + "/lifetime/1")
 			.then(function (response) {
 				let total = response.data.total;
 				setPomodoroLifeTime(total);
@@ -61,7 +63,7 @@ const Time = () => {
 
 	//updates lifetime pomodoro count to server
 	function updateLifeTime() {
-		axios.get("http://localhost:3001/lifetime/1")
+		axios.get(SERVER + "/lifetime/1")
 			.then(function (response) {
 				let getData = response.data.total;
 				const total = getData + 1;
@@ -70,13 +72,13 @@ const Time = () => {
 
 				let payload = { total: total };
 
-				axios.patch("http://localhost:3001/lifetime/1", payload);
+				axios.patch(SERVER + "/lifetime/1", payload);
 			});
 	}
 
 	//updates daily pomodoro and daily total pomodoro count to server
 	function updateDay() {
-		axios.get("http://localhost:3001/day/1/")
+		axios.get(SERVER + "/day/1/")
 			.then(function (response) {
 				let currentHour = new Date().getHours();
 
@@ -88,13 +90,13 @@ const Time = () => {
 
 				let payload = { [currentHour]: count, total: totalCount };
 
-				axios.patch("http://localhost:3001/day/1/", payload);
+				axios.patch(SERVER + "/day/1/", payload);
 			});
 	}
 
 	//resets day's data back to 0 once new day starts
 	function resetDay() {
-		axios.get("http://localhost:3001/day/1/")
+		axios.get(SERVER + "/day/1/")
 			.then(function (response) {
 				let date =
 					new Date().getMonth() +
@@ -111,7 +113,7 @@ const Time = () => {
 		
 					for (i = 0; i < 24; i++) {
 						let payload = { [i]: 0, total: 0, date: date };
-						axios.patch("http://localhost:3001/day/1/", payload);
+						axios.patch(SERVER + "/day/1/", payload);
 					}
 				}
 			});
@@ -119,7 +121,7 @@ const Time = () => {
 
 	//updates weekly and weekly total pomodoro count
 	function updateWeek() {
-		axios.get("http://localhost:3001/week/1/")
+		axios.get(SERVER + "/week/1/")
 			.then(function (response) {
 				let currentDay = new Date().getDay();
 				let date =
@@ -142,13 +144,13 @@ const Time = () => {
 					currentDay: currentDay,
 				};
 
-				axios.patch("http://localhost:3001/week/1/", payload);
+				axios.patch(SERVER + "/week/1/", payload);
 			});
 	}
 
 	//resets data back to 0 once week has ended
 	function resetWeek() {
-		axios.get("http://localhost:3001/week/1/")
+		axios.get(SERVER + "/week/1/")
 			.then(function (response) {
 				let currentDay = new Date().getDay();
 				const date =
@@ -166,7 +168,7 @@ const Time = () => {
 
 					for (i = 0; i < 7; i++) {
 						let payload = { [i]: 0, total: 0, currentDay: currentDay, date: date };
-						axios.patch("http://localhost:3001/week/1/", payload);
+						axios.patch(SERVER + "/week/1/", payload);
 					}
 				}
 			});
@@ -174,7 +176,7 @@ const Time = () => {
 
 	//updates monthly and monthly total pomodoro count
 	function updateMonth() {
-		axios.get("http://localhost:3001/month/1/")
+		axios.get(SERVER + "/month/1/")
 			.then(function (response) {
 				let currentDay = new Date().getDate(); //day of month
 				const date =
@@ -197,13 +199,13 @@ const Time = () => {
 					date: date,
 				};
 
-				axios.patch("http://localhost:3001/month/1/", payload);
+				axios.patch(SERVER + "/month/1/", payload);
 			});
 	}
 
 	//resets data back to 0 once month has ended
 	function resetMonth() {
-		axios.get("http://localhost:3001/month/1/")
+		axios.get(SERVER + "/month/1/")
 			.then(function (response) {
 				let currentDay = new Date().getDate(); //day of month
 				const date =
@@ -221,7 +223,7 @@ const Time = () => {
 		
 					for (i = 1; i < 32; i++) {
 						let payload = { [i]: 0, total: 0, currentDay: currentDay, date: date };
-						axios.patch("http://localhost:3001/month/1/", payload);
+						axios.patch(SERVER + "/month/1/", payload);
 					}
 				}
 			});
@@ -229,7 +231,7 @@ const Time = () => {
 
 	//updates yearly counts and yearly total count
 	function updateYear() {
-		axios.get("http://localhost:3001/year/1/")
+		axios.get(SERVER + "/year/1/")
 			.then(function (response) {
 				const currentMonth = new Date().getMonth();
 
@@ -245,12 +247,12 @@ const Time = () => {
 					currentMonth: currentMonth,
 				};
 
-				axios.patch("http://localhost:3001/year/1/", payload);
+				axios.patch(SERVER + "/year/1/", payload);
 			});
 	}
 
 	function resetYear() {
-		axios.get("http://localhost:3001/year/1/")
+		axios.get(SERVER + "/year/1/")
 			.then(function (response) {
 				const currentMonth = new Date().getMonth();
 
@@ -262,7 +264,7 @@ const Time = () => {
 
 					for (i = 0; i < 12; i++) {
 						let payload = { [i]: 0, total: 0, currentMonth: currentMonth };
-						axios.patch("http://localhost:3001/year/1/", payload);
+						axios.patch(SERVER + "/year/1/", payload);
 					}
 				}
 			});

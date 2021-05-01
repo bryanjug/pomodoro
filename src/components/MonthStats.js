@@ -12,8 +12,10 @@ const MonthStats = () => {
 	const [total, setTotal] = useState(0);
 	Chart.defaults.global.defaultFontColor = "#F8F9FA";
 
+	const SERVER = `${process.env.REACT_APP_NODE_SERVER}`;
+
 	async function getMonthStats() {
-		let getResponse = await axios.get("http://localhost:3001/month/1/");
+		let getResponse = await axios.get(SERVER + "/month/1/");
 
 		let getDays = getResponse.data;
 		let getTotal = getResponse.data.total;
