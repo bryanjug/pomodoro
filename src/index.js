@@ -1,3 +1,5 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
 import React from "react";
 import ReactDOM from "react-dom";
 import {BrowserRouter as Router, Route} from 'react-router-dom';
@@ -7,6 +9,7 @@ import DayStats from './components/DayStats';
 import WeekStats from './components/WeekStats';
 import MonthStats from './components/MonthStats';
 import YearStats from './components/YearStats';
+import "./css/style.css";
 
 ReactDOM.render(
     <Router>

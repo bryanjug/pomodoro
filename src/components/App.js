@@ -1,6 +1,4 @@
-import {useEffect} from 'react';
 import { Link } from "react-router-dom";
-import "../css/App.css";
 import GoogleBtn from './GoogleBtn';
 
 //TODO:
@@ -69,7 +67,10 @@ import GoogleBtn from './GoogleBtn';
 //(DONE) CHANGE SKYBOX ON EARTH DISPLAY
 //(DONE) SET COUNTDOWN TIMERS TO 25 and 5
 //(DONE) DESIGN AND CREATE GOOGLE LOG IN BUTTON
+//() ADD BOOTSTRAP POPOVER ONTOP OF LOG IN BUTTON
 //() REQUIRE LOG IN TO SHOW STATS
+//() ASK USER TO LOG IN TO SHOW STATS
+//() CHANGE DB AND SERVER CONNECTIONS FOR INDIVIDUAL GOOGLE ID'S
 //() (OPTIONAL) ADD LEADERBOARDS FOR POMODORO COUNT
 //() HOST REACT APP ON OWN WEBSITE => IF WEBGL DOESNT WORK, HOST ON GITHUB PAGES OR HEROKU
 //() HOST JSON-SERVER ON HEROKU
@@ -85,7 +86,7 @@ const App = () => {
 							<Link to="/" className="navigation">
 								<button
 									type="button"
-									className="btn btn-secondary navigation navigationDividerRight navButton"
+									className="btn btn-secondary navigation navButton"
 								>
 									<svg
 										xmlns="http://www.w3.org/2000/svg"

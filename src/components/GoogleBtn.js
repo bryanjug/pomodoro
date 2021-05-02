@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
-
 const CLIENT_ID = `${process.env.REACT_APP_CLIENT_ID}`;
 
 class GoogleBtn extends Component {
@@ -16,6 +15,12 @@ class GoogleBtn extends Component {
     this.handleLoginFailure = this.handleLoginFailure.bind(this);
     this.logout = this.logout.bind(this);
     this.handleLogoutFailure = this.handleLogoutFailure.bind(this);
+
+    const popoverRef = React.createRef();
+    // var popover = new bootstrap.Popover(popoverRef.current, {
+    //   content: "Hello popover content!",
+    //   title: "My Popover"
+    // });
   }
 
   login (response) {
@@ -24,6 +29,7 @@ class GoogleBtn extends Component {
         isLogined: true,
         accessToken: response.accessToken
       }));
+      console.log(response.getId()); //gets unique Google userId
     }
   }
 
@@ -42,6 +48,16 @@ class GoogleBtn extends Component {
     alert('Failed to log out')
   }
 
+  popOverStatus() {
+    if(this.state.accessToken) {
+      // document.querySelector('.googleBtn').popover('show');
+      console.log("user is logged in");
+    } else {
+      // document.querySelector('.googleBtn').popover('hide');
+      console.log("user is NOT logged in");
+    }
+  }
+
   render() {
     return (
     <div>
@@ -53,6 +69,7 @@ class GoogleBtn extends Component {
             className="googleBtn text-light navButton navigation"
             isSignedIn={true}
             icon={false}
+            data-container="body" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
         >
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -75,6 +92,8 @@ class GoogleBtn extends Component {
             isSignedIn={true}
             className="googleBtn text-light navButton navigation"
             icon={false}
+            data-container="body" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+            ref={this.popoverRef}
         >
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -89,8 +108,7 @@ class GoogleBtn extends Component {
             Login
         </GoogleLogin>
       }
-      { this.state.accessToken ? console.log(this.state.accessToken) : null }
-
+      {this.popOverStatus()}
     </div>
     )
   }

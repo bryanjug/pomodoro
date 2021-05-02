@@ -56,17 +56,9 @@ body {
     position: fixed;
 }
 
-.navigationDividerLeft {
-    border-left: 1px solid #28343a;
-}
-
 .navigationDividerMiddle {
-    border-left: 1px solid #28343a;
-    border-right: 1px solid #28343a;
-}
-
-.navigationDividerRight {
-    border-right: 1px solid #28343a;
+    border-left: 2px solid #28343a;
+    border-right: 2px solid #28343a;
 }
 
 .googleBtn {
