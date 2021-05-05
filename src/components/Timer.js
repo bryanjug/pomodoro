@@ -427,7 +427,7 @@ const Time = () => {
 
 	return (
 		<div>
-			<div className="pomodoroCounterContainer pt-2">
+			<div className="pomodoroCounterContainer pt-3">
 				<p className="text-light pomodoroCounter">{pomodoroLifeTime}</p>
 			</div>
 			<div className="pomodoroContainer">

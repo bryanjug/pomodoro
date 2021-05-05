@@ -2,7 +2,7 @@ import {Link} from 'react-router-dom';
 
 const StatsNavigation = () => {
     return (
-        <div className="text-center pt-4 pb-4">
+        <div className="text-center pt-4 pb-4 statsNavContainer">
             <Link to="/stats/day">
                 <button type="button" className="btn btn-secondary statsNavigation statsNavigationLeft">Day</button>
             </Link>

@@ -8,6 +8,101 @@ body {
     background: rgb(69,89,96);
 }
 
+.menu-ham {
+    width: 100%;
+}
+
+.menu-exit {
+    width: 100%;
+}
+
+.mhead {
+    right: 0 !important;
+    z-index: 99999999;
+    position: absolute;
+    top: 0 !important;
+    cursor: pointer;
+    width: 18%;
+}
+
+.menu {
+    width: 60%;
+    height: 100%;
+    position: fixed;
+    right: -60%;
+    top: 0;
+    background-color: #2F3D43;
+    box-shadow: 1px 0 5px black;
+    transition: all ease 1s;
+    z-index: 99999999 !important;
+}
+
+.close-menu {
+    float: right;
+    min-height: 30px;
+    margin-right: 18px;
+    margin-top: 15px;
+    cursor: pointer;
+    width: 10%;
+}
+
+.menu ul {
+    padding-left: 0;
+    margin-top: 80px;
+    width: 100%;
+}
+
+.menu li {
+    list-style: none;
+    text-decoration-style: none;
+    line-height: 170%;
+    padding: 5% 0% 5% 5%;
+    text-align: center !important;
+}
+
+.menu a li {
+    text-transform: uppercase;
+    font-size: 16px;
+    color: #E7E8EB;
+}
+
+a:link { text-decoration: none; }
+
+
+a:visited { text-decoration: none; }
+
+
+a:hover { text-decoration: none; }
+
+
+a:active { text-decoration: none; }
+
+.menu li:hover {
+    background-color: #4B9C96 !important;
+    cursor: pointer;
+}
+
+.googleBtn {
+    width: 100% !important;
+    text-align: center !important;
+    background-color: inherit !important;
+    color: #E7E8EB !important;
+    text-decoration: none !important;
+    text-transform: uppercase;
+    box-shadow: none !important;
+    border: none !important;
+    /* display: inline-block !important; */
+    font-size: 16px !important;
+}
+
+.displayNone {
+    display: none !important;
+}
+
+.displayInline {
+    display: inline-block !important;
+}
+
 .pomodoroContainer {
     z-index: 999;
     position: absolute;
@@ -56,21 +151,29 @@ body {
     position: fixed;
 }
 
-.navigationDividerMiddle {
-    border-left: 2px solid #28343a;
-    border-right: 2px solid #28343a;
+.loginAlert {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: fixed;
+    height: 50%;
+    width: 80%;
 }
 
-.googleBtn {
-    background-color: #2F3D43 !important;
-    border: none !important;
-    border-radius: 0 !important;
-    display: inline-block !important;
-    height: 100% !important;
+.loginAlertText {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: fixed;
+    width: 90%;
+    height: 60%;
+    text-align: center;
 }
 
-.bi-google {
-    margin-right: 8px !important;
+.catImg {
+    width: 70% !important;
+    height: 50% !important;
+    margin-bottom: 5%;
 }
 
 .navigation:hover {
@@ -129,6 +232,10 @@ body {
     box-shadow: none !important;
 }
 
+.statsNavContainer {
+    margin-top: 10% !important;
+}
+
 .statsNavigation {
     border-radius: 0;
     background-color: #2F3D43;
@@ -171,10 +278,43 @@ body {
     padding-right: 5% !important;
 }
 
+@media only screen and (min-width: 425px) { 
+    .catImg {
+        width: 200px !important;
+    }
+    .statsNavContainer {
+        margin-top: 0 !important;
+    }
+}
+
+@media only screen and (min-width: 768px) { 
+    .loginAlert {
+        width: 50% !important;
+    }
+}
+
+@media only screen and (min-width: 1024px) { 
+    .loginAlert {
+        width: 40% !important;
+    }
+}
+
+@media only screen and (min-width: 1069px) { 
+    .loginAlert {
+        width: 30% !important;
+    }
+}
+
 @media only screen and (min-width: 1583px) { 
+    .loginAlertText {
+        font-size: 120% !important;
+    }
+    .catImg { 
+        width: 50% !important;
+    }
     .navButton svg {
-        width: 4%;
-        height: 4%;
+        width: 7%;
+        height: 7%;
         padding-top: .1%;
         padding-bottom: .1%;
     }
@@ -197,6 +337,9 @@ body {
 } 
 
 @media only screen and (min-width: 1781px) { 
+    .loginAlertText {
+        font-size: 130% !important;
+    }
     .statsNavigation {
         font-size: 115%;
     }
@@ -217,14 +360,17 @@ body {
         font-size: 160%;
     }
     .navButton svg {
-        width: 4.5%;
-        height: 4.5%;
+        width: 7%;
+        height: 7%;
         padding-top: .1%;
         padding-bottom: .1%;
     }
 } 
 
 @media only screen and (min-width: 1900px) { 
+    .loginAlertText {
+        font-size: 140% !important;
+    }
     .statsNavigation {
         font-size: 130%;
     }
@@ -249,6 +395,9 @@ body {
 } 
 
 @media only screen and (min-width: 2137px) { 
+    .loginAlertText {
+        font-size: 150% !important;
+    }
     .statsNavigation {
         font-size: 150%;
     }
@@ -279,6 +428,9 @@ body {
 } 
 
 @media only screen and (min-width: 2850px) { 
+    .loginAlertText {
+        font-size: 220% !important;
+    }
     .statsNavigation {
         font-size: 200%;
         padding-left: 20px;
@@ -316,6 +468,9 @@ body {
 } 
 
 @media only screen and (min-width: 4275px) { 
+    .loginAlertText {
+        font-size: 320% !important;
+    }
     .statsNavigation {
         font-size: 300%;
         padding-left: 40px;
