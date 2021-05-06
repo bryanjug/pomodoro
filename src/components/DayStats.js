@@ -3,7 +3,7 @@ import { Line, Chart } from "react-chartjs-2";
 import axios from "axios";
 import StatsNavigation from "./StatsNavigation"; 
 
-const DayStats = () => {
+const DayStats = ({userId}) => {
 	const [hour, setHour] = useState({});
 	const [chartData, setChartData] = useState({});
 	const [pointRadius, setPointRadius] = useState(4);
@@ -28,6 +28,7 @@ const DayStats = () => {
     //loads stats from server once page loads
 	useEffect(() => {
 		getDayStats();
+		console.log(userId);
 	}, []);
 
 	const chart = () => {

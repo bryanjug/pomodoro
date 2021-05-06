@@ -3,7 +3,7 @@ import { Line, Chart } from "react-chartjs-2";
 import axios from "axios";
 import StatsNavigation from "./StatsNavigation";
 
-const WeekStats = () => {
+const WeekStats = ({userId}) => {
 	const [day, setDay] = useState({});
 	const [chartData, setChartData] = useState({});
 	const [pointRadius, setPointRadius] = useState(4);
@@ -28,6 +28,7 @@ const WeekStats = () => {
 	//loads stats from server once page loads
 	useEffect(() => {
 		getWeekStats();
+		console.log(userId);
 	}, []);
 
 	const chart = () => {

@@ -1,5 +1,4 @@
-import React, { Component } from 'react'
-import ReactDOM from 'react-dom';
+import React, { Component } from 'react';
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
 const CLIENT_ID = `${process.env.REACT_APP_CLIENT_ID}`;
 
@@ -11,7 +10,8 @@ class GoogleBtn extends Component {
       isLogined: false,
       accessToken: '',
       styleLogin: "googleBtn displayInline",
-      styleLogout: "googleBtn displayNone"
+      styleLogout: "googleBtn displayNone",
+      styleAlert: "alert alert-success loginAlert alert-dismissible displayInline",
     };
 
     this.login = this.login.bind(this);
@@ -29,9 +29,10 @@ class GoogleBtn extends Component {
         accessToken: response.accessToken,
         styleLogin: "googleBtn displayNone",
         styleLogout: "googleBtn displayInline",
+        styleAlert: "alert alert-success loginAlert alert-dismissible displayNone",
       }));
-      console.log(response.getId()); //gets unique Google userId
-      // this.alert.current.style.display = "none";
+      this.props.setUserId(response.getId()); //gets unique Google userId
+      // console.log(this.props.userId);
     }
   }
 
@@ -41,6 +42,7 @@ class GoogleBtn extends Component {
       accessToken: '',
       styleLogin: "googleBtn displayInline",
       styleLogout: "googleBtn displayNone",
+      styleAlert: "alert alert-success loginAlert alert-dismissible displayInline",
     }));
   }
 
@@ -52,13 +54,24 @@ class GoogleBtn extends Component {
     alert('Failed to log out')
   }
 
-  popOverStatus() {
-    if(this.state.accessToken) {
-      console.log("user is logged in");
-    } else {
-      console.log("user is NOT logged in");
-    }
-  }
+  // popOverStatus() {
+  //   if(this.state.isLogined === true) {
+  //     console.log("user is logged in");
+  //   } 
+  //   if(this.state.isLogined === false) {
+  //     console.log("user is NOT logged in");
+
+  //     const showAlert = setTimeout(() => {
+  //       this.setState(state => ({
+  //         styleAlert: "alert alert-success loginAlert alert-dismissible displayInline",
+  //       }));
+  //     }, 5000);
+
+  //     if(this.state.accessToken) {
+  //       clearTimeout(showAlert);
+  //     }
+  //   }
+  // }
 
   render() {
     return (
@@ -85,8 +98,7 @@ class GoogleBtn extends Component {
       >
         <span className="googleText">Login</span>
       </GoogleLogin>
-      {this.popOverStatus()}
-      <div className="alert alert-success loginAlert alert-dismissible">
+      <div className={this.state.styleAlert} ref={this.alert}>
         <a href="#" className="close" data-dismiss="alert" aria-label="close">&times;</a>
         <span className="loginAlertText">
           <img src="/img/cat.png" alt="" className="catImg"/>

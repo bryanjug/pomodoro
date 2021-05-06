@@ -3,7 +3,7 @@ import Countdown, { zeroPad } from "react-countdown";
 import axios from "axios";
 import Pet from "./Pet";
 
-const Time = () => {
+const Time = ({userId}) => {
 	const [start, setStart] = useState(false);
 	const [activity, setActivity] = useState("Working Mode");
 	const [time, setTime] = useState(1500000);
@@ -22,6 +22,7 @@ const Time = () => {
 		} else {
 			Notification.requestPermission();
 		}
+		console.log(userId);
 	}, []);
 
 	//show notification once timer is done

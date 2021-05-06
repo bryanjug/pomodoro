@@ -3,7 +3,7 @@ import { Line, Chart } from "react-chartjs-2";
 import axios from "axios";
 import StatsNavigation from "./StatsNavigation";
 
-const YearStats = () => {
+const YearStats = ({userId}) => {
 	const [chartData, setChartData] = useState({});
 	const [month, setMonth] = useState({});
 	const [pointRadius, setPointRadius] = useState(4);
@@ -27,6 +27,7 @@ const YearStats = () => {
     //loads stats from server once page loads
 	useEffect(() => {
 		getYearStats();
+		console.log(userId);
 	}, []);
 	
 	const chart = () => {

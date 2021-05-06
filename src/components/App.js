@@ -1,6 +1,13 @@
 import { Link } from "react-router-dom";
-import GoogleBtn from './GoogleBtn';
-import React, {useRef} from 'react';
+import GoogleBtn from "./GoogleBtn";
+import React, { useRef, useState } from "react";
+import {BrowserRouter as Router, Route} from 'react-router-dom';
+import { createBrowserHistory } from 'history';
+import Timer from './Timer';
+import DayStats from './DayStats';
+import WeekStats from './WeekStats';
+import MonthStats from './MonthStats';
+import YearStats from './YearStats';
 
 //TODO:
 //(DONE) COMPLETION METHOD -> CREATE TIMER
@@ -72,20 +79,23 @@ import React, {useRef} from 'react';
 //(DONE) FIX RESPONSIVE ALERT
 //(DONE) SLIDE NAV MENU FROM RIGHT
 //(DONE) SHOW / HIDE GOOGLE LOGIN BUTTON
-//() SET NAV ICONS
+//(DONE) SET NAV ICONS
 //(DONE) FIX GOOGLE BUTTON STYLING
-//() RESPONSIVE NAV MENU
-//() SHOW ALERT SCREEN ON UNITY LOAD AND WHEN USER IS NOT LOGGED IN 
+//(DONE) RESPONSIVE NAV MENU
+//(DONE) CHANGE LINKS TO ROUTERS WITH COMPONENTS AS CHILDREN
+//(DONE) MOVE USERID STATES FROM ROUTERS TO CHILDREN
+//(DONE) SHOW ALERT AFTER GOOGLE BUTTON LOADS AND WHEN USER IS NOT LOGGED IN
+//() CONNECT DB AND SERVER FOR INDIVIDUAL GOOGLE ID'S
 //() REQUIRE LOG IN TO SHOW STATS
-//() ASK USER TO LOG IN TO SHOW STATS
-//() CHANGE DB AND SERVER CONNECTIONS FOR INDIVIDUAL GOOGLE ID'S
 //() (OPTIONAL) ADD LEADERBOARDS FOR POMODORO COUNT
 //() HOST REACT APP ON OWN WEBSITE => IF WEBGL DOESNT WORK, HOST ON GITHUB PAGES OR HEROKU
 //() HOST JSON-SERVER ON HEROKU
 //() SHOW LOADING ANIM OVER APP WHILE WAITING FOR HEROKU TO START
 
 const App = () => {
+	const [userId, setUserId] = useState(null);
 	const nav = useRef(null);
+	const history = createBrowserHistory();
 
 	function showNav() {
 		nav.current.style.right = "0px";
@@ -94,28 +104,51 @@ const App = () => {
 	function hideNav() {
 		nav.current.style.right = "-60%";
 	}
-	
+
 	return (
 		<div>
-			<div class="mhead">
-				<img className="menu-ham" src="/img/hamburger.png" onClick={showNav} />
-			</div>
-			<div className="menu" ref={nav}>
-				<div className="close-menu">
-					<img src="/img/exit.png" onClick={hideNav} className="menu-exit" />
+			<Router history={history}>
+				<Route exact path="/">
+					<Timer userId={userId} />
+				</Route>
+				<Route path="/stats/day">
+					<DayStats userId={userId} />
+				</Route>
+				<Route path="/stats/week">
+					<WeekStats userId={userId} />
+				</Route>
+				<Route path="/stats/month">
+					<MonthStats userId={userId} />
+				</Route>
+				<Route path="/stats/year">
+					<YearStats userId={userId} />
+				</Route>
+
+				<div className="mhead">
+					<img className="menu-ham" src="/img/hamburger.png" onClick={showNav} />
 				</div>
-				<ul>
-					<Link to="/">
-						<li>Pomodoro</li>
-					</Link>
-					<Link to="/stats/day">
-						<li>Statistics</li>
-					</Link>
-					<li>
-						<GoogleBtn />
-					</li>
-				</ul>
-			</div>
+				<div className="menu" ref={nav}>
+					<div className="close-menu">
+						<img src="/img/exit.png" onClick={hideNav} className="menu-exit" />
+					</div>
+					<ul>
+						<Link to="/">
+							<li>Pomodoro</li>
+						</Link>
+						<Link
+							to={{
+								pathname: "/stats/day",
+								state: { userId: {userId} },
+							}}
+						>
+							<li>Statistics</li>
+						</Link>
+						<li>
+							<GoogleBtn setUserId={setUserId} userId={userId}/>
+						</li>
+					</ul>
+				</div>
+			</Router>
 		</div>
 	);
 };

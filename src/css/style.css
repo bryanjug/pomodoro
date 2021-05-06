@@ -40,15 +40,15 @@ body {
 .close-menu {
     float: right;
     min-height: 30px;
-    margin-right: 18px;
-    margin-top: 15px;
+    margin-right: 10%;
+    margin-top: 10%;
     cursor: pointer;
     width: 10%;
 }
 
 .menu ul {
     padding-left: 0;
-    margin-top: 80px;
+    margin-top: 35% !important;
     width: 100%;
 }
 
@@ -158,6 +158,41 @@ a:active { text-decoration: none; }
     position: fixed;
     height: 50%;
     width: 80%;
+    animation: fadeIn 5s;
+    -webkit-animation: fadeIn 5s;
+    -moz-animation: fadeIn 5s;
+    -o-animation: fadeIn 5s;
+    -ms-animation: fadeIn 5s;
+}
+
+@keyframes fadeIn {
+    0% {opacity:0;}
+    75%{opacity:0;}
+    100% {opacity:1;}
+}
+
+@-moz-keyframes fadeIn {
+    0% {opacity:0;}
+    75%{opacity:0;}
+    100% {opacity:1;}
+}
+
+@-webkit-keyframes fadeIn {
+    0% {opacity:0;}
+    75%{opacity:0;}
+    100% {opacity:1;}
+}
+
+@-o-keyframes fadeIn {
+    0% {opacity:0;}
+    75%{opacity:0;}
+    100% {opacity:1;}
+}
+
+@-ms-keyframes fadeIn {
+    0% {opacity:0;}
+    75%{opacity:0;}
+    100% {opacity:1;}
 }
 
 .loginAlertText {
@@ -278,6 +313,16 @@ a:active { text-decoration: none; }
     padding-right: 5% !important;
 }
 
+@media only screen and (min-width: 375px) { 
+    .mhead {
+        width: 16%;
+    }
+    .menu {
+        width: 50%;
+        right: -50%;
+    }
+}
+
 @media only screen and (min-width: 425px) { 
     .catImg {
         width: 200px !important;
@@ -285,11 +330,25 @@ a:active { text-decoration: none; }
     .statsNavContainer {
         margin-top: 0 !important;
     }
+    .mhead {
+        width: 14%;
+    }
+    .menu {
+        width: 45%;
+        right: -45%;
+    }
 }
 
 @media only screen and (min-width: 768px) { 
     .loginAlert {
         width: 50% !important;
+    }
+    .mhead {
+        width: 8%;
+    }
+    .menu {
+        width: 25%;
+        right: -25%;
     }
 }
 
@@ -297,16 +356,30 @@ a:active { text-decoration: none; }
     .loginAlert {
         width: 40% !important;
     }
+    .mhead {
+        width: 6%;
+    }
+    .menu {
+        width: 20%;
+        right: -20%;
+    }
 }
 
 @media only screen and (min-width: 1069px) { 
     .loginAlert {
         width: 30% !important;
     }
+    .mhead {
+        width: 5.5%;
+    }
+    .menu {
+        width: 18%;
+        right: -18%;
+    }
 }
 
 @media only screen and (min-width: 1583px) { 
-    .loginAlertText {
+    .menu li, .googleText {
         font-size: 120% !important;
     }
     .catImg { 
@@ -337,7 +410,7 @@ a:active { text-decoration: none; }
 } 
 
 @media only screen and (min-width: 1781px) { 
-    .loginAlertText {
+    .menu li, .googleText {
         font-size: 130% !important;
     }
     .statsNavigation {
@@ -368,7 +441,7 @@ a:active { text-decoration: none; }
 } 
 
 @media only screen and (min-width: 1900px) { 
-    .loginAlertText {
+    .menu li, .googleText {
         font-size: 140% !important;
     }
     .statsNavigation {
@@ -395,8 +468,8 @@ a:active { text-decoration: none; }
 } 
 
 @media only screen and (min-width: 2137px) { 
-    .loginAlertText {
-        font-size: 150% !important;
+    .menu li, .googleText {
+        font-size: 160% !important;
     }
     .statsNavigation {
         font-size: 150%;
@@ -428,7 +501,7 @@ a:active { text-decoration: none; }
 } 
 
 @media only screen and (min-width: 2850px) { 
-    .loginAlertText {
+    .menu li, .googleText {
         font-size: 220% !important;
     }
     .statsNavigation {
@@ -468,7 +541,7 @@ a:active { text-decoration: none; }
 } 
 
 @media only screen and (min-width: 4275px) { 
-    .loginAlertText {
+    .menu li, .googleText {
         font-size: 320% !important;
     }
     .statsNavigation {

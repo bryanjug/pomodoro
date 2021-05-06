@@ -8,7 +8,7 @@ const unityContext = new UnityContext({
 	loaderUrl: "/Pet/Build/Pet.loader.js",
 });
 
-const App = ({activity, pomodoroLifeTime}) => {
+const Pet = ({activity, pomodoroLifeTime}) => {
 	const [isLoaded, setIsLoaded] = useState(false);
 	const [feedPet, setFeedPet] = useState(false);
 
@@ -122,5 +122,5 @@ const App = ({activity, pomodoroLifeTime}) => {
 	);
 };
 
-export default App;
+export default Pet;
 
