@@ -32,7 +32,7 @@ class GoogleBtn extends Component {
         styleAlert: "alert alert-success loginAlert alert-dismissible displayNone",
       }));
       this.props.setUserId(response.getId()); //gets unique Google userId
-      // console.log(this.props.userId);
+      
     }
   }
 
@@ -53,25 +53,6 @@ class GoogleBtn extends Component {
   handleLogoutFailure (response) {
     alert('Failed to log out')
   }
-
-  // popOverStatus() {
-  //   if(this.state.isLogined === true) {
-  //     console.log("user is logged in");
-  //   } 
-  //   if(this.state.isLogined === false) {
-  //     console.log("user is NOT logged in");
-
-  //     const showAlert = setTimeout(() => {
-  //       this.setState(state => ({
-  //         styleAlert: "alert alert-success loginAlert alert-dismissible displayInline",
-  //       }));
-  //     }, 5000);
-
-  //     if(this.state.accessToken) {
-  //       clearTimeout(showAlert);
-  //     }
-  //   }
-  // }
 
   render() {
     return (
@@ -103,7 +84,8 @@ class GoogleBtn extends Component {
         <span className="loginAlertText">
           <img src="/img/cat.png" alt="" className="catImg"/>
           <br />
-          Please <strong>Login</strong> with your Google account in order to see your stats.
+          Please <strong>Login</strong> with your Google account in order to see your stats. 
+          Reload the page after you have successfully logged in.
         </span>
       </div>
     </div>

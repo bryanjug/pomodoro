@@ -22,7 +22,6 @@ const Time = ({userId}) => {
 		} else {
 			Notification.requestPermission();
 		}
-		console.log(userId);
 	}, []);
 
 	//show notification once timer is done
@@ -53,14 +52,164 @@ const Time = ({userId}) => {
 		}
 	}, [pomodoro, activity]);
 
+	function postDay() {
+		const date =
+			new Date().getMonth() +
+			"-" +
+			new Date().getDate() +
+			"-" +
+			new Date().getFullYear();
+		let payload = {
+			id: `${userId}`, 
+			total: 0, 
+			date: date, 
+			0: 0,
+			1: 0,
+			2: 0,
+			3: 0,
+			4: 0,
+			5: 0,
+			6: 0,
+			7: 0,
+			8: 0,
+			9: 0,
+			10: 0,
+			11: 0,
+			12: 0,
+			13: 0,
+			14: 0,
+			15: 0,
+			16: 0,
+			17: 0,
+			18: 0,
+			19: 0,
+			20: 0,
+			21: 0,
+			22: 0,
+			23: 0
+		};
+		return axios.post(SERVER + `/day`, payload);
+	}
+
+	function postWeek() {
+		const date =
+			new Date().getMonth() +
+			"-" +
+			new Date().getDate() +
+			"-" +
+			new Date().getFullYear();
+		let currentDay = new Date().getDay();
+		let payload = {
+			id: `${userId}`, 
+			total: 0, 
+			date: date, 
+			currentDay: currentDay,
+			0: 0,
+			1: 0,
+			2: 0,
+			3: 0,
+			4: 0,
+			5: 0,
+			6: 0
+		};
+		return axios.post(SERVER + `/week`, payload);
+	}
+
+	function postMonth() {
+		const date =
+			new Date().getMonth() +
+			"-" +
+			new Date().getDate() +
+			"-" +
+			new Date().getFullYear();
+		let currentDay = new Date().getDay();
+		let payload = {
+			id: `${userId}`, 
+			total: 0, 
+			date: date, 
+			currentDay: currentDay,
+			1: 0,
+			2: 0,
+			3: 0,
+			4: 0,
+			5: 0,
+			6: 0,
+			7: 0,
+			8: 0,
+			9: 0,
+			10: 0,
+			11: 0,
+			12: 0,
+			13: 0,
+			14: 0,
+			15: 0,
+			16: 0,
+			17: 0,
+			18: 0,
+			19: 0,
+			20: 0,
+			21: 0,
+			22: 0,
+			23: 0,
+			24: 0,
+			25: 0,
+			26: 0,
+			27: 0,
+			28: 0,
+			29: 0,
+			30: 0,
+			31: 0,
+		};
+		return axios.post(SERVER + `/month`, payload);
+	}
+
+	function postYear() {
+		const currentMonth = new Date().getMonth();
+		let payload = {
+			id: `${userId}`, 
+			total: 0, 
+			currentMonth: currentMonth,
+			0: 0,
+			1: 0,
+			2: 0,
+			3: 0,
+			4: 0,
+			5: 0,
+			6: 0,
+			7: 0,
+			8: 0,
+			9: 0,
+			10: 0,
+			11: 0
+		};
+		return axios.post(SERVER + `/year`, payload);
+	}
+
+	function postLifetime() {
+		let payload = { id: `${userId}`, total: 0 };
+		return axios.post(SERVER + `/lifetime`, payload);
+	}
+
 	//finds lifetime pomodoro count from server
+	//if userId isnt in DB, then set new placeholder data for that userId
 	function fetchLifeTime() {
-		axios.get(SERVER + "/lifetime/1")
+		axios.get(SERVER + `/lifetime/${userId}`)
 			.then(function (response) {
 				let total = response.data.total;
 				setPomodoroLifeTime(total);
 			})
+			.catch(function (error) {
+				if (error.response) {
+					Promise.all([postDay(), postWeek(), postMonth(), postYear(), postLifetime()]);
+				}
+			})
 	}
+
+	useEffect(() => {
+		if (pomodoro === 0 && userId !== null) {
+			fetchLifeTime();
+		}
+	}, [userId])
 
 	//updates lifetime pomodoro count to server
 	function updateLifeTime() {
@@ -283,10 +432,6 @@ const Time = ({userId}) => {
 
 	//fetches + updates data to server once pomodoro updates
 	useEffect(() => {
-		if (pomodoro === 0) {
-			fetchLifeTime();
-		}
-
 		if (pomodoro >= 1) {
 			updateLifeTime();
 			updateDay();

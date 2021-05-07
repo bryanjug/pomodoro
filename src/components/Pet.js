@@ -22,7 +22,6 @@ const Pet = ({activity, pomodoroLifeTime}) => {
 	useEffect(() => {
 		let scaleResolution = (pomodoroLifeTime / 2) + 5; //default scale = 5, scale by 1/2
 		let changePosition = (.0405 * pomodoroLifeTime) + .369; //default scale y = .369, scale by .0405
-		let scaleCloud = (.1 * pomodoroLifeTime) + 1.2 + 100; //default scale = 1.2, scale by .1
 		let scaleCamera = (pomodoroLifeTime / 5) + 3; //default scale = 3, scale by 1 at each 5th pomodoro
 		var remainder = pomodoroLifeTime % 5;
 
@@ -37,7 +36,6 @@ const Pet = ({activity, pomodoroLifeTime}) => {
 						unityContext.send("pet", "ShowEarth");
 						unityContext.send("pet", "ChangeSkybox");
 					}, 2500);
-					// unityContext.send("pet", "ScaleCloud", scaleCloud); //set cloud size
 				}
 
 				//check to see if pomodoro count is a numerator of 5
