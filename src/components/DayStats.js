@@ -15,9 +15,32 @@ const DayStats = ({userId}) => {
 
 	const SERVER = `${process.env.REACT_APP_NODE_SERVER}`;
 
+	const instance = axios.create({
+		baseURL: SERVER
+	});
+
     //requests server data and sets state
 	function getDayStats() {
-		axios.get(SERVER + `/day/${userId}`)
+		// axios.get(SERVER + `/day/${userId}`)
+		// 	.then(function (response) {
+		// 		let getHours = response.data;
+		// 		let getTotal = response.data.total;
+
+		// 		setHour(getHours);
+		// 		setTotal(getTotal);
+		// 		setDataLoaded(true);
+		// 	})
+		// 	.catch(function (error) {
+		// 		if (error.response) {
+		// 			console.log("404 error");
+		// 			console.log("Please log in");
+		// 		}
+		// 		if (error.request) {
+		// 			console.log(error.config);
+		// 			console.log("Server is still offline");
+		// 		}
+		// 	})
+		instance.get(SERVER + `/day/${userId}`) //${userId}
 			.then(function (response) {
 				let getHours = response.data;
 				let getTotal = response.data.total;
@@ -26,11 +49,40 @@ const DayStats = ({userId}) => {
 				setTotal(getTotal);
 				setDataLoaded(true);
 			})
+			.catch(function (error) {
+				if (error.response) {
+					console.log("404 error");
+					console.log("Please log in");
+				}
+				if (error.request) {
+					console.log("Server is offline");
+					const connectFailure = setInterval(() => {
+						instance.get(SERVER + `/day/${userId}`)
+							.then(function (response) {
+								let getHours = response.data;
+								let getTotal = response.data.total;
+
+								setHour(getHours);
+								setTotal(getTotal);
+								setDataLoaded(true);
+								clearInterval(connectFailure);
+								console.log("Server is online!");
+							})
+							.catch(function (error) {
+								if (error.request) {
+									console.log("Server is still offline");
+								}
+							})
+					}, 3000);
+				}
+			})
 	}
 
     //loads stats from server once user is logged in
 	useEffect(() => {
-		getDayStats();
+		if (userId !== null) {
+			getDayStats();
+		}
 	}, [userId]);
 
 	const chart = () => {

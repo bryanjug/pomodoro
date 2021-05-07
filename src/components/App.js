@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import GoogleBtn from "./GoogleBtn";
 import React, { useRef, useState } from "react";
 import {BrowserRouter as Router, Route} from 'react-router-dom';
-import { createBrowserHistory } from 'history';
 import Timer from './Timer';
 import DayStats from './DayStats';
 import WeekStats from './WeekStats';
@@ -92,16 +91,16 @@ import YearStats from './YearStats';
 //(DONE) REQUIRE LOG IN TO SHOW STATS
 //(DONE) REMOVE LOOPED PATCH PAYLOADS
 //(DONE) FIX RESPONSIVE HAMGBURGER ICON
-//() SHOW SPINNING LOADER WHEN ON STATS PAGE WHILE NOT LOGGED IN
-//() SHOW SPINNING LOADER WHILE CONNECTING TO DB
-//() (OPTIONAL) ADD LEADERBOARDS FOR POMODORO COUNT
+//() HIDE SPINNING LOADER WHEN ON STATS PAGE UNTIL STATS GETS USERID
+//() AXIOS REQUEST SETINTERVAL UNTIL DB SERVER IS ONLINE
+//() SHOW SPINNING LOADER WHILE CONNECTING TO DB ON TIMER
 //() HOST REACT APP ON OWN WEBSITE => IF WEBGL DOESNT WORK, HOST ON GITHUB PAGES OR HEROKU
 //() HOST JSON-SERVER ON HEROKU
+//() (OPTIONAL) ADD LEADERBOARDS FOR POMODORO COUNT
 
 const App = () => {
 	const [userId, setUserId] = useState(null);
 	const nav = useRef(null);
-	const history = createBrowserHistory();
 
 	function showNav() {
 		nav.current.style.right = "0px";
@@ -113,7 +112,7 @@ const App = () => {
 
 	return (
 		<div>
-			<Router history={history}>
+			<Router>
 				<Route exact path="/">
 					<Timer userId={userId} />
 				</Route>
@@ -131,11 +130,11 @@ const App = () => {
 				</Route>
 
 				<div className="mhead">
-					<img className="menu-ham" src="/img/hamburger.png" onClick={showNav} />
+					<img className="menu-ham" src="/img/hamburger.png" onClick={showNav} alt="" />
 				</div>
 				<div className="menu" ref={nav}>
 					<div className="close-menu">
-						<img src="/img/exit.png" onClick={hideNav} className="menu-exit" />
+						<img src="/img/exit.png" onClick={hideNav} className="menu-exit" alt="" />
 					</div>
 					<ul>
 						<Link to="/">

@@ -15,11 +15,6 @@ const Time = ({userId}) => {
 	const SERVER = `${process.env.REACT_APP_NODE_SERVER}`;
 	let [today, setToday] = useState(new Date().getDate());
 
-	//resets state every hour in case user is still in app once day changes
-	setTimeout(() => {
-		setToday(new Date().getDate());
-	}, 3600000);
-
 	//ask user permission for notifications
 	useEffect(() => {
 		if (!("Notification" in window)) {
@@ -27,6 +22,10 @@ const Time = ({userId}) => {
 		} else {
 			Notification.requestPermission();
 		}
+		//resets state every hour in case user is still in app once day changes
+		setInterval(() => {
+			setToday(new Date().getDate());
+		}, 3600000);
 	}, []);
 
 	//show notification once timer is done
@@ -197,6 +196,7 @@ const Time = ({userId}) => {
 
 	//finds lifetime pomodoro count from server
 	//if userId isnt in DB, then set new placeholder data for that userId
+	//prevents overwiting DB if user already exists
 	function fetchLifeTime() {
 		axios.get(SERVER + `/lifetime/${userId}`)
 			.then(function (response) {
