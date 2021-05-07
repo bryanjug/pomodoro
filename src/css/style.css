@@ -8,6 +8,23 @@ body {
     background: rgb(69,89,96);
 }
 
+.loading {
+    z-index: 999999 !important;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: fixed;
+}
+
+.loadingText {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: fixed;
+    text-align: center;
+    z-index: 999999 !important;
+}
+
 .menu-ham {
     width: 100%;
 }
@@ -331,7 +348,7 @@ a:active { text-decoration: none; }
         margin-top: 0 !important;
     }
     .mhead {
-        width: 14%;
+        width: 60px;
     }
     .menu {
         width: 45%;

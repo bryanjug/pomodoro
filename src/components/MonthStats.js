@@ -10,25 +10,28 @@ const MonthStats = ({userId}) => {
 	const [pointHoverRadius, setPointHoverRadius] = useState(4);
 	const [borderWidth, setBorderWidth] = useState(4);
 	const [total, setTotal] = useState(0);
+	const [dataLoaded, setDataLoaded] = useState(false);
 	Chart.defaults.global.defaultFontColor = "#F8F9FA";
 
 	const SERVER = `${process.env.REACT_APP_NODE_SERVER}`;
 
-	async function getMonthStats() {
-		let getResponse = await axios.get(SERVER + "/month/1/");
+	function getMonthStats() {
+		axios.get(SERVER + `/month/${userId}`)
+			.then(function (response) {
 
-		let getDays = getResponse.data;
-		let getTotal = getResponse.data.total;
+				let getDays = response.data;
+				let getTotal = response.data.total;
 
-		setDay(getDays);
-		setTotal(getTotal);
+				setDay(getDays);
+				setTotal(getTotal);
+				setDataLoaded(true);
+			})
 	}
 
     //loads stats from server once page loads
 	useEffect(() => {
 		getMonthStats();
-		console.log(userId);
-	}, []);
+	}, [userId]);
 	
 	const chart = () => {
 		setChartData({
@@ -202,10 +205,11 @@ const MonthStats = ({userId}) => {
 		}
 	}, [])
 
-	//updates chart once data is fetched and when screen size changes
+	//updates chart once data is fetched, user is signed in, 
+	//and when screen size changes
 	useEffect(() => {
 		chart();
-	}, [day, pointRadius]);
+	}, [dataLoaded, pointRadius]);
 
 	return (
 		<div>

@@ -10,26 +10,28 @@ const WeekStats = ({userId}) => {
 	const [pointHoverRadius, setPointHoverRadius] = useState(4);
 	const [borderWidth, setBorderWidth] = useState(4);
 	const [total, setTotal] = useState(0);
+	const [dataLoaded, setDataLoaded] = useState(false);
 	Chart.defaults.global.defaultFontColor = "#F8F9FA";
 
 	const SERVER = `${process.env.REACT_APP_NODE_SERVER}`;
 
 	//requests server data and sets state
-	async function getWeekStats() {
-		let getResponse = await axios.get(SERVER + "/week/1/");
+	function getWeekStats() {
+		axios.get(SERVER + `/week/${userId}`)
+			.then(function (response) {
+				let getWeek = response.data;
+				let getTotal = response.data.total;
 
-		let getWeek = getResponse.data;
-		let getTotal = getResponse.data.total;
-
-		setDay(getWeek);
-		setTotal(getTotal);
+				setDay(getWeek);
+				setTotal(getTotal);
+				setDataLoaded(true);
+			})
 	}
 
 	//loads stats from server once page loads
 	useEffect(() => {
 		getWeekStats();
-		console.log(userId);
-	}, []);
+	}, [userId]);
 
 	const chart = () => {
 		setChartData({
@@ -155,10 +157,11 @@ const WeekStats = ({userId}) => {
 		}
 	}, [])
 
-	//updates chart once data is fetched and when screen size changes
+	//updates chart once data is fetched, user is signed in, 
+	//and when screen size changes
 	useEffect(() => {
 		chart();
-	}, [day, pointRadius]);
+	}, [dataLoaded, pointRadius]);
 
 	return (
 		<div>

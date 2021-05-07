@@ -10,26 +10,28 @@ const DayStats = ({userId}) => {
 	const [pointHoverRadius, setPointHoverRadius] = useState(4);
 	const [borderWidth, setBorderWidth] = useState(4);
 	const [total, setTotal] = useState(0);
+	const [dataLoaded, setDataLoaded] = useState(false);
 	Chart.defaults.global.defaultFontColor = "#F8F9FA";
 
 	const SERVER = `${process.env.REACT_APP_NODE_SERVER}`;
 
     //requests server data and sets state
-	async function getDayStats() {
-		let getResponse = await axios.get(SERVER + "/day/1/");
+	function getDayStats() {
+		axios.get(SERVER + `/day/${userId}`)
+			.then(function (response) {
+				let getHours = response.data;
+				let getTotal = response.data.total;
 
-		let getHours = getResponse.data;
-		let getTotal = getResponse.data.total;
-
-		setHour(getHours);
-		setTotal(getTotal);
+				setHour(getHours);
+				setTotal(getTotal);
+				setDataLoaded(true);
+			})
 	}
 
-    //loads stats from server once page loads
+    //loads stats from server once user is logged in
 	useEffect(() => {
 		getDayStats();
-		console.log(userId);
-	}, []);
+	}, [userId]);
 
 	const chart = () => {
 		setChartData({
@@ -189,10 +191,11 @@ const DayStats = ({userId}) => {
 		}
 	}, [])
 
-	//updates chart once data is fetched and when screen size changes
+	//updates chart once data is fetched, user is signed in, 
+	//and when screen size changes
 	useEffect(() => {
 		chart();
-	}, [hour, pointRadius]);
+	}, [dataLoaded, pointRadius]);
 
 	return (
 		<div>

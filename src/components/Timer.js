@@ -12,8 +12,13 @@ const Time = ({userId}) => {
 	const [pomodoro, setPomodoro] = useState(0);
 	const [pomodoroLifeTime, setPomodoroLifeTime] = useState(0);
 	const countdown = useRef(null);
-
 	const SERVER = `${process.env.REACT_APP_NODE_SERVER}`;
+	let [today, setToday] = useState(new Date().getDate());
+
+	//resets state every hour in case user is still in app once day changes
+	setTimeout(() => {
+		setToday(new Date().getDate());
+	}, 3600000);
 
 	//ask user permission for notifications
 	useEffect(() => {
@@ -205,15 +210,9 @@ const Time = ({userId}) => {
 			})
 	}
 
-	useEffect(() => {
-		if (pomodoro === 0 && userId !== null) {
-			fetchLifeTime();
-		}
-	}, [userId])
-
 	//updates lifetime pomodoro count to server
 	function updateLifeTime() {
-		axios.get(SERVER + "/lifetime/1")
+		axios.get(SERVER + `/lifetime/${userId}`)
 			.then(function (response) {
 				let getData = response.data.total;
 				const total = getData + 1;
@@ -222,13 +221,13 @@ const Time = ({userId}) => {
 
 				let payload = { total: total };
 
-				axios.patch(SERVER + "/lifetime/1", payload);
+				axios.patch(SERVER + `/lifetime/${userId}`, payload);
 			});
 	}
 
 	//updates daily pomodoro and daily total pomodoro count to server
 	function updateDay() {
-		axios.get(SERVER + "/day/1/")
+		axios.get(SERVER + `/day/${userId}`)
 			.then(function (response) {
 				let currentHour = new Date().getHours();
 
@@ -240,13 +239,13 @@ const Time = ({userId}) => {
 
 				let payload = { [currentHour]: count, total: totalCount };
 
-				axios.patch(SERVER + "/day/1/", payload);
+				axios.patch(SERVER + `/day/${userId}`, payload);
 			});
 	}
 
 	//resets day's data back to 0 once new day starts
 	function resetDay() {
-		axios.get(SERVER + "/day/1/")
+		axios.get(SERVER + `/day/${userId}`)
 			.then(function (response) {
 				let date =
 					new Date().getMonth() +
@@ -259,19 +258,42 @@ const Time = ({userId}) => {
 
 				//if date has changed, reset all data to 0
 				if (date !== getData) {
-					var i;
-		
-					for (i = 0; i < 24; i++) {
-						let payload = { [i]: 0, total: 0, date: date };
-						axios.patch(SERVER + "/day/1/", payload);
-					}
+					let payload = {
+						total: 0, 
+						date: date, 
+						0: 0,
+						1: 0,
+						2: 0,
+						3: 0,
+						4: 0,
+						5: 0,
+						6: 0,
+						7: 0,
+						8: 0,
+						9: 0,
+						10: 0,
+						11: 0,
+						12: 0,
+						13: 0,
+						14: 0,
+						15: 0,
+						16: 0,
+						17: 0,
+						18: 0,
+						19: 0,
+						20: 0,
+						21: 0,
+						22: 0,
+						23: 0
+					};
+					axios.patch(SERVER + `/day/${userId}`, payload);
 				}
 			});
 	}
 
 	//updates weekly and weekly total pomodoro count
 	function updateWeek() {
-		axios.get(SERVER + "/week/1/")
+		axios.get(SERVER + `/week/${userId}`)
 			.then(function (response) {
 				let currentDay = new Date().getDay();
 				let date =
@@ -294,13 +316,13 @@ const Time = ({userId}) => {
 					currentDay: currentDay,
 				};
 
-				axios.patch(SERVER + "/week/1/", payload);
+				axios.patch(SERVER + `/week/${userId}`, payload);
 			});
 	}
 
 	//resets data back to 0 once week has ended
 	function resetWeek() {
-		axios.get(SERVER + "/week/1/")
+		axios.get(SERVER + `/week/${userId}`)
 			.then(function (response) {
 				let currentDay = new Date().getDay();
 				const date =
@@ -314,19 +336,26 @@ const Time = ({userId}) => {
 
 				//if current day has changed to 0 and is not the same date as previously saved, reset data to 0
 				if (currentDay === 0 && date !== getDate) {
-					var i;
-
-					for (i = 0; i < 7; i++) {
-						let payload = { [i]: 0, total: 0, currentDay: currentDay, date: date };
-						axios.patch(SERVER + "/week/1/", payload);
-					}
+					let payload = {
+						total: 0, 
+						date: date, 
+						currentDay: currentDay,
+						0: 0,
+						1: 0,
+						2: 0,
+						3: 0,
+						4: 0,
+						5: 0,
+						6: 0
+					};
+					axios.patch(SERVER + `/week/${userId}`, payload);
 				}
 			});
 	}
 
 	//updates monthly and monthly total pomodoro count
 	function updateMonth() {
-		axios.get(SERVER + "/month/1/")
+		axios.get(SERVER + `/month/${userId}`)
 			.then(function (response) {
 				let currentDay = new Date().getDate(); //day of month
 				const date =
@@ -349,13 +378,13 @@ const Time = ({userId}) => {
 					date: date,
 				};
 
-				axios.patch(SERVER + "/month/1/", payload);
+				axios.patch(SERVER + `/month/${userId}`, payload);
 			});
 	}
 
 	//resets data back to 0 once month has ended
 	function resetMonth() {
-		axios.get(SERVER + "/month/1/")
+		axios.get(SERVER + `/month/${userId}`)
 			.then(function (response) {
 				let currentDay = new Date().getDate(); //day of month
 				const date =
@@ -369,19 +398,50 @@ const Time = ({userId}) => {
 
 				//if current day has changed to 1 and is not the same date as previously saved, reset data to 0
 				if (currentDay === 1 && date !== getDate) {
-					var i;
-		
-					for (i = 1; i < 32; i++) {
-						let payload = { [i]: 0, total: 0, currentDay: currentDay, date: date };
-						axios.patch(SERVER + "/month/1/", payload);
-					}
+					let payload = {
+						total: 0, 
+						date: date, 
+						currentDay: currentDay,
+						1: 0,
+						2: 0,
+						3: 0,
+						4: 0,
+						5: 0,
+						6: 0,
+						7: 0,
+						8: 0,
+						9: 0,
+						10: 0,
+						11: 0,
+						12: 0,
+						13: 0,
+						14: 0,
+						15: 0,
+						16: 0,
+						17: 0,
+						18: 0,
+						19: 0,
+						20: 0,
+						21: 0,
+						22: 0,
+						23: 0,
+						24: 0,
+						25: 0,
+						26: 0,
+						27: 0,
+						28: 0,
+						29: 0,
+						30: 0,
+						31: 0
+					};
+					axios.patch(SERVER + `/month/${userId}`, payload);
 				}
 			});
 	}
 
 	//updates yearly counts and yearly total count
 	function updateYear() {
-		axios.get(SERVER + "/year/1/")
+		axios.get(SERVER + `/year/${userId}`)
 			.then(function (response) {
 				const currentMonth = new Date().getMonth();
 
@@ -397,12 +457,12 @@ const Time = ({userId}) => {
 					currentMonth: currentMonth,
 				};
 
-				axios.patch(SERVER + "/year/1/", payload);
+				axios.patch(SERVER + `/year/${userId}`, payload);
 			});
 	}
 
 	function resetYear() {
-		axios.get(SERVER + "/year/1/")
+		axios.get(SERVER + `/year/${userId}`)
 			.then(function (response) {
 				const currentMonth = new Date().getMonth();
 
@@ -410,29 +470,47 @@ const Time = ({userId}) => {
 
 				//if current month has changed to 0 and is not the same date as previously saved, reset data to 0
 				if (currentMonth === 0 && currentMonth !== getCurrentMonth) {
-					var i;
-
-					for (i = 0; i < 12; i++) {
-						let payload = { [i]: 0, total: 0, currentMonth: currentMonth };
-						axios.patch(SERVER + "/year/1/", payload);
-					}
+					let payload = { 
+						total: 0, 
+						currentMonth: currentMonth,
+						0: 0,
+						1: 0,
+						2: 0,
+						3: 0,
+						4: 0,
+						5: 0,
+						6: 0,
+						7: 0,
+						8: 0,
+						9: 0,
+						10: 0,
+						11: 0
+					};
+					axios.patch(SERVER + `/year/${userId}`, payload);
 				}
 			});
 	}
 
-	//resets data back to 0 on page load
+	//resets data back to 0 once user is logged in, on page load, and when day changes
 	useEffect(() => {
-		if (pomodoro === 0) {
+		if (pomodoro === 0 && userId !== null) {
 			resetDay();
 			resetWeek();
 			resetMonth();
 			resetYear();
 		}
-	}, []);
+	}, [userId, today]);
+
+	//inserts userId into DB once user is logged in and fetches pomodoro total
+	useEffect(() => {
+		if (pomodoro === 0 && userId !== null) {
+			fetchLifeTime();
+		}
+	}, [userId]);
 
 	//fetches + updates data to server once pomodoro updates
 	useEffect(() => {
-		if (pomodoro >= 1) {
+		if (pomodoro >= 1 && userId !== null) {
 			updateLifeTime();
 			updateDay();
 			updateWeek();

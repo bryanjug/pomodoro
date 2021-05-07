@@ -10,25 +10,28 @@ const YearStats = ({userId}) => {
 	const [pointHoverRadius, setPointHoverRadius] = useState(4);
 	const [borderWidth, setBorderWidth] = useState(4);
 	const [total, setTotal] = useState(0);
+	const [dataLoaded, setDataLoaded] = useState(false);
 	Chart.defaults.global.defaultFontColor = "#F8F9FA";
 
 	const SERVER = `${process.env.REACT_APP_NODE_SERVER}`;
 
-	async function getYearStats() {
-		let getResponse = await axios.get(SERVER + "/year/1/");
+	function getYearStats() {
+		axios.get(SERVER + `/year/${userId}`)
+			.then(function (response) {
 
-		let getMonths = getResponse.data;
-		let getTotal = getResponse.data.total;
+				let getMonths = response.data;
+				let getTotal = response.data.total;
 
-		setMonth(getMonths);
-		setTotal(getTotal);
+				setMonth(getMonths);
+				setTotal(getTotal);
+				setDataLoaded(true);
+			})
 	}
 
     //loads stats from server once page loads
 	useEffect(() => {
 		getYearStats();
-		console.log(userId);
-	}, []);
+	}, [userId]);
 	
 	const chart = () => {
 		setChartData({
@@ -164,10 +167,11 @@ const YearStats = ({userId}) => {
 		}
 	}, [])
 
-	//updates chart once data is fetched and when screen size changes
-	useEffect(() => {
+	//updates chart once data is fetched, user is signed in, 
+	//and when screen size changes
+	useEffect(() => {	
 		chart();
-	}, [month, pointRadius]);
+	}, [dataLoaded, pointRadius]);
 
 	return (
 		<div>

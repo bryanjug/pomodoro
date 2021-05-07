@@ -42,8 +42,8 @@ class GoogleBtn extends Component {
       accessToken: '',
       styleLogin: "googleBtn displayInline",
       styleLogout: "googleBtn displayNone",
-      styleAlert: "alert alert-success loginAlert alert-dismissible displayInline",
     }));
+    this.props.setUserId(null);
   }
 
   handleLoginFailure (response) {
@@ -84,9 +84,13 @@ class GoogleBtn extends Component {
         <span className="loginAlertText">
           <img src="/img/cat.png" alt="" className="catImg"/>
           <br />
-          Please <strong>Login</strong> with your Google account in order to see your stats. 
-          Reload the page after you have successfully logged in.
+          Please <strong>Login</strong> with your Google account in order to see your stats.
         </span>
+      </div>
+      <div className="text-center loading">
+        <div className="spinner-border text-light" role="status">
+          <span className="sr-only loadingText">Loading...</span>
+        </div>
       </div>
     </div>
     )
