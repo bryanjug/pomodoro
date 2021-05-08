@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import Countdown, { zeroPad } from "react-countdown";
-import axios from "axios";
+import API from './API';
+import {CancelToken} from 'axios';
 import Pet from "./Pet";
 
-const Time = ({userId}) => {
+const Time = ({userId, setLoadingStyle}) => {
 	const [start, setStart] = useState(false);
 	const [activity, setActivity] = useState("Working Mode");
 	const [time, setTime] = useState(1500000);
@@ -11,9 +12,11 @@ const Time = ({userId}) => {
 	const [long, setLong] = useState("");
 	const [pomodoro, setPomodoro] = useState(0);
 	const [pomodoroLifeTime, setPomodoroLifeTime] = useState(0);
+	const [today, setToday] = useState(new Date().getDate());
+	const [dataLoaded, setDataLoaded] = useState(false);
+	const source = CancelToken.source();
 	const countdown = useRef(null);
-	const SERVER = `${process.env.REACT_APP_NODE_SERVER}`;
-	let [today, setToday] = useState(new Date().getDate());
+	var reconnect;
 
 	//ask user permission for notifications
 	useEffect(() => {
@@ -23,9 +26,13 @@ const Time = ({userId}) => {
 			Notification.requestPermission();
 		}
 		//resets state every hour in case user is still in app once day changes
-		setInterval(() => {
+		let resetDay = setInterval(() => {
 			setToday(new Date().getDate());
 		}, 3600000);
+
+		return () => {
+			clearInterval(resetDay);
+		}
 	}, []);
 
 	//show notification once timer is done
@@ -92,7 +99,7 @@ const Time = ({userId}) => {
 			22: 0,
 			23: 0
 		};
-		return axios.post(SERVER + `/day`, payload);
+		return API.post(`/day`, payload);
 	}
 
 	function postWeek() {
@@ -116,7 +123,7 @@ const Time = ({userId}) => {
 			5: 0,
 			6: 0
 		};
-		return axios.post(SERVER + `/week`, payload);
+		return API.post(`/week`, payload);
 	}
 
 	function postMonth() {
@@ -164,7 +171,7 @@ const Time = ({userId}) => {
 			30: 0,
 			31: 0,
 		};
-		return axios.post(SERVER + `/month`, payload);
+		return API.post(`/month`, payload);
 	}
 
 	function postYear() {
@@ -186,33 +193,53 @@ const Time = ({userId}) => {
 			10: 0,
 			11: 0
 		};
-		return axios.post(SERVER + `/year`, payload);
+		return API.post(`/year`, payload);
 	}
 
 	function postLifetime() {
 		let payload = { id: `${userId}`, total: 0 };
-		return axios.post(SERVER + `/lifetime`, payload);
+		return API.post(`/lifetime`, payload);
 	}
 
 	//finds lifetime pomodoro count from server
 	//if userId isnt in DB, then set new placeholder data for that userId
 	//prevents overwiting DB if user already exists
+	//makes multiple requests until connected to server
 	function fetchLifeTime() {
-		axios.get(SERVER + `/lifetime/${userId}`)
+		API.get(`/lifetime/${userId}`, {cancelToken: source.token})
 			.then(function (response) {
 				let total = response.data.total;
 				setPomodoroLifeTime(total);
+				setDataLoaded(true);
 			})
 			.catch(function (error) {
 				if (error.response) {
 					Promise.all([postDay(), postWeek(), postMonth(), postYear(), postLifetime()]);
+				}
+				if (error.request) {
+					console.log("Server is offline");
+					reconnect = setInterval(() => {
+						API.get(`/lifetime/${userId}`, {cancelToken: source.token})
+							.then(function (response) {
+								let total = response.data.total;
+								setPomodoroLifeTime(total);
+								setDataLoaded(true);
+								clearInterval(reconnect);
+								console.log("Server is online!");
+							})
+							.catch(function (error) {
+								if (error.request) {
+									console.log("Server is still offline");
+								}
+							})
+					}, 3000);
 				}
 			})
 	}
 
 	//updates lifetime pomodoro count to server
 	function updateLifeTime() {
-		axios.get(SERVER + `/lifetime/${userId}`)
+		API.get(`/lifetime/${userId}`)
 			.then(function (response) {
 				let getData = response.data.total;
 				const total = getData + 1;
@@ -221,13 +248,13 @@ const Time = ({userId}) => {
 
 				let payload = { total: total };
 
-				axios.patch(SERVER + `/lifetime/${userId}`, payload);
+				API.patch(`/lifetime/${userId}`, payload);
 			});
 	}
 
 	//updates daily pomodoro and daily total pomodoro count to server
 	function updateDay() {
-		axios.get(SERVER + `/day/${userId}`)
+		API.get(`/day/${userId}`)
 			.then(function (response) {
 				let currentHour = new Date().getHours();
 
@@ -239,13 +266,13 @@ const Time = ({userId}) => {
 
 				let payload = { [currentHour]: count, total: totalCount };
 
-				axios.patch(SERVER + `/day/${userId}`, payload);
+				API.patch(`/day/${userId}`, payload);
 			});
 	}
 
 	//resets day's data back to 0 once new day starts
 	function resetDay() {
-		axios.get(SERVER + `/day/${userId}`)
+		API.get(`/day/${userId}`)
 			.then(function (response) {
 				let date =
 					new Date().getMonth() +
@@ -286,14 +313,14 @@ const Time = ({userId}) => {
 						22: 0,
 						23: 0
 					};
-					axios.patch(SERVER + `/day/${userId}`, payload);
+					API.patch(`/day/${userId}`, payload);
 				}
 			});
 	}
 
 	//updates weekly and weekly total pomodoro count
 	function updateWeek() {
-		axios.get(SERVER + `/week/${userId}`)
+		API.get(`/week/${userId}`)
 			.then(function (response) {
 				let currentDay = new Date().getDay();
 				let date =
@@ -316,13 +343,13 @@ const Time = ({userId}) => {
 					currentDay: currentDay,
 				};
 
-				axios.patch(SERVER + `/week/${userId}`, payload);
+				API.patch(`/week/${userId}`, payload);
 			});
 	}
 
 	//resets data back to 0 once week has ended
 	function resetWeek() {
-		axios.get(SERVER + `/week/${userId}`)
+		API.get(`/week/${userId}`)
 			.then(function (response) {
 				let currentDay = new Date().getDay();
 				const date =
@@ -348,14 +375,14 @@ const Time = ({userId}) => {
 						5: 0,
 						6: 0
 					};
-					axios.patch(SERVER + `/week/${userId}`, payload);
+					API.patch(`/week/${userId}`, payload);
 				}
 			});
 	}
 
 	//updates monthly and monthly total pomodoro count
 	function updateMonth() {
-		axios.get(SERVER + `/month/${userId}`)
+		API.get(`/month/${userId}`)
 			.then(function (response) {
 				let currentDay = new Date().getDate(); //day of month
 				const date =
@@ -378,13 +405,13 @@ const Time = ({userId}) => {
 					date: date,
 				};
 
-				axios.patch(SERVER + `/month/${userId}`, payload);
+				API.patch(`/month/${userId}`, payload);
 			});
 	}
 
 	//resets data back to 0 once month has ended
 	function resetMonth() {
-		axios.get(SERVER + `/month/${userId}`)
+		API.get(`/month/${userId}`)
 			.then(function (response) {
 				let currentDay = new Date().getDate(); //day of month
 				const date =
@@ -434,14 +461,14 @@ const Time = ({userId}) => {
 						30: 0,
 						31: 0
 					};
-					axios.patch(SERVER + `/month/${userId}`, payload);
+					API.patch(`/month/${userId}`, payload);
 				}
 			});
 	}
 
 	//updates yearly counts and yearly total count
 	function updateYear() {
-		axios.get(SERVER + `/year/${userId}`)
+		API.get(`/year/${userId}`)
 			.then(function (response) {
 				const currentMonth = new Date().getMonth();
 
@@ -457,12 +484,12 @@ const Time = ({userId}) => {
 					currentMonth: currentMonth,
 				};
 
-				axios.patch(SERVER + `/year/${userId}`, payload);
+				API.patch(`/year/${userId}`, payload);
 			});
 	}
 
 	function resetYear() {
-		axios.get(SERVER + `/year/${userId}`)
+		API.get(`/year/${userId}`)
 			.then(function (response) {
 				const currentMonth = new Date().getMonth();
 
@@ -486,38 +513,57 @@ const Time = ({userId}) => {
 						10: 0,
 						11: 0
 					};
-					axios.patch(SERVER + `/year/${userId}`, payload);
+					API.patch(`/year/${userId}`, payload);
 				}
 			});
 	}
 
-	//resets data back to 0 once user is logged in, on page load, and when day changes
+	//shows spinning loader after user logs in and the server
+	//is not connected
 	useEffect(() => {
-		if (pomodoro === 0 && userId !== null) {
+		if (userId && dataLoaded === false) {
+			setLoadingStyle("text-center loading");
+		}
+		if (userId && dataLoaded === true) {
+			setLoadingStyle("text-center loading displayNone");
+		}
+		if (userId === null) {
+			setLoadingStyle("text-center loading displayNone");
+		}
+		return () => {
+			setLoadingStyle("text-center loading displayNone");
+		}
+	}, [userId])
+
+	//resets data back to 0 once user is logged in, on page load, and when day changes
+	//runs only when server is connected
+	useEffect(() => {
+		if (pomodoro === 0 && userId && dataLoaded === true) {
 			resetDay();
 			resetWeek();
 			resetMonth();
 			resetYear();
 		}
-	}, [userId, today]);
+	}, [userId, today, dataLoaded]);
 
 	//inserts userId into DB once user is logged in and fetches pomodoro total
 	useEffect(() => {
-		if (pomodoro === 0 && userId !== null) {
+		if (pomodoro === 0 && userId) {
 			fetchLifeTime();
 		}
 	}, [userId]);
 
 	//fetches + updates data to server once pomodoro updates
+	//runs only when server is connected
 	useEffect(() => {
-		if (pomodoro >= 1 && userId !== null) {
+		if (pomodoro >= 1 && userId && dataLoaded === true) {
 			updateLifeTime();
 			updateDay();
 			updateWeek();
 			updateMonth();
 			updateYear();
 		}
-	}, [pomodoro]);
+	}, [pomodoro, dataLoaded]);
 
 	//Starts and stops timer
 	const startButton = () => {

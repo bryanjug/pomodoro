@@ -87,7 +87,7 @@ class GoogleBtn extends Component {
           Please <strong>Login</strong> with your Google account in order to see your stats.
         </span>
       </div>
-      <div className="text-center loading">
+      <div className={this.props.loadingStyle}>
         <div className="spinner-border text-light" role="status">
           <span className="sr-only loadingText">Loading...</span>
         </div>

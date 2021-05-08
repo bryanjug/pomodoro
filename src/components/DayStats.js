@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Line, Chart } from "react-chartjs-2";
-import axios from "axios";
+import API from './API';
+import {CancelToken} from 'axios';
 import StatsNavigation from "./StatsNavigation"; 
 
-const DayStats = ({userId}) => {
+const DayStats = ({userId, setLoadingStyle}) => {
 	const [hour, setHour] = useState({});
 	const [chartData, setChartData] = useState({});
 	const [pointRadius, setPointRadius] = useState(4);
@@ -12,35 +13,12 @@ const DayStats = ({userId}) => {
 	const [total, setTotal] = useState(0);
 	const [dataLoaded, setDataLoaded] = useState(false);
 	Chart.defaults.global.defaultFontColor = "#F8F9FA";
+	const source = CancelToken.source();
+	var reconnect;
 
-	const SERVER = `${process.env.REACT_APP_NODE_SERVER}`;
-
-	const instance = axios.create({
-		baseURL: SERVER
-	});
-
-    //requests server data and sets state
+	//requests server data and repeats if the server is not connected
 	function getDayStats() {
-		// axios.get(SERVER + `/day/${userId}`)
-		// 	.then(function (response) {
-		// 		let getHours = response.data;
-		// 		let getTotal = response.data.total;
-
-		// 		setHour(getHours);
-		// 		setTotal(getTotal);
-		// 		setDataLoaded(true);
-		// 	})
-		// 	.catch(function (error) {
-		// 		if (error.response) {
-		// 			console.log("404 error");
-		// 			console.log("Please log in");
-		// 		}
-		// 		if (error.request) {
-		// 			console.log(error.config);
-		// 			console.log("Server is still offline");
-		// 		}
-		// 	})
-		instance.get(SERVER + `/day/${userId}`) //${userId}
+		API.get(`/day/${userId}`, {cancelToken: source.token})
 			.then(function (response) {
 				let getHours = response.data;
 				let getTotal = response.data.total;
@@ -51,13 +29,12 @@ const DayStats = ({userId}) => {
 			})
 			.catch(function (error) {
 				if (error.response) {
-					console.log("404 error");
-					console.log("Please log in");
+					console.log("404 error : Please log in");
 				}
 				if (error.request) {
 					console.log("Server is offline");
-					const connectFailure = setInterval(() => {
-						instance.get(SERVER + `/day/${userId}`)
+					reconnect = setInterval(() => {
+						API.get(`/day/${userId}`, {cancelToken: source.token})
 							.then(function (response) {
 								let getHours = response.data;
 								let getTotal = response.data.total;
@@ -65,7 +42,7 @@ const DayStats = ({userId}) => {
 								setHour(getHours);
 								setTotal(getTotal);
 								setDataLoaded(true);
-								clearInterval(connectFailure);
+								clearInterval(reconnect);
 								console.log("Server is online!");
 							})
 							.catch(function (error) {
@@ -80,10 +57,30 @@ const DayStats = ({userId}) => {
 
     //loads stats from server once user is logged in
 	useEffect(() => {
-		if (userId !== null) {
+		if (userId) {
 			getDayStats();
 		}
-	}, [userId]);
+		//cleanup function for reconnecting interval 
+		//and axios connections
+		return () => {
+			source.cancel();
+			clearInterval(reconnect);
+		}
+	}, [userId])
+
+	//show loading spinner when user is not logged in and data is
+	//still loading
+	useEffect(() => {
+		if (userId && dataLoaded === true) {
+			setLoadingStyle("text-center loading displayNone");
+		}
+		if (userId === null || dataLoaded === false) {
+			setLoadingStyle("text-center loading");
+		}
+		return () => {
+			setLoadingStyle("text-center loading displayNone");
+		}
+	}, [userId, dataLoaded])
 
 	const chart = () => {
 		setChartData({

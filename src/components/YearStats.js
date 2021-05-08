@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Line, Chart } from "react-chartjs-2";
-import axios from "axios";
+import API from './API';
+import {CancelToken} from 'axios';
 import StatsNavigation from "./StatsNavigation";
 
-const YearStats = ({userId}) => {
+const YearStats = ({userId, setLoadingStyle}) => {
 	const [chartData, setChartData] = useState({});
 	const [month, setMonth] = useState({});
 	const [pointRadius, setPointRadius] = useState(4);
@@ -12,13 +13,12 @@ const YearStats = ({userId}) => {
 	const [total, setTotal] = useState(0);
 	const [dataLoaded, setDataLoaded] = useState(false);
 	Chart.defaults.global.defaultFontColor = "#F8F9FA";
-
-	const SERVER = `${process.env.REACT_APP_NODE_SERVER}`;
+	const source = CancelToken.source();
+	var reconnect;
 
 	function getYearStats() {
-		axios.get(SERVER + `/year/${userId}`)
+		API.get(`/year/${userId}`, {cancelToken: source.token})
 			.then(function (response) {
-
 				let getMonths = response.data;
 				let getTotal = response.data.total;
 
@@ -26,12 +26,60 @@ const YearStats = ({userId}) => {
 				setTotal(getTotal);
 				setDataLoaded(true);
 			})
+			.catch(function (error) {
+				if (error.response) {
+					console.log("404 error : Please log in");
+				}
+				if (error.request) {
+					console.log("Server is offline");
+					reconnect = setInterval(() => {
+						API.get(`/year/${userId}`, {cancelToken: source.token})
+							.then(function (response) {
+								let getMonths = response.data;
+								let getTotal = response.data.total;
+
+								setMonth(getMonths);
+								setTotal(getTotal);
+								setDataLoaded(true);
+								clearInterval(reconnect);
+								console.log("Server is online!");
+							})
+							.catch(function (error) {
+								if (error.request) {
+									console.log("Server is still offline");
+								}
+							})
+					}, 3000);
+				}
+			})
 	}
 
-    //loads stats from server once page loads
+    //loads stats from server once user is logged in
 	useEffect(() => {
-		getYearStats();
+		if (userId) {
+			getYearStats();
+		}
+		//cleanup function for reconnecting interval 
+		//and axios connections
+		return () => {
+			source.cancel();
+			clearInterval(reconnect);
+		}
 	}, [userId]);
+
+	//show loading spinner when user is not logged in and data is
+	//still loading
+	useEffect(() => {
+		if (userId && dataLoaded === true) {
+			setLoadingStyle("text-center loading displayNone");
+		}
+		if (userId === null || dataLoaded === false) {
+			setLoadingStyle("text-center loading");
+		}
+		return () => {
+			setLoadingStyle("text-center loading displayNone");
+		}
+	}, [userId, dataLoaded])
 	
 	const chart = () => {
 		setChartData({

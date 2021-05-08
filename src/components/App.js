@@ -91,15 +91,22 @@ import YearStats from './YearStats';
 //(DONE) REQUIRE LOG IN TO SHOW STATS
 //(DONE) REMOVE LOOPED PATCH PAYLOADS
 //(DONE) FIX RESPONSIVE HAMGBURGER ICON
-//() HIDE SPINNING LOADER WHEN ON STATS PAGE UNTIL STATS GETS USERID
-//() AXIOS REQUEST SETINTERVAL UNTIL DB SERVER IS ONLINE
-//() SHOW SPINNING LOADER WHILE CONNECTING TO DB ON TIMER
+//(DONE) RESET ALL FILES WITH API FILE
+//(DONE) CHANGE USERID !== NULL TO JUST USERID
+//(DONE) SHOW SPINNING LOADER WHEN ON STATS PAGE UNTIL USERID AND AXIOS IS CONNECTED
+//(DONE) HIDE SPINNING LOADER WHILE LOGGED OFF ON TIMER
+//(DONE) AXIOS REQUEST SETINTERVAL UNTIL DB SERVER IS ONLINE FOR STATS
+//(DONE) CANCEL AXIOS REQUESTS ON WINDOW CHANGE FOR STATS
+//(DONE) SHOW SPINNING LOADER WHILE CONNECTING TO DB ON TIMER AFTER USER LOGS IN
+//() AXIOS REQUEST SETINTERVAL UNTIL DB SERVER IS ONLINE FOR TIMER
+//() CANCEL AXIOS REQUESTS ON WINDOW CHANGE FOR TIMER
 //() HOST REACT APP ON OWN WEBSITE => IF WEBGL DOESNT WORK, HOST ON GITHUB PAGES OR HEROKU
 //() HOST JSON-SERVER ON HEROKU
 //() (OPTIONAL) ADD LEADERBOARDS FOR POMODORO COUNT
 
 const App = () => {
 	const [userId, setUserId] = useState(null);
+	const [loadingStyle, setLoadingStyle] = useState("text-center loading displayNone");
 	const nav = useRef(null);
 
 	function showNav() {
@@ -114,19 +121,19 @@ const App = () => {
 		<div>
 			<Router>
 				<Route exact path="/">
-					<Timer userId={userId} />
+					<Timer userId={userId} setLoadingStyle={setLoadingStyle} />
 				</Route>
 				<Route path="/stats/day">
-					<DayStats userId={userId} />
+					<DayStats userId={userId} setLoadingStyle={setLoadingStyle} />
 				</Route>
 				<Route path="/stats/week">
-					<WeekStats userId={userId} />
+					<WeekStats userId={userId} setLoadingStyle={setLoadingStyle} />
 				</Route>
 				<Route path="/stats/month">
-					<MonthStats userId={userId} />
+					<MonthStats userId={userId} setLoadingStyle={setLoadingStyle} />
 				</Route>
 				<Route path="/stats/year">
-					<YearStats userId={userId} />
+					<YearStats userId={userId} setLoadingStyle={setLoadingStyle} />
 				</Route>
 
 				<div className="mhead">
@@ -149,7 +156,7 @@ const App = () => {
 							<li>Statistics</li>
 						</Link>
 						<li>
-							<GoogleBtn setUserId={setUserId} userId={userId}/>
+							<GoogleBtn setUserId={setUserId} userId={userId} loadingStyle={loadingStyle} />
 						</li>
 					</ul>
 				</div>
