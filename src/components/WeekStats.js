@@ -3,6 +3,7 @@ import { Line, Chart } from "react-chartjs-2";
 import API from './API';
 import {CancelToken} from 'axios';
 import StatsNavigation from "./StatsNavigation";
+import {CreateNewUser} from './NewUser';
 
 const WeekStats = ({userId, setLoadingStyle}) => {
 	const [day, setDay] = useState({});
@@ -29,7 +30,8 @@ const WeekStats = ({userId, setLoadingStyle}) => {
 			})
 			.catch(function (error) {
 				if (error.response) {
-					console.log("404 error : Please log in");
+					CreateNewUser(userId);
+					setDataLoaded(true);
 				}
 				if (error.request) {
 					console.log("Server is offline");
@@ -48,6 +50,11 @@ const WeekStats = ({userId, setLoadingStyle}) => {
 							.catch(function (error) {
 								if (error.request) {
 									console.log("Server is still offline");
+								}
+								if (error.response) {
+									CreateNewUser(userId);
+									setDataLoaded(true);
+									clearInterval(reconnect);
 								}
 							})
 					}, 3000);
@@ -210,7 +217,7 @@ const WeekStats = ({userId, setLoadingStyle}) => {
 	//and when screen size changes
 	useEffect(() => {
 		chart();
-	}, [dataLoaded, pointRadius]);
+	}, [dataLoaded, pointRadius, userId]);
 
 	return (
 		<div>

@@ -3,6 +3,7 @@ import Countdown, { zeroPad } from "react-countdown";
 import API from './API';
 import {CancelToken} from 'axios';
 import Pet from "./Pet";
+import {CreateNewUser} from './NewUser';
 
 const Time = ({userId, setLoadingStyle}) => {
 	const [start, setStart] = useState(false);
@@ -63,144 +64,6 @@ const Time = ({userId, setLoadingStyle}) => {
 		}
 	}, [pomodoro, activity]);
 
-	function postDay() {
-		const date =
-			new Date().getMonth() +
-			"-" +
-			new Date().getDate() +
-			"-" +
-			new Date().getFullYear();
-		let payload = {
-			id: `${userId}`, 
-			total: 0, 
-			date: date, 
-			0: 0,
-			1: 0,
-			2: 0,
-			3: 0,
-			4: 0,
-			5: 0,
-			6: 0,
-			7: 0,
-			8: 0,
-			9: 0,
-			10: 0,
-			11: 0,
-			12: 0,
-			13: 0,
-			14: 0,
-			15: 0,
-			16: 0,
-			17: 0,
-			18: 0,
-			19: 0,
-			20: 0,
-			21: 0,
-			22: 0,
-			23: 0
-		};
-		return API.post(`/day`, payload);
-	}
-
-	function postWeek() {
-		const date =
-			new Date().getMonth() +
-			"-" +
-			new Date().getDate() +
-			"-" +
-			new Date().getFullYear();
-		let currentDay = new Date().getDay();
-		let payload = {
-			id: `${userId}`, 
-			total: 0, 
-			date: date, 
-			currentDay: currentDay,
-			0: 0,
-			1: 0,
-			2: 0,
-			3: 0,
-			4: 0,
-			5: 0,
-			6: 0
-		};
-		return API.post(`/week`, payload);
-	}
-
-	function postMonth() {
-		const date =
-			new Date().getMonth() +
-			"-" +
-			new Date().getDate() +
-			"-" +
-			new Date().getFullYear();
-		let currentDay = new Date().getDay();
-		let payload = {
-			id: `${userId}`, 
-			total: 0, 
-			date: date, 
-			currentDay: currentDay,
-			1: 0,
-			2: 0,
-			3: 0,
-			4: 0,
-			5: 0,
-			6: 0,
-			7: 0,
-			8: 0,
-			9: 0,
-			10: 0,
-			11: 0,
-			12: 0,
-			13: 0,
-			14: 0,
-			15: 0,
-			16: 0,
-			17: 0,
-			18: 0,
-			19: 0,
-			20: 0,
-			21: 0,
-			22: 0,
-			23: 0,
-			24: 0,
-			25: 0,
-			26: 0,
-			27: 0,
-			28: 0,
-			29: 0,
-			30: 0,
-			31: 0,
-		};
-		return API.post(`/month`, payload);
-	}
-
-	function postYear() {
-		const currentMonth = new Date().getMonth();
-		let payload = {
-			id: `${userId}`, 
-			total: 0, 
-			currentMonth: currentMonth,
-			0: 0,
-			1: 0,
-			2: 0,
-			3: 0,
-			4: 0,
-			5: 0,
-			6: 0,
-			7: 0,
-			8: 0,
-			9: 0,
-			10: 0,
-			11: 0
-		};
-		return API.post(`/year`, payload);
-	}
-
-	function postLifetime() {
-		let payload = { id: `${userId}`, total: 0 };
-		return API.post(`/lifetime`, payload);
-	}
-
 	//finds lifetime pomodoro count from server
 	//if userId isnt in DB, then set new placeholder data for that userId
 	//prevents overwiting DB if user already exists
@@ -214,7 +77,7 @@ const Time = ({userId, setLoadingStyle}) => {
 			})
 			.catch(function (error) {
 				if (error.response) {
-					Promise.all([postDay(), postWeek(), postMonth(), postYear(), postLifetime()]);
+					CreateNewUser(userId);
 					setDataLoaded(true);
 				}
 				if (error.request) {
@@ -233,7 +96,7 @@ const Time = ({userId, setLoadingStyle}) => {
 									console.log("Server is still offline");
 								}
 								if (error.response) {
-									Promise.all([postDay(), postWeek(), postMonth(), postYear(), postLifetime()]);
+									CreateNewUser(userId);
 									setDataLoaded(true);
 									clearInterval(reconnect);
 								}
@@ -539,7 +402,7 @@ const Time = ({userId, setLoadingStyle}) => {
 		return () => {
 			setLoadingStyle("text-center loading displayNone");
 		}
-	}, [userId])
+	}, [userId, dataLoaded])
 
 	//resets data back to 0 once user is logged in, on page load, and when day changes
 	//runs only when server is connected
