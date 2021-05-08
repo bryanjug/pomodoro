@@ -215,6 +215,7 @@ const Time = ({userId, setLoadingStyle}) => {
 			.catch(function (error) {
 				if (error.response) {
 					Promise.all([postDay(), postWeek(), postMonth(), postYear(), postLifetime()]);
+					setDataLoaded(true);
 				}
 				if (error.request) {
 					console.log("Server is offline");
@@ -230,6 +231,11 @@ const Time = ({userId, setLoadingStyle}) => {
 							.catch(function (error) {
 								if (error.request) {
 									console.log("Server is still offline");
+								}
+								if (error.response) {
+									Promise.all([postDay(), postWeek(), postMonth(), postYear(), postLifetime()]);
+									setDataLoaded(true);
+									clearInterval(reconnect);
 								}
 							})
 					}, 3000);
@@ -550,6 +556,12 @@ const Time = ({userId, setLoadingStyle}) => {
 	useEffect(() => {
 		if (pomodoro === 0 && userId) {
 			fetchLifeTime();
+		}
+		//cleanup function for reconnecting interval 
+		//and axios connections
+		return () => {
+			source.cancel();
+			clearInterval(reconnect);
 		}
 	}, [userId]);
 
