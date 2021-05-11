@@ -148,7 +148,7 @@ const App = () => {
 					</div>
 					<ul>
 						<Link to="/">
-							<li>Pomodoro</li>
+							<li>Pomodoro Confirmed</li>
 						</Link>
 						<Link
 							to={{
