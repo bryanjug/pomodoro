@@ -5,10 +5,10 @@ const unityContext = new UnityContext({
 	codeUrl: "/Pet/Build/Pet.wasm",
 	frameworkUrl: "/Pet/Build/Pet.framework.js",
 	dataUrl: "/Pet/Build/Pet.data",
-	loaderUrl: "/Pet/Build/Pet.loader.js",
+	loaderUrl: "/Pet/Build/Pet.loader.js"
 });
 
-const Pet = ({activity, pomodoroLifeTime}) => {
+const Pet = ({activity, pomodoroLifeTime, setLoadingStyle, dataLoaded, userId}) => {
 	const [isLoaded, setIsLoaded] = useState(false);
 	const [feedPet, setFeedPet] = useState(false);
 
@@ -17,6 +17,26 @@ const Pet = ({activity, pomodoroLifeTime}) => {
 			setIsLoaded(true);
 		});
 	}, []);
+
+	useEffect(() => {
+		if (isLoaded === true) {
+			setLoadingStyle("text-center loading displayNone");
+		} else if (isLoaded === false) {
+			setLoadingStyle("text-center loading displayInline !important");
+		}
+		if (userId && dataLoaded === false) {
+			setLoadingStyle("text-center loading");
+		}
+		if (userId && dataLoaded === true && isLoaded === true) {
+			setLoadingStyle("text-center loading displayNone");
+		}
+		if (userId === null && isLoaded === true) {
+			setLoadingStyle("text-center loading displayNone");
+		}
+		return () => {
+			setLoadingStyle("text-center loading displayNone");
+		}
+	}, [isLoaded, userId, dataLoaded])
 
 	//runs animation and resets back to idle animation once feedPet state updates
 	useEffect(() => {
@@ -98,7 +118,7 @@ const Pet = ({activity, pomodoroLifeTime}) => {
 				unityContext.send("pet", "ChangeSkybox");
 			}
 		}
-	}, [isLoaded])
+	}, [isLoaded, dataLoaded, userId])
 
 	return (
 		<div>

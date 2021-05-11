@@ -389,20 +389,20 @@ const Time = ({userId, setLoadingStyle}) => {
 
 	//shows spinning loader after user logs in and the server
 	//is not connected
-	useEffect(() => {
-		if (userId && dataLoaded === false) {
-			setLoadingStyle("text-center loading");
-		}
-		if (userId && dataLoaded === true) {
-			setLoadingStyle("text-center loading displayNone");
-		}
-		if (userId === null) {
-			setLoadingStyle("text-center loading displayNone");
-		}
-		return () => {
-			setLoadingStyle("text-center loading displayNone");
-		}
-	}, [userId, dataLoaded])
+	// useEffect(() => {
+	// 	if (userId && dataLoaded === false) {
+	// 		setLoadingStyle("text-center loading");
+	// 	}
+	// 	if (userId && dataLoaded === true) {
+	// 		setLoadingStyle("text-center loading displayNone");
+	// 	}
+	// 	if (userId === null) {
+	// 		setLoadingStyle("text-center loading displayNone");
+	// 	}
+	// 	return () => {
+	// 		setLoadingStyle("text-center loading displayNone");
+	// 	}
+	// }, [userId, dataLoaded])
 
 	//resets data back to 0 once user is logged in, on page load, and when day changes
 	//runs only when server is connected
@@ -600,7 +600,7 @@ const Time = ({userId, setLoadingStyle}) => {
 					</div>
 				</div>
 			</div>
-			<Pet activity={activity} pomodoroLifeTime={pomodoroLifeTime} />
+			<Pet activity={activity} pomodoroLifeTime={pomodoroLifeTime} setLoadingStyle={setLoadingStyle} dataLoaded={dataLoaded} userId={userId} />
 		</div>
 	);
 };
