@@ -9,6 +9,7 @@
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "chartjs": "^0.3.24",
+    "jquery": "^3.6.0",
     "react": "^17.0.2",
     "react-chartjs-2": "^2.11.1",
     "react-countdown": "^2.3.1",
