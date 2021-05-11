@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import Unity, { UnityContext } from "react-unity-webgl"; 
 
 const unityContext = new UnityContext({
-	codeUrl: "/Pet/Build/Pet.wasm.unityweb",
-	frameworkUrl: "/Pet/Build/Pet.framework.js.unityweb",
-	dataUrl: "/Pet/Build/Pet.data.unityweb",
+	codeUrl: "/Pet/Build/Pet.wasm",
+	frameworkUrl: "/Pet/Build/Pet.framework.js",
+	dataUrl: "/Pet/Build/Pet.data",
 	loaderUrl: "/Pet/Build/Pet.loader.js",
 });
 
