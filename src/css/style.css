@@ -8,6 +8,87 @@ body {
     background: rgb(69,89,96);
 }
 
+.leaderboardButtonLeft {
+    padding-left: 10%;
+    padding-right: 15%;
+}
+
+.leaderboardButtonRight {
+    padding-left: 15%;
+    padding-right: 10%;
+}
+
+.leaderboardButtonIcon, .leaderboardButtonText {
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.leaderboardButtonIconRight {
+    padding-left: 10% !important;
+}
+
+.leaderboardButtonIconLeft {
+    padding-right: 10% !important;
+}
+
+.leaderboardButtonText {
+    padding-bottom: 4%;
+}
+
+.leaderboardButtons {
+    text-align: center !important;
+    margin-top: 5% !important;
+}
+
+.leaderboardButtons button {
+    padding-top: 1%;
+    padding-bottom: 1%;
+    border-radius: 100px;
+    background-color: #2F3D43;
+    border: none;
+    color: white;
+}
+
+.leaderboardButtons button:hover {
+    background-color: #4B9C96;
+}
+
+.leaderboardsContainer {
+    bottom: 50%;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    position: fixed;
+}
+
+.userHeader p {
+    padding-left: 15% !important;
+    text-align: left !important;
+}
+
+.scoreHeader p {
+    text-align: right !important;
+    padding-right: 15% !important;
+}
+
+.leaderboards li {
+    background-color: inherit !important;
+    border-color: rgb(158, 180, 175) !important;
+    color: white !important;
+}
+
+.leaderboards li:hover {
+    color: #7bfdf5 !important;
+}
+
+.leaderboards .badge {
+    background-color: #2F3D43 !important;
+    padding: 5px 8px 5px 8px !important;
+}
+
+.leaderboards {
+    border: solid 1px rgb(158, 180, 175) !important;
+}
+
 .loading {
     top: 50%;
     left: 50%;
@@ -125,7 +206,7 @@ a:active { text-decoration: none; }
 }
 
 .navigation {
-    background-color: #2F3D43 !important;
+    background-color: #455960 !important;
     border: none;
     border-radius: 0;
     z-index: 9999;
