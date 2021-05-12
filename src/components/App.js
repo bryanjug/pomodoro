@@ -7,6 +7,7 @@ import DayStats from './DayStats';
 import WeekStats from './WeekStats';
 import MonthStats from './MonthStats';
 import YearStats from './YearStats';
+import Leaderboards from './Leaderboards';
 
 //TODO:
 //(DONE) COMPLETION METHOD -> CREATE TIMER
@@ -109,11 +110,12 @@ import YearStats from './YearStats';
 //(DONE) SHOW SPINNING LOADER BEFORE UNITY IS LOADED
 //(DONE) FIX PET SIZE NOT MATCHING TO DB ON MOUNT 
 //(DONE) FIX SPINNING LOADER FOR UNITY LOADING
-//() (OPTIONAL) ADD LEADERBOARDS FOR POMODORO COUNT
+//() ADD LEADERBOARDS FOR POMODORO COUNT
 
 const App = () => {
 	const [userId, setUserId] = useState(null);
 	const [loadingStyle, setLoadingStyle] = useState("text-center loading displayNone");
+	const [userName, setUserName] = useState(null);
 	const nav = useRef(null);
 
 	function showNav() {
@@ -128,19 +130,22 @@ const App = () => {
 		<div>
 			<Router>
 				<Route exact path="/">
-					<Timer userId={userId} setLoadingStyle={setLoadingStyle} />
+					<Timer userId={userId} setLoadingStyle={setLoadingStyle} userName={userName} />
 				</Route>
 				<Route path="/stats/day">
-					<DayStats userId={userId} setLoadingStyle={setLoadingStyle} />
+					<DayStats userId={userId} setLoadingStyle={setLoadingStyle} userName={userName} />
 				</Route>
 				<Route path="/stats/week">
-					<WeekStats userId={userId} setLoadingStyle={setLoadingStyle} />
+					<WeekStats userId={userId} setLoadingStyle={setLoadingStyle} userName={userName} />
 				</Route>
 				<Route path="/stats/month">
-					<MonthStats userId={userId} setLoadingStyle={setLoadingStyle} />
+					<MonthStats userId={userId} setLoadingStyle={setLoadingStyle} userName={userName} />
 				</Route>
 				<Route path="/stats/year">
-					<YearStats userId={userId} setLoadingStyle={setLoadingStyle} />
+					<YearStats userId={userId} setLoadingStyle={setLoadingStyle} userName={userName} />
+				</Route>
+				<Route path="/leaderboards">
+					<Leaderboards setLoadingStyle={setLoadingStyle} userName={userName} />
 				</Route>
 
 				<div className="mhead">
@@ -154,16 +159,14 @@ const App = () => {
 						<Link to="/">
 							<li>Pomodoro</li>
 						</Link>
-						<Link
-							to={{
-								pathname: "/stats/day",
-								state: { userId: {userId} },
-							}}
-						>
+						<Link to="/stats/day">
 							<li>Statistics</li>
 						</Link>
+						<Link to="/leaderboards">
+							<li>Leaderboards</li>
+						</Link>
 						<li>
-							<GoogleBtn setUserId={setUserId} userId={userId} loadingStyle={loadingStyle} />
+							<GoogleBtn setUserId={setUserId} userId={userId} loadingStyle={loadingStyle} setUserName={setUserName} />
 						</li>
 					</ul>
 				</div>

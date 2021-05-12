@@ -133,11 +133,11 @@ function postYear(userId) {
     return API.post(`/year`, payload);
 }
 
-function postLifetime(userId) {
-    let payload = { id: `${userId}`, total: 0 };
+function postLifetime(userId, userName) {
+    let payload = { id: `${userId}`, userName: `${userName}`, total: 0 };
     return API.post(`/lifetime`, payload);
 }
 
-export function CreateNewUser(userId) {
-    return Promise.all([postDay(userId), postWeek(userId), postMonth(userId), postYear(userId), postLifetime(userId)]);
+export function CreateNewUser(userId, userName) {
+    return Promise.all([postDay(userId), postWeek(userId), postMonth(userId), postYear(userId), postLifetime(userId, userName)]);
 }

@@ -5,7 +5,7 @@ import {CancelToken} from 'axios';
 import StatsNavigation from "./StatsNavigation"; 
 import {CreateNewUser} from './NewUser';
 
-const MonthStats = ({userId, setLoadingStyle}) => {
+const MonthStats = ({userId, setLoadingStyle, userName}) => {
 	const [chartData, setChartData] = useState({});
 	const [day, setDay] = useState({});
 	const [pointRadius, setPointRadius] = useState(4);
@@ -30,7 +30,7 @@ const MonthStats = ({userId, setLoadingStyle}) => {
 			})
 			.catch(function (error) {
 				if (error.response) {
-					CreateNewUser(userId);
+					CreateNewUser(userId, userName);
 					setDataLoaded(true);
 				}
 				if (error.request) {
@@ -52,7 +52,7 @@ const MonthStats = ({userId, setLoadingStyle}) => {
 									console.log("Server is still offline");
 								}
 								if (error.response) {
-									CreateNewUser(userId);
+									CreateNewUser(userId, userName);
 									setDataLoaded(true);
 									clearInterval(reconnect);
 								}

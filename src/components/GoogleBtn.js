@@ -32,7 +32,7 @@ class GoogleBtn extends Component {
         styleAlert: "alert alert-success loginAlert alert-dismissible displayNone",
       }));
       this.props.setUserId(response.getId()); //gets unique Google userId
-      
+      this.props.setUserName(response.profileObj.givenName); //gets unique name
     }
   }
 

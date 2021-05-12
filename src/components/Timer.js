@@ -5,7 +5,7 @@ import {CancelToken} from 'axios';
 import Pet from "./Pet";
 import {CreateNewUser} from './NewUser';
 
-const Time = ({userId, setLoadingStyle}) => {
+const Time = ({userId, setLoadingStyle, userName}) => {
 	const [start, setStart] = useState(false);
 	const [activity, setActivity] = useState("Working Mode");
 	const [time, setTime] = useState(1500000);
@@ -77,7 +77,7 @@ const Time = ({userId, setLoadingStyle}) => {
 			})
 			.catch(function (error) {
 				if (error.response) {
-					CreateNewUser(userId);
+					CreateNewUser(userId, userName);
 					setDataLoaded(true);
 				}
 				if (error.request) {
@@ -96,7 +96,7 @@ const Time = ({userId, setLoadingStyle}) => {
 									console.log("Server is still offline");
 								}
 								if (error.response) {
-									CreateNewUser(userId);
+									CreateNewUser(userId, userName);
 									setDataLoaded(true);
 									clearInterval(reconnect);
 								}
