@@ -8,14 +8,18 @@ body {
     background: rgb(69,89,96);
 }
 
+.loadingText {
+    line-height: 200% !important;
+}
+
 .leaderboardButtonLeft {
-    padding-left: 10%;
-    padding-right: 15%;
+    padding-left: 20px;
+    padding-right: 30px;
 }
 
 .leaderboardButtonRight {
-    padding-left: 15%;
-    padding-right: 10%;
+    padding-left: 30px;
+    padding-right: 20px;
 }
 
 .leaderboardButtonIcon, .leaderboardButtonText {
@@ -427,9 +431,15 @@ a:active { text-decoration: none; }
         width: 45%;
         right: -45%;
     }
+    .leaderboardsContainer {
+        width: 425px !important;
+    }
 }
 
 @media only screen and (min-width: 768px) { 
+    .leaderboardTitle {
+        margin-bottom: 5%;
+    }
     .loginAlert {
         width: 50% !important;
     }
@@ -468,7 +478,29 @@ a:active { text-decoration: none; }
     }
 }
 
+@media only screen and (min-width: 1425px) { 
+    .leaderboardTitle {
+        margin-bottom: 10%;
+    }
+    .leaderboardButtons {
+        margin-top: 10% !important;
+    }
+    .leaderboardsContainer {
+        font-size: 110%;
+    }
+    .leaderboardButtonIcon {
+        width: 20px;
+    }
+}
+
 @media only screen and (min-width: 1583px) { 
+    .leaderboardsContainer {
+        font-size: 120%;
+        width: 25% !important;
+    }
+    .leaderboardButtonIcon {
+        width: 25px;
+    }
     .menu li, .googleText {
         font-size: 120% !important;
     }
@@ -500,6 +532,16 @@ a:active { text-decoration: none; }
 } 
 
 @media only screen and (min-width: 1781px) { 
+    .leaderboardsContainer li {
+        padding-top: 4%;
+        padding-bottom: 4%;
+    }
+    .leaderboardsContainer {
+        font-size: 130%;
+    }
+    .leaderboardButtonIcon {
+        width: 30px;
+    }
     .menu li, .googleText {
         font-size: 130% !important;
     }
@@ -531,6 +573,9 @@ a:active { text-decoration: none; }
 } 
 
 @media only screen and (min-width: 1900px) { 
+    .leaderboardsContainer {
+        font-size: 140%;
+    }
     .menu li, .googleText {
         font-size: 140% !important;
     }
@@ -558,6 +603,12 @@ a:active { text-decoration: none; }
 } 
 
 @media only screen and (min-width: 2137px) { 
+    .leaderboardsContainer {
+        font-size: 160%;
+    }
+    .leaderboardButtonIcon {
+        height: 20px;
+    }
     .menu li, .googleText {
         font-size: 160% !important;
     }
@@ -591,6 +642,25 @@ a:active { text-decoration: none; }
 } 
 
 @media only screen and (min-width: 2850px) { 
+    .leaderboardsContainer li {
+        padding-top: 5%;
+        padding-bottom: 5%;
+    }
+    .leaderboardButtonLeft {
+        padding-left: 30px;
+        padding-right: 40px;
+    }
+    .leaderboardButtonRight {
+        padding-left: 40px;
+        padding-right: 30px;
+    }
+    .leaderboardsContainer {
+        font-size: 220%;
+    }
+    .leaderboardButtonIcon {
+        height: 40px;
+        width: 40px;
+    }
     .menu li, .googleText {
         font-size: 220% !important;
     }
@@ -631,6 +701,28 @@ a:active { text-decoration: none; }
 } 
 
 @media only screen and (min-width: 4275px) { 
+    .leaderboardsContainer li {
+        padding-top: 5%;
+        padding-bottom: 5%;
+    }
+    .leaderboardButtonLeft {
+        padding-left: 50px;
+        padding-right: 60px;
+    }
+    .leaderboardButtonRight {
+        padding-left: 60px;
+        padding-right: 50px;
+    }
+    .leaderboardsContainer {
+        font-size: 320%;
+    }
+    .leaderboardButtonIcon {
+        height: 60px;
+        width: 60px;
+    }
+    .leaderboardCount {
+        width: 11%;
+    }
     .menu li, .googleText {
         font-size: 320% !important;
     }

@@ -90,6 +90,8 @@ class GoogleBtn extends Component {
       <div className={this.props.loadingStyle}>
         <div className="spinner-border text-light" role="status">
         </div>
+        <br />
+        <span className="text-light loadingText">Loading...</span>
       </div>
     </div>
     )

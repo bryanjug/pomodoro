@@ -18,7 +18,7 @@ const Leaderboards = ({setLoadingStyle, userName}) => {
             const listItems = users.map((user, i) =>  
                 <li key={i} className="list-group-item d-flex justify-content-between align-items-center">
                     {userRank[i]}. {user.userName}
-                    <span className="badge bg-primary rounded-pill text-light">{user.total}</span>
+                    <span className="badge bg-primary rounded-pill text-light leaderboardCount">{user.total}</span>
                 </li>
             );  
             return (  
@@ -118,7 +118,7 @@ const Leaderboards = ({setLoadingStyle, userName}) => {
 
     return (
         <div className="container leaderboardsContainer">
-            <p className="text-light text-center"><b>Overall Pomodoros Completed</b></p>
+            <p className="text-light text-center leaderboardTitle"><b>Overall Pomodoros Completed</b></p>
             <div className="row">
                 <div className="col-6 userHeader text-light">
                     <p>Users</p>

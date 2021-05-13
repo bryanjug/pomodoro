@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import GoogleBtn from "./GoogleBtn";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 import Timer from './Timer';
 import DayStats from './DayStats';
@@ -115,7 +115,7 @@ import Leaderboards from './Leaderboards';
 //(DONE) ADD BUTTONS TO SEE NEXT 10 USERS
 //(DONE) HIDE LEFT BUTTON AT START AND HIDE RIGHT BUTTON AT END OF USERS 
 //(DONE) ON BUTTON CLICK CHANGE STATE FOR AXIOS TO SET START TO +10
-//() RESPONSIVE LEADERBOARDS
+//(DONE) RESPONSIVE LEADERBOARDS
 
 const App = () => {
 	const [userId, setUserId] = useState(null);
