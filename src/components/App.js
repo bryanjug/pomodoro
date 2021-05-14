@@ -7,6 +7,7 @@ import DayStats from './DayStats';
 import WeekStats from './WeekStats';
 import MonthStats from './MonthStats';
 import YearStats from './YearStats';
+import ChangeTimer from './ChangeTimer';
 import Leaderboards from './Leaderboards';
 
 //TODO:
@@ -116,12 +117,38 @@ import Leaderboards from './Leaderboards';
 //(DONE) HIDE LEFT BUTTON AT START AND HIDE RIGHT BUTTON AT END OF USERS 
 //(DONE) ON BUTTON CLICK CHANGE STATE FOR AXIOS TO SET START TO +10
 //(DONE) RESPONSIVE LEADERBOARDS
+//(DONE) ADD TIME CHANGER ROUTE WITH ALERT ON CLICK
+//() RESPONSIVE TIME CHANGER
 
 const App = () => {
 	const [userId, setUserId] = useState(null);
 	const [loadingStyle, setLoadingStyle] = useState("text-center loading displayNone");
 	const [userName, setUserName] = useState(null);
+	const [changeTimerStyle, setChangeTimerStyle] = useState("alert alert-success changeTimer alert-dismissible displayNone");
+	const [workTime, setWorkTime] = useState(1500000);
+	const [restTime, setRestTime] = useState(300000);
 	const nav = useRef(null);
+
+	//hides nav when clicked outside of div
+	function useOutsideAlerter(ref) {
+		useEffect(() => {
+			function handleClickOutside(event) {
+				if (ref.current && !ref.current.contains(event.target) && nav.current.style.right === "0px") {
+					nav.current.style.right = "-60%";
+				}
+			}
+	
+			// Bind the event listener
+			document.addEventListener("mousedown", handleClickOutside);
+			return () => {
+				// Unbind the event listener on clean up
+				document.removeEventListener("mousedown", handleClickOutside);
+			};
+
+		}, [ref]);
+	}
+
+	useOutsideAlerter(nav);
 
 	function showNav() {
 		nav.current.style.right = "0px";
@@ -135,7 +162,7 @@ const App = () => {
 		<div>
 			<Router>
 				<Route exact path="/">
-					<Timer userId={userId} setLoadingStyle={setLoadingStyle} userName={userName} />
+					<Timer userId={userId} setLoadingStyle={setLoadingStyle} userName={userName} restTime={restTime} workTime={workTime} />
 				</Route>
 				<Route path="/stats/day">
 					<DayStats userId={userId} setLoadingStyle={setLoadingStyle} userName={userName} />
@@ -149,6 +176,9 @@ const App = () => {
 				<Route path="/stats/year">
 					<YearStats userId={userId} setLoadingStyle={setLoadingStyle} userName={userName} />
 				</Route>
+				<Route path="/changetimer">
+					<ChangeTimer setWorkTime={setWorkTime} setRestTime={setRestTime} />
+				</Route>
 				<Route path="/leaderboards">
 					<Leaderboards setLoadingStyle={setLoadingStyle} userName={userName} />
 				</Route>
@@ -161,13 +191,16 @@ const App = () => {
 						<img src="/img/exit.png" onClick={hideNav} className="menu-exit" alt="" />
 					</div>
 					<ul>
-						<Link to="/">
+						<Link to="/" onClick={hideNav}>
 							<li>Pomodoro</li>
 						</Link>
-						<Link to="/stats/day">
+						<Link to="/stats/day" onClick={hideNav}>
 							<li>Statistics</li>
 						</Link>
-						<Link to="/leaderboards">
+						<Link to="/changetimer" onClick={hideNav}>
+							<li>Change Timer</li>
+						</Link>
+						<Link to="/leaderboards" onClick={hideNav}>
 							<li>Leaderboards</li>
 						</Link>
 						<li>

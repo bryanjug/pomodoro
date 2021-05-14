@@ -1,4 +1,3 @@
-//https://pomodoroserver.herokuapp.com/
 import React, { useState, useEffect } from "react";
 import {CancelToken} from 'axios';
 import API from './API';

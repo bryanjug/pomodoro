@@ -8,6 +8,141 @@ body {
     background: rgb(69,89,96);
 }
 
+.timerLeftSection {
+    text-align: right;
+}
+
+.timerRightSection {
+    text-align: left;
+}
+
+.confirmedTimeChange {
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: fixed;
+    color: white;
+    text-align: center !important;
+    animation: fade 1s;
+    -webkit-animation: fade 1s;
+    -moz-animation: fade 1s;
+    -o-animation: fade 1s;
+    -ms-animation: fade 1s;
+}
+
+.changeTimerText {
+    top: 58%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: fixed;
+    width: 90%;
+    height: 60%;
+    text-align: center;
+}
+
+.changeTimerAlert {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: fixed;
+    height: 50%;
+    width: 80%;
+    animation: fade 1s;
+    -webkit-animation: fade 1s;
+    -moz-animation: fade 1s;
+    -o-animation: fade 1s;
+    -ms-animation: fade 1s;
+}
+
+@keyframes fade {
+    0% {opacity:0;}
+    100% {opacity:1;}
+}
+
+@-moz-keyframes fade {
+    0% {opacity:0;}
+    100% {opacity:1;}
+}
+
+@-webkit-keyframes fade {
+    0% {opacity:0;}
+    100% {opacity:1;}
+}
+
+@-o-keyframes fade {
+    0% {opacity:0;}
+    100% {opacity:1;}
+}
+
+@-ms-keyframes fade {
+    0% {opacity:0;}
+    100% {opacity:1;}
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.restingTitle {
+    margin-top: 8%;
+}
+
+.restingTitle, .workingTitle {
+    margin-bottom: 3%;
+}
+
+.changeTimer input {
+    text-align: center !important;
+    width: 55px;
+    line-height: 220% !important;
+    font-size: 220%;
+    background-color: #2F3D43;
+    color: white !important;
+    border: none;
+    border-radius: 10px !important;
+}
+
+.changeTimer input:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    background-color: #273236 !important;
+}
+
+.changeTimerTitle {
+    margin-bottom: 10%;
+}
+
+.changeTimerButton {
+    margin-top: 10%;
+}
+
+.changeTimerButton:hover {
+    background-color: #4B9C96 !important;
+}
+
+.changeTimer {
+    text-align: center !important;
+    bottom: 50%;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    position: fixed;
+}
+
+.changeTimerButton {
+    width: 40%;
+    background-color: #2F3D43 !important;
+    border: none;
+    border-radius: 20px;
+    color: white;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
 .loadingText {
     line-height: 200% !important;
 }

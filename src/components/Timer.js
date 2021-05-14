@@ -5,10 +5,10 @@ import {CancelToken} from 'axios';
 import Pet from "./Pet";
 import {CreateNewUser} from './NewUser';
 
-const Time = ({userId, setLoadingStyle, userName}) => {
+const Time = ({userId, setLoadingStyle, userName, workTime, restTime}) => {
 	const [start, setStart] = useState(false);
 	const [activity, setActivity] = useState("Working Mode");
-	const [time, setTime] = useState(1500000);
+	const [time, setTime] = useState(workTime);
 	const [completedCount, setCompletedCount] = useState(0);
 	const [long, setLong] = useState("");
 	const [pomodoro, setPomodoro] = useState(0);
@@ -54,11 +54,11 @@ const Time = ({userId, setLoadingStyle, userName}) => {
 		//check pomodoro multiple and set long resting mode
 		if (remainder === 0) {
 			if (activity === "Resting Mode") {
-				setTime(900000); //15 minutes
+				setTime(restTime * 3); //15 minutes
 				setLong("Long");
 			}
 			if (activity === "Working Mode") {
-				setTime(1500000);
+				setTime(workTime);
 				setLong("");
 			}
 		}
@@ -107,18 +107,21 @@ const Time = ({userId, setLoadingStyle, userName}) => {
 	}
 
 	//updates lifetime pomodoro count to server
+	//if the timer is set to 25mins and above
 	function updateLifeTime() {
-		API.get(`/lifetime/${userId}`)
-			.then(function (response) {
-				let getData = response.data.total;
-				const total = getData + 1;
+		if (workTime >= 1499999) {
+			API.get(`/lifetime/${userId}`)
+				.then(function (response) {
+					let getData = response.data.total;
+					const total = getData + 1;
 
-				setPomodoroLifeTime(total);
+					setPomodoroLifeTime(total);
 
-				let payload = { total: total };
+					let payload = { total: total };
 
-				API.patch(`/lifetime/${userId}`, payload);
-			});
+					API.patch(`/lifetime/${userId}`, payload);
+				});
+		}
 	}
 
 	//updates daily pomodoro and daily total pomodoro count to server
@@ -481,7 +484,7 @@ const Time = ({userId, setLoadingStyle, userName}) => {
 		if (completedCount === 0) {
 			return (
 				<span>
-					{setTime(300000)}
+					{setTime(restTime)}
 					{setStart(false)}
 					{setActivity("Working Mode")}
 				</span>
@@ -490,7 +493,7 @@ const Time = ({userId, setLoadingStyle, userName}) => {
 		if (completedCount === 1) {
 			return (
 				<span>
-					{setTime(300000)}
+					{setTime(restTime)}
 					{setStart(false)}
 					{setPomodoro(pomodoro + 1)}
 					{setActivity("Resting Mode")}
@@ -501,7 +504,7 @@ const Time = ({userId, setLoadingStyle, userName}) => {
 			//finish working mode
 			return (
 				<span>
-					{setTime(300000)}
+					{setTime(restTime)}
 					{setStart(false)}
 					{setActivity("Resting Mode")}
 				</span>
@@ -510,7 +513,7 @@ const Time = ({userId, setLoadingStyle, userName}) => {
 		if (completedCount === 3) {
 			return (
 				<span>
-					{setTime(1500000)}
+					{setTime(workTime)}
 					{setStart(false)}
 					{setActivity("Working Mode")}
 				</span>
@@ -519,7 +522,7 @@ const Time = ({userId, setLoadingStyle, userName}) => {
 		if (completedCount === 4) {
 			return (
 				<span>
-					{setTime(1500000)}
+					{setTime(workTime)}
 					{setStart(false)}
 					{setPomodoro(pomodoro + 1)}
 					{setActivity("Working Mode")}
@@ -529,7 +532,7 @@ const Time = ({userId, setLoadingStyle, userName}) => {
 		if (completedCount === 5) {
 			return (
 				<span>
-					{setTime(300000)}
+					{setTime(restTime)}
 					{setStart(false)}
 					{setActivity("Resting Mode")}
 				</span>
@@ -538,7 +541,7 @@ const Time = ({userId, setLoadingStyle, userName}) => {
 		if (completedCount === 6) {
 			return (
 				<span>
-					{setTime(300000)}
+					{setTime(restTime)}
 					{setStart(false)}
 					{setActivity("Resting Mode")}
 					{setCompletedCount(3)}
@@ -548,7 +551,7 @@ const Time = ({userId, setLoadingStyle, userName}) => {
 	};
 
 	//Countdown Renderer
-	const Renderer = ({ minutes, seconds, completed }) => {
+	const Renderer = ({ hours, minutes, seconds, completed }) => {
 		if (completed) {
 			//Render a completed state
 			{
@@ -564,7 +567,7 @@ const Time = ({userId, setLoadingStyle, userName}) => {
 			// Render a countdown
 			return (
 				<span>
-					{zeroPad(minutes, 2)}:{zeroPad(seconds, 2)}
+					{zeroPad(hours, 2)}:{zeroPad(minutes, 2)}:{zeroPad(seconds, 2)}
 				</span>
 			);
 		}
@@ -597,6 +600,7 @@ const Time = ({userId, setLoadingStyle, userName}) => {
 							/>
 						</p>
 						{renderButton()}
+						<br />
 					</div>
 				</div>
 			</div>
