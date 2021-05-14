@@ -51,7 +51,7 @@ const ChangeTimer = ({setWorkTime, setRestTime}) => {
             <div className="changeTimer container">
                 <div className="row">
                     <div className="col-12 text-light workingTitle">
-                        Working Time
+                        <b>Working Time</b>
                     </div>
                     <div className="col-6 timerLeftSection">
                         <p className="text-light">Minutes</p>
@@ -62,7 +62,7 @@ const ChangeTimer = ({setWorkTime, setRestTime}) => {
                         <input type="number" placeholder="00" onChange={e => setWorkSeconds(e.target.value)} />
                     </div>
                     <div className="col-12 text-light restingTitle">
-                        Resting Time
+                        <b>Resting Time</b>
                     </div>
                     <div className="col-6 timerLeftSection">
                         <p className="text-light">Minutes</p>
@@ -73,7 +73,7 @@ const ChangeTimer = ({setWorkTime, setRestTime}) => {
                         <input type="number" placeholder="00" onChange={e => setRestSeconds(e.target.value)} />
                     </div>
                     <div className="col-12">
-                        <button className="changeTimerButton" onClick={submitTimes}>Set</button>
+                        <button className="changeTimerButton setTimerButton" onClick={submitTimes}>Set Timer</button>
                     </div>
                 </div>
             </div>

@@ -124,7 +124,6 @@ const App = () => {
 	const [userId, setUserId] = useState(null);
 	const [loadingStyle, setLoadingStyle] = useState("text-center loading displayNone");
 	const [userName, setUserName] = useState(null);
-	const [changeTimerStyle, setChangeTimerStyle] = useState("alert alert-success changeTimer alert-dismissible displayNone");
 	const [workTime, setWorkTime] = useState(1500000);
 	const [restTime, setRestTime] = useState(300000);
 	const nav = useRef(null);

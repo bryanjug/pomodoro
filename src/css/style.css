@@ -17,7 +17,7 @@ body {
 }
 
 .confirmedTimeChange {
-    top: 90%;
+    top: 95%;
     left: 50%;
     transform: translate(-50%, -50%);
     position: fixed;
@@ -89,11 +89,11 @@ input[type=number] {
 }
 
 .restingTitle {
-    margin-top: 8%;
+    margin-top: 30px;
 }
 
 .restingTitle, .workingTitle {
-    margin-bottom: 3%;
+    margin-bottom: 20px;
 }
 
 .changeTimer input {
@@ -105,6 +105,7 @@ input[type=number] {
     color: white !important;
     border: none;
     border-radius: 10px !important;
+    font-weight: 100;
 }
 
 .changeTimer input:focus {
@@ -113,12 +114,8 @@ input[type=number] {
     background-color: #273236 !important;
 }
 
-.changeTimerTitle {
-    margin-bottom: 10%;
-}
-
 .changeTimerButton {
-    margin-top: 10%;
+    margin-top: 40px;
 }
 
 .changeTimerButton:hover {
@@ -134,7 +131,7 @@ input[type=number] {
 }
 
 .changeTimerButton {
-    width: 40%;
+    width: 120px;
     background-color: #2F3D43 !important;
     border: none;
     border-radius: 20px;
@@ -572,6 +569,12 @@ a:active { text-decoration: none; }
 }
 
 @media only screen and (min-width: 768px) { 
+    .changeTimerAlert{
+        width: 50% !important;
+    } 
+    .changeTimerText {
+        top: 60%;
+    }
     .leaderboardTitle {
         margin-bottom: 5%;
     }
@@ -588,6 +591,9 @@ a:active { text-decoration: none; }
 }
 
 @media only screen and (min-width: 1024px) { 
+    .changeTimerAlert{
+        width: 40% !important;
+    } 
     .loginAlert {
         width: 40% !important;
     }
@@ -612,8 +618,19 @@ a:active { text-decoration: none; }
         right: -18%;
     }
 }
+@media only screen and (min-width: 1295px) { 
+    .changeTimerText {
+        top: 65%;
+    }
+    .changeTimerAlert{
+        width: 35% !important;
+    } 
+}
 
 @media only screen and (min-width: 1425px) { 
+    .changeTimerAlert{
+        width: 35% !important;
+    } 
     .leaderboardTitle {
         margin-bottom: 10%;
     }
@@ -629,6 +646,24 @@ a:active { text-decoration: none; }
 }
 
 @media only screen and (min-width: 1583px) { 
+    .close {
+        font-size: 120% !important;
+    }
+    .changeTimer, .confirmedTimeChange  {
+        font-size: 120%;
+    }
+    .changeTimer input {
+        text-align: center !important;
+        width: 65px;
+    }
+    .changeTimerButton {
+        width: 140px;
+        padding-top: 6px;
+        padding-bottom: 6px;
+    }
+    .changeTimerAlert{
+        font-size: 120%;
+    } 
     .leaderboardsContainer {
         font-size: 120%;
         width: 25% !important;
@@ -667,6 +702,25 @@ a:active { text-decoration: none; }
 } 
 
 @media only screen and (min-width: 1781px) { 
+    .close {
+        font-size: 130% !important;
+    }
+    .changeTimerAlert{
+        width: 30% !important;
+        font-size: 130%;
+    } 
+    .changeTimer, .confirmedTimeChange  {
+        font-size: 130%;
+    }
+    .changeTimer input {
+        text-align: center !important;
+        width: 65px;
+    }
+    .changeTimerButton {
+        width: 140px;
+        padding-top: 6px;
+        padding-bottom: 6px;
+    }
     .leaderboardsContainer li {
         padding-top: 4%;
         padding-bottom: 4%;
@@ -708,6 +762,33 @@ a:active { text-decoration: none; }
 } 
 
 @media only screen and (min-width: 1900px) { 
+    .close {
+        font-size: 140% !important;
+    }
+    .changeTimerAlert, .confirmedTimeChange {
+        font-size: 140%;
+    } 
+    .changeTimer {
+        font-size: 140%;
+    }
+    .changeTimer input {
+        text-align: center !important;
+        width: 80px;
+    }
+    .changeTimerButton {
+        width: 160px;
+        padding-top: 6px;
+        padding-bottom: 6px;
+    }
+    .workingTitle, .restingTitle {
+        margin-bottom: 35px;
+    }
+    .restingTitle {
+        margin-top: 35px;
+    }
+    .setTimerButton {
+        margin-top: 55px;
+    }
     .leaderboardsContainer {
         font-size: 140%;
     }
@@ -738,6 +819,31 @@ a:active { text-decoration: none; }
 } 
 
 @media only screen and (min-width: 2137px) { 
+    .close {
+        font-size: 160% !important;
+    }
+    .changeTimerAlert, .confirmedTimeChange {
+        font-size: 160%;
+    } 
+    .changeTimer {
+        font-size: 160%;
+    }
+    .changeTimer input {
+        text-align: center !important;
+        width: 90px;
+    }
+    .changeTimerButton {
+        width: 190px;
+        border-radius: 50px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+    .workingTitle, .restingTitle {
+        margin-bottom: 40px;
+    }
+    .restingTitle {
+        margin-top: 40px;
+    }
     .leaderboardsContainer {
         font-size: 160%;
     }
@@ -777,6 +883,32 @@ a:active { text-decoration: none; }
 } 
 
 @media only screen and (min-width: 2850px) { 
+    .close {
+        font-size: 220% !important;
+    }
+    .changeTimerAlert, .confirmedTimeChange {
+        font-size: 220%;
+    } 
+    .changeTimer {
+        font-size: 220%;
+    }
+    .changeTimer input {
+        width: 130px;
+    }
+    .changeTimerButton {
+        width: 270px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .workingTitle, .restingTitle {
+        margin-bottom: 60px;
+    }
+    .restingTitle {
+        margin-top: 60px;
+    }
+    .setTimerButton {
+        margin-top: 65px;
+    }
     .leaderboardsContainer li {
         padding-top: 5%;
         padding-bottom: 5%;
@@ -836,6 +968,29 @@ a:active { text-decoration: none; }
 } 
 
 @media only screen and (min-width: 4275px) { 
+    .changeTimerAlert, .confirmedTimeChange {
+        font-size: 320%;
+    } 
+    .changeTimer {
+        font-size: 320%;
+    }
+    .changeTimer input {
+        width: 180px;
+    }
+    .changeTimerButton {
+        width: 370px;
+        padding-top: 14px;
+        padding-bottom: 14px;
+    }
+    .workingTitle, .restingTitle {
+        margin-bottom: 90px;
+    }
+    .restingTitle {
+        margin-top: 90px;
+    }
+    .setTimerButton {
+        margin-top: 95px;
+    }
     .leaderboardsContainer li {
         padding-top: 5%;
         padding-bottom: 5%;
