@@ -79,14 +79,14 @@ class GoogleBtn extends Component {
       >
         <span className="googleText">Login</span>
       </GoogleLogin>
-      <div className={this.state.styleAlert} ref={this.alert}>
+      {/* <div className={this.state.styleAlert} ref={this.alert}>
         <a href="#" className="close" data-dismiss="alert" aria-label="close">&times;</a>
         <span className="loginAlertText">
           <img src="/img/cat.png" alt="" className="catImg"/>
           <br />
           Please <strong>Login</strong> with your Google account in order to see your stats.
         </span>
-      </div>
+      </div> */}
       <div className={this.props.loadingStyle}>
         <div className="spinner-border text-light" role="status">
         </div>

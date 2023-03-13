@@ -528,6 +528,7 @@ a:active { text-decoration: none; }
 .countdown {
     line-height: 90%;
     margin-top: 280px !important;
+    text-shadow: 0px 0px 10px black;
 }
 
 .graph {

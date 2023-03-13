@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Countdown, { zeroPad } from "react-countdown";
 import API from './API';
 import {CancelToken} from 'axios';
-import Pet from "./Pet";
+import Planet from "./Planet";
 import {CreateNewUser} from './NewUser';
 
 const Time = ({userId, setLoadingStyle, userName, workTime, restTime}) => {
@@ -604,7 +604,8 @@ const Time = ({userId, setLoadingStyle, userName, workTime, restTime}) => {
 					</div>
 				</div>
 			</div>
-			<Pet activity={activity} pomodoroLifeTime={pomodoroLifeTime} setLoadingStyle={setLoadingStyle} dataLoaded={dataLoaded} userId={userId} />
+			{/* <Pet activity={activity} pomodoroLifeTime={pomodoroLifeTime} setLoadingStyle={setLoadingStyle} dataLoaded={dataLoaded} userId={userId} /> */}
+            <Planet />
 		</div>
 	);
 };
