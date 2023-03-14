@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Line, Chart } from "react-chartjs-2";
 import API from './API';
-import {CancelToken} from 'axios';
 import StatsNavigation from "./StatsNavigation"; 
-import {CreateNewUser} from './NewUser';
 
-const DayStats = ({userId, setLoadingStyle, userName}) => {
+const DayStats = ({setLoadingStyle}) => {
 	const [hour, setHour] = useState({});
 	const [chartData, setChartData] = useState({});
 	const [pointRadius, setPointRadius] = useState(4);
@@ -14,80 +12,79 @@ const DayStats = ({userId, setLoadingStyle, userName}) => {
 	const [total, setTotal] = useState(0);
 	const [dataLoaded, setDataLoaded] = useState(false);
 	Chart.defaults.global.defaultFontColor = "#F8F9FA";
-	const source = CancelToken.source();
-	var reconnect;
 
 	//requests server data and repeats if the server is not connected
-	function getDayStats() {
-		API.get(`/day/${userId}`, {cancelToken: source.token})
-			.then(function (response) {
-				let getHours = response.data;
-				let getTotal = response.data.total;
+    
+	// function getDayStats() {
+	// 	API.get(`/day/${userId}`, {cancelToken: source.token})
+	// 		.then(function (response) {
+	// 			let getHours = response.data;
+	// 			let getTotal = response.data.total;
 
-				setHour(getHours);
-				setTotal(getTotal);
-				setDataLoaded(true);
-			})
-			.catch(function (error) {
-				if (error.response) {
-					CreateNewUser(userId, userName);
-					setDataLoaded(true);
-				}
-				if (error.request) {
-					console.log("Server is offline");
-					reconnect = setInterval(() => {
-						API.get(`/day/${userId}`, {cancelToken: source.token})
-							.then(function (response) {
-								let getHours = response.data;
-								let getTotal = response.data.total;
+	// 			setHour(getHours);
+	// 			setTotal(getTotal);
+	// 			setDataLoaded(true);
+	// 		})
+	// 		.catch(function (error) {
+	// 			if (error.response) {
+	// 				CreateNewUser(userId, userName);
+	// 				setDataLoaded(true);
+	// 			}
+	// 			if (error.request) {
+	// 				console.log("Server is offline");
+	// 				reconnect = setInterval(() => {
+	// 					API.get(`/day/${userId}`, {cancelToken: source.token})
+	// 						.then(function (response) {
+	// 							let getHours = response.data;
+	// 							let getTotal = response.data.total;
 
-								setHour(getHours);
-								setTotal(getTotal);
-								setDataLoaded(true);
-								clearInterval(reconnect);
-								console.log("Server is online!");
-							})
-							.catch(function (error) {
-								if (error.request) {
-									console.log("Server is still offline");
-								}
-								if (error.response) {
-									CreateNewUser(userId, userName);
-									setDataLoaded(true);
-									clearInterval(reconnect);
-								}
-							})
-					}, 3000);
-				}
-			})
-	}
+	// 							setHour(getHours);
+	// 							setTotal(getTotal);
+	// 							setDataLoaded(true);
+	// 							clearInterval(reconnect);
+	// 							console.log("Server is online!");
+	// 						})
+	// 						.catch(function (error) {
+	// 							if (error.request) {
+	// 								console.log("Server is still offline");
+	// 							}
+	// 							if (error.response) {
+	// 								CreateNewUser(userId, userName);
+	// 								setDataLoaded(true);
+	// 								clearInterval(reconnect);
+	// 							}
+	// 						})
+	// 				}, 3000);
+	// 			}
+	// 		})
+	// }
 
     //loads stats from server once user is logged in
-	useEffect(() => {
-		if (userId) {
-			getDayStats();
-		}
-		//cleanup function for reconnecting interval 
-		//and axios connections
-		return () => {
-			source.cancel();
-			clearInterval(reconnect);
-		}
-	}, [userId])
+	// useEffect(() => {
+	// 	if (userId) {
+	// 		getDayStats();
+	// 	}
+	// 	//cleanup function for reconnecting interval 
+	// 	//and axios connections
+	// 	return () => {
+	// 		source.cancel();
+	// 		clearInterval(reconnect);
+	// 	}
+	// }, [userId])
 
 	//show loading spinner when user is not logged in and data is
 	//still loading
-	useEffect(() => {
-		if (userId && dataLoaded === true) {
-			setLoadingStyle("text-center loading displayNone");
-		}
-		if (userId === null || dataLoaded === false) {
-			setLoadingStyle("text-center loading");
-		}
-		return () => {
-			setLoadingStyle("text-center loading displayNone");
-		}
-	}, [userId, dataLoaded])
+	// useEffect(() => {
+	// 	if (userId && dataLoaded === true) {
+	// 		setLoadingStyle("text-center loading displayNone");
+	// 	}
+	// 	if (userId === null || dataLoaded === false) {
+	// 		setLoadingStyle("text-center loading");
+	// 	}
+	// 	return () => {
+	// 		setLoadingStyle("text-center loading displayNone");
+	// 	}
+	// }, [userId, dataLoaded])
 
 	const chart = () => {
 		setChartData({
@@ -247,12 +244,15 @@ const DayStats = ({userId, setLoadingStyle, userName}) => {
 		}
 	}, [])
 
-	//updates chart once data is fetched, user is signed in, 
-	//and when screen size changes
+	//updates chart once data is fetched and when screen size changes
 	useEffect(() => {
 		chart();
-	}, [dataLoaded, pointRadius, userId]);
+	}, [dataLoaded, pointRadius]);
 
+    useEffect(() => {
+        // API.get(`/day/${userId}`, {cancelToken: source.token})
+    }, [])
+    
 	return (
 		<div>
 			<StatsNavigation />

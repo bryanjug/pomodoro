@@ -80,7 +80,7 @@ const ChangeTimer = ({setWorkTime, setRestTime}) => {
             <div className={alertStyle}>
                 <a href="#" className="close" onClick={hideAlert}>&times;</a>
                 <span className="changeTimerText">
-                    Your working time must be 25 minutes or above in order to grow your pet and show your progress on the leaderboards.
+                    Your working time must be 25 minutes or above in order to show your progress.
                     <br />
                     <button className="changeTimerButton" onClick={confirmSubmitTimes}>That's Ok</button>
                 </span>

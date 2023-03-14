@@ -2,10 +2,11 @@ V2 TODO:
 [X] rotate trees away from sphere
 [X] spawn trees in random positions around the planet
 [X] look for better background
-[] remove google button login requirement from all components
-[] remove warnings
+[X] connect react to webgl
+[X] remove leaderboards
+[X] remove google button login requirement from all components
+[X] reformat db.json -> pomodoros completed today, this week, this month, this year, and in total
 [] after completed pomodoro, send api response to server and add to overall count of trees
-[] connect react to webgl
 [] spawn world total # of trees in random positions around the planet
 [] change server to only have total # of trees for all users
 [] change client to only show total # of trees data

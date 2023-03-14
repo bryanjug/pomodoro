@@ -5,7 +5,7 @@ import {CancelToken} from 'axios';
 import Planet from "./Planet";
 import {CreateNewUser} from './NewUser';
 
-const Time = ({userId, setLoadingStyle, userName, workTime, restTime}) => {
+const Time = ({setLoadingStyle, workTime, restTime}) => {
 	const [start, setStart] = useState(false);
 	const [activity, setActivity] = useState("Working Mode");
 	const [time, setTime] = useState(workTime);
@@ -64,331 +64,462 @@ const Time = ({userId, setLoadingStyle, userName, workTime, restTime}) => {
 		}
 	}, [pomodoro, activity]);
 
+    //request from server total pomodoro count and set total count at top left of homepage
+    useEffect(() => {
+        async function FetchInfo() {
+            API.get(`/total`)
+            .then(function(response) {
+                setPomodoroLifeTime(response.data[0].count)
+            })
+            .catch(function (error) {
+                if (error.response) {
+                    console.log(error.response)
+                }
+                if (error.request) {
+                    console.log(error.request)
+                }
+            })
+        }
+		FetchInfo()
+	}, []);
+    
+    useEffect(() => {
+        // async function FetchAndUpdateInfo() {
+        //     API.get(`/total`)
+        //     .then(function(response) {
+        //         let count = response.data[0].count + 1;
+        //         let payload = { count: count };
+
+	    //         API.patch(`/total`, payload);
+        //     })
+        //     .catch(function (error) {
+        //         if (error.response) {
+        //             console.log(error.response)
+        //         }
+        //         if (error.request) {
+        //             console.log(error.request)
+        //         }
+        //     })
+        // }
+        // if (completedCount !== 0) {
+        //     FetchAndUpdateInfo()
+        // }
+
+        function updateLifeTime() {
+            // if (workTime >= 1499999) {
+            if (workTime >= 100) {
+                API.get(`/total`)
+                    .then(function (response) {
+                        let getData = response.data[0].count;
+                        let count = getData + 1;
+    
+                        setPomodoroLifeTime(count);
+    
+                        let payload = { count: count };
+    
+                        API.patch(`/total/1`, payload);
+                        
+                    })
+                    .catch(function (error) {
+                        if (error.response) {
+                            console.log(error.response)
+                        }
+                        if (error.request) {
+                            console.log(error.request)
+                        }
+                    });
+                API.get(`/day`)
+                    .then(function (response) {
+                        let getData = response.data[0].total;
+                        let total = getData + 1;
+    
+                        let payload = { total: total };
+    
+                        API.patch(`/day/1`, payload);
+                        
+                    })
+                    .catch(function (error) {
+                        if (error.response) {
+                            console.log(error.response)
+                        }
+                        if (error.request) {
+                            console.log(error.request)
+                        }
+                    });
+                API.get(`/week`)
+                    .then(function (response) {
+                        let getData = response.data[0].total;
+                        let total = getData + 1;
+    
+                        let payload = { total: total };
+    
+                        API.patch(`/week/1`, payload);
+                        
+                    })
+                    .catch(function (error) {
+                        if (error.response) {
+                            console.log(error.response)
+                        }
+                        if (error.request) {
+                            console.log(error.request)
+                        }
+                    });
+                API.get(`/month`)
+                    .then(function (response) {
+                        let getData = response.data[0].total;
+                        let total = getData + 1;
+    
+                        let payload = { total: total };
+    
+                        API.patch(`/month/1`, payload);
+                        
+                    })
+                    .catch(function (error) {
+                        if (error.response) {
+                            console.log(error.response)
+                        }
+                        if (error.request) {
+                            console.log(error.request)
+                        }
+                    });
+                API.get(`/year`)
+                    .then(function (response) {
+                        let getData = response.data[0].total;
+                        let total = getData + 1;
+    
+                        let payload = { total: total };
+    
+                        API.patch(`/year/1`, payload);
+                        
+                    })
+                    .catch(function (error) {
+                        if (error.response) {
+                            console.log(error.response)
+                        }
+                        if (error.request) {
+                            console.log(error.request)
+                        }
+                    });
+            }
+        }
+        if (pomodoro !== 0) {
+            updateLifeTime()
+        }
+	}, [pomodoro]);
+
+    //updates lifetime pomodoro count to server
+	//if the timer is set to 25mins and above
+	
+
 	//finds lifetime pomodoro count from server
 	//if userId isnt in DB, then set new placeholder data for that userId
 	//prevents overwiting DB if user already exists
 	//makes multiple requests until connected to server
-	function fetchLifeTime() {
-		API.get(`/lifetime/${userId}`, {cancelToken: source.token})
-			.then(function (response) {
-				let total = response.data.total;
-				setPomodoroLifeTime(total);
-				setDataLoaded(true);
-			})
-			.catch(function (error) {
-				if (error.response) {
-					CreateNewUser(userId, userName);
-					setDataLoaded(true);
-				}
-				if (error.request) {
-					console.log("Server is offline");
-					reconnect = setInterval(() => {
-						API.get(`/lifetime/${userId}`, {cancelToken: source.token})
-							.then(function (response) {
-								let total = response.data.total;
-								setPomodoroLifeTime(total);
-								setDataLoaded(true);
-								clearInterval(reconnect);
-								console.log("Server is online!");
-							})
-							.catch(function (error) {
-								if (error.request) {
-									console.log("Server is still offline");
-								}
-								if (error.response) {
-									CreateNewUser(userId, userName);
-									setDataLoaded(true);
-									clearInterval(reconnect);
-								}
-							})
-					}, 3000);
-				}
-			})
-	}
+	// function fetchLifeTime() {
+	// 	API.get(`/lifetime/${userId}`, {cancelToken: source.token})
+	// 		.then(function (response) {
+	// 			let total = response.data.total;
+	// 			setPomodoroLifeTime(total);
+	// 			setDataLoaded(true);
+	// 		})
+	// 		.catch(function (error) {
+	// 			if (error.response) {
+	// 				CreateNewUser(userId, userName);
+	// 				setDataLoaded(true);
+	// 			}
+	// 			if (error.request) {
+	// 				console.log("Server is offline");
+	// 				reconnect = setInterval(() => {
+	// 					API.get(`/lifetime/${userId}`, {cancelToken: source.token})
+	// 						.then(function (response) {
+	// 							let total = response.data.total;
+	// 							setPomodoroLifeTime(total);
+	// 							setDataLoaded(true);
+	// 							clearInterval(reconnect);
+	// 							console.log("Server is online!");
+	// 						})
+	// 						.catch(function (error) {
+	// 							if (error.request) {
+	// 								console.log("Server is still offline");
+	// 							}
+	// 							if (error.response) {
+	// 								CreateNewUser(userId, userName);
+	// 								setDataLoaded(true);
+	// 								clearInterval(reconnect);
+	// 							}
+	// 						})
+	// 				}, 3000);
+	// 			}
+	// 		})
+	// }
 
-	//updates lifetime pomodoro count to server
-	//if the timer is set to 25mins and above
-	function updateLifeTime() {
-		if (workTime >= 1499999) {
-			API.get(`/lifetime/${userId}`)
-				.then(function (response) {
-					let getData = response.data.total;
-					const total = getData + 1;
-
-					setPomodoroLifeTime(total);
-
-					let payload = { total: total };
-
-					API.patch(`/lifetime/${userId}`, payload);
-				});
-		}
-	}
+	
 
 	//updates daily pomodoro and daily total pomodoro count to server
-	function updateDay() {
-		API.get(`/day/${userId}`)
-			.then(function (response) {
-				let currentHour = new Date().getHours();
+	// function updateDay() {
+	// 	API.get(`/day/${userId}`)
+	// 		.then(function (response) {
+	// 			let currentHour = new Date().getHours();
 
-				let getData = response.data[currentHour];
-				let count = getData + 1;
+	// 			let getData = response.data[currentHour];
+	// 			let count = getData + 1;
 
-				let getDataTotal = response.data.total;
-				let totalCount = getDataTotal + 1;
+	// 			let getDataTotal = response.data.total;
+	// 			let totalCount = getDataTotal + 1;
 
-				let payload = { [currentHour]: count, total: totalCount };
+	// 			let payload = { [currentHour]: count, total: totalCount };
 
-				API.patch(`/day/${userId}`, payload);
-			});
-	}
+	// 			API.patch(`/day/${userId}`, payload);
+	// 		});
+	// }
 
 	//resets day's data back to 0 once new day starts
-	function resetDay() {
-		API.get(`/day/${userId}`)
-			.then(function (response) {
-				let date =
-					new Date().getMonth() +
-					"-" +
-					new Date().getDate() +
-					"-" +
-					new Date().getFullYear();
+	// function resetDay() {
+	// 	API.get(`/day/${userId}`)
+	// 		.then(function (response) {
+	// 			let date =
+	// 				new Date().getMonth() +
+	// 				"-" +
+	// 				new Date().getDate() +
+	// 				"-" +
+	// 				new Date().getFullYear();
 
-				let getData = response.data.date;
+	// 			let getData = response.data.date;
 
-				//if date has changed, reset all data to 0
-				if (date !== getData) {
-					let payload = {
-						total: 0, 
-						date: date, 
-						0: 0,
-						1: 0,
-						2: 0,
-						3: 0,
-						4: 0,
-						5: 0,
-						6: 0,
-						7: 0,
-						8: 0,
-						9: 0,
-						10: 0,
-						11: 0,
-						12: 0,
-						13: 0,
-						14: 0,
-						15: 0,
-						16: 0,
-						17: 0,
-						18: 0,
-						19: 0,
-						20: 0,
-						21: 0,
-						22: 0,
-						23: 0
-					};
-					API.patch(`/day/${userId}`, payload);
-				}
-			});
-	}
+	// 			//if date has changed, reset all data to 0
+	// 			if (date !== getData) {
+	// 				let payload = {
+	// 					total: 0, 
+	// 					date: date, 
+	// 					0: 0,
+	// 					1: 0,
+	// 					2: 0,
+	// 					3: 0,
+	// 					4: 0,
+	// 					5: 0,
+	// 					6: 0,
+	// 					7: 0,
+	// 					8: 0,
+	// 					9: 0,
+	// 					10: 0,
+	// 					11: 0,
+	// 					12: 0,
+	// 					13: 0,
+	// 					14: 0,
+	// 					15: 0,
+	// 					16: 0,
+	// 					17: 0,
+	// 					18: 0,
+	// 					19: 0,
+	// 					20: 0,
+	// 					21: 0,
+	// 					22: 0,
+	// 					23: 0
+	// 				};
+	// 				API.patch(`/day/${userId}`, payload);
+	// 			}
+	// 		});
+	// }
 
 	//updates weekly and weekly total pomodoro count
-	function updateWeek() {
-		API.get(`/week/${userId}`)
-			.then(function (response) {
-				let currentDay = new Date().getDay();
-				let date =
-					new Date().getMonth() +
-					"-" +
-					new Date().getDate() +
-					"-" +
-					new Date().getFullYear();
+	// function updateWeek() {
+	// 	API.get(`/week/${userId}`)
+	// 		.then(function (response) {
+	// 			let currentDay = new Date().getDay();
+	// 			let date =
+	// 				new Date().getMonth() +
+	// 				"-" +
+	// 				new Date().getDate() +
+	// 				"-" +
+	// 				new Date().getFullYear();
 
-				let getData = response.data[currentDay];
-				let count = getData + 1;
+	// 			let getData = response.data[currentDay];
+	// 			let count = getData + 1;
 
-				let getDataTotal = response.data.total;
-				let totalCount = getDataTotal + 1;
+	// 			let getDataTotal = response.data.total;
+	// 			let totalCount = getDataTotal + 1;
 
-				let payload = {
-					[currentDay]: count,
-					total: totalCount,
-					date: date,
-					currentDay: currentDay,
-				};
+	// 			let payload = {
+	// 				[currentDay]: count,
+	// 				total: totalCount,
+	// 				date: date,
+	// 				currentDay: currentDay,
+	// 			};
 
-				API.patch(`/week/${userId}`, payload);
-			});
-	}
+	// 			API.patch(`/week/${userId}`, payload);
+	// 		});
+	// }
 
 	//resets data back to 0 once week has ended
-	function resetWeek() {
-		API.get(`/week/${userId}`)
-			.then(function (response) {
-				let currentDay = new Date().getDay();
-				const date =
-					new Date().getMonth() +
-					"-" +
-					new Date().getDate() +
-					"-" +
-					new Date().getFullYear();
+	// function resetWeek() {
+	// 	API.get(`/week/${userId}`)
+	// 		.then(function (response) {
+	// 			let currentDay = new Date().getDay();
+	// 			const date =
+	// 				new Date().getMonth() +
+	// 				"-" +
+	// 				new Date().getDate() +
+	// 				"-" +
+	// 				new Date().getFullYear();
 
-				let getDate = response.data.date;
+	// 			let getDate = response.data.date;
 
-				//if current day has changed to 0 and is not the same date as previously saved, reset data to 0
-				if (currentDay === 0 && date !== getDate) {
-					let payload = {
-						total: 0, 
-						date: date, 
-						currentDay: currentDay,
-						0: 0,
-						1: 0,
-						2: 0,
-						3: 0,
-						4: 0,
-						5: 0,
-						6: 0
-					};
-					API.patch(`/week/${userId}`, payload);
-				}
-			});
-	}
+	// 			//if current day has changed to 0 and is not the same date as previously saved, reset data to 0
+	// 			if (currentDay === 0 && date !== getDate) {
+	// 				let payload = {
+	// 					total: 0, 
+	// 					date: date, 
+	// 					currentDay: currentDay,
+	// 					0: 0,
+	// 					1: 0,
+	// 					2: 0,
+	// 					3: 0,
+	// 					4: 0,
+	// 					5: 0,
+	// 					6: 0
+	// 				};
+	// 				API.patch(`/week/${userId}`, payload);
+	// 			}
+	// 		});
+	// }
 
 	//updates monthly and monthly total pomodoro count
-	function updateMonth() {
-		API.get(`/month/${userId}`)
-			.then(function (response) {
-				let currentDay = new Date().getDate(); //day of month
-				const date =
-					new Date().getMonth() +
-					"-" +
-					new Date().getDate() +
-					"-" +
-					new Date().getFullYear();
+	// function updateMonth() {
+	// 	API.get(`/month/${userId}`)
+	// 		.then(function (response) {
+	// 			let currentDay = new Date().getDate(); //day of month
+	// 			const date =
+	// 				new Date().getMonth() +
+	// 				"-" +
+	// 				new Date().getDate() +
+	// 				"-" +
+	// 				new Date().getFullYear();
 
-				let getData = response.data[currentDay];
-				let count = getData + 1;
+	// 			let getData = response.data[currentDay];
+	// 			let count = getData + 1;
 
-				let getDataTotal = response.data.total;
-				let totalCount = getDataTotal + 1;
+	// 			let getDataTotal = response.data.total;
+	// 			let totalCount = getDataTotal + 1;
 
-				let payload = {
-					[currentDay]: count,
-					total: totalCount,
-					currentDay: currentDay,
-					date: date,
-				};
+	// 			let payload = {
+	// 				[currentDay]: count,
+	// 				total: totalCount,
+	// 				currentDay: currentDay,
+	// 				date: date,
+	// 			};
 
-				API.patch(`/month/${userId}`, payload);
-			});
-	}
+	// 			API.patch(`/month/${userId}`, payload);
+	// 		});
+	// }
 
 	//resets data back to 0 once month has ended
-	function resetMonth() {
-		API.get(`/month/${userId}`)
-			.then(function (response) {
-				let currentDay = new Date().getDate(); //day of month
-				const date =
-					new Date().getMonth() +
-					"-" +
-					new Date().getDate() +
-					"-" +
-					new Date().getFullYear();
+	// function resetMonth() {
+	// 	API.get(`/month/${userId}`)
+	// 		.then(function (response) {
+	// 			let currentDay = new Date().getDate(); //day of month
+	// 			const date =
+	// 				new Date().getMonth() +
+	// 				"-" +
+	// 				new Date().getDate() +
+	// 				"-" +
+	// 				new Date().getFullYear();
 				
-				let getDate = response.data.date;
+	// 			let getDate = response.data.date;
 
-				//if current day has changed to 1 and is not the same date as previously saved, reset data to 0
-				if (currentDay === 1 && date !== getDate) {
-					let payload = {
-						total: 0, 
-						date: date, 
-						currentDay: currentDay,
-						1: 0,
-						2: 0,
-						3: 0,
-						4: 0,
-						5: 0,
-						6: 0,
-						7: 0,
-						8: 0,
-						9: 0,
-						10: 0,
-						11: 0,
-						12: 0,
-						13: 0,
-						14: 0,
-						15: 0,
-						16: 0,
-						17: 0,
-						18: 0,
-						19: 0,
-						20: 0,
-						21: 0,
-						22: 0,
-						23: 0,
-						24: 0,
-						25: 0,
-						26: 0,
-						27: 0,
-						28: 0,
-						29: 0,
-						30: 0,
-						31: 0
-					};
-					API.patch(`/month/${userId}`, payload);
-				}
-			});
-	}
+	// 			//if current day has changed to 1 and is not the same date as previously saved, reset data to 0
+	// 			if (currentDay === 1 && date !== getDate) {
+	// 				let payload = {
+	// 					total: 0, 
+	// 					date: date, 
+	// 					currentDay: currentDay,
+	// 					1: 0,
+	// 					2: 0,
+	// 					3: 0,
+	// 					4: 0,
+	// 					5: 0,
+	// 					6: 0,
+	// 					7: 0,
+	// 					8: 0,
+	// 					9: 0,
+	// 					10: 0,
+	// 					11: 0,
+	// 					12: 0,
+	// 					13: 0,
+	// 					14: 0,
+	// 					15: 0,
+	// 					16: 0,
+	// 					17: 0,
+	// 					18: 0,
+	// 					19: 0,
+	// 					20: 0,
+	// 					21: 0,
+	// 					22: 0,
+	// 					23: 0,
+	// 					24: 0,
+	// 					25: 0,
+	// 					26: 0,
+	// 					27: 0,
+	// 					28: 0,
+	// 					29: 0,
+	// 					30: 0,
+	// 					31: 0
+	// 				};
+	// 				API.patch(`/month/${userId}`, payload);
+	// 			}
+	// 		});
+	// }
 
 	//updates yearly counts and yearly total count
-	function updateYear() {
-		API.get(`/year/${userId}`)
-			.then(function (response) {
-				const currentMonth = new Date().getMonth();
+	// function updateYear() {
+	// 	API.get(`/year/${userId}`)
+	// 		.then(function (response) {
+	// 			const currentMonth = new Date().getMonth();
 
-				let getMonth = response.data[currentMonth];
-				let count = getMonth + 1;
+	// 			let getMonth = response.data[currentMonth];
+	// 			let count = getMonth + 1;
 
-				let getTotal = response.data.total;
-				let totalCount = getTotal + 1;
+	// 			let getTotal = response.data.total;
+	// 			let totalCount = getTotal + 1;
 
-				let payload = {
-					[currentMonth]: count,
-					total: totalCount,
-					currentMonth: currentMonth,
-				};
+	// 			let payload = {
+	// 				[currentMonth]: count,
+	// 				total: totalCount,
+	// 				currentMonth: currentMonth,
+	// 			};
 
-				API.patch(`/year/${userId}`, payload);
-			});
-	}
+	// 			API.patch(`/year/${userId}`, payload);
+	// 		});
+	// }
 
-	function resetYear() {
-		API.get(`/year/${userId}`)
-			.then(function (response) {
-				const currentMonth = new Date().getMonth();
+	// function resetYear() {
+	// 	API.get(`/year/${userId}`)
+	// 		.then(function (response) {
+	// 			const currentMonth = new Date().getMonth();
 
-				let getCurrentMonth = response.data.currentMonth;
+	// 			let getCurrentMonth = response.data.currentMonth;
 
-				//if current month has changed to 0 and is not the same date as previously saved, reset data to 0
-				if (currentMonth === 0 && currentMonth !== getCurrentMonth) {
-					let payload = { 
-						total: 0, 
-						currentMonth: currentMonth,
-						0: 0,
-						1: 0,
-						2: 0,
-						3: 0,
-						4: 0,
-						5: 0,
-						6: 0,
-						7: 0,
-						8: 0,
-						9: 0,
-						10: 0,
-						11: 0
-					};
-					API.patch(`/year/${userId}`, payload);
-				}
-			});
-	}
+	// 			//if current month has changed to 0 and is not the same date as previously saved, reset data to 0
+	// 			if (currentMonth === 0 && currentMonth !== getCurrentMonth) {
+	// 				let payload = { 
+	// 					total: 0, 
+	// 					currentMonth: currentMonth,
+	// 					0: 0,
+	// 					1: 0,
+	// 					2: 0,
+	// 					3: 0,
+	// 					4: 0,
+	// 					5: 0,
+	// 					6: 0,
+	// 					7: 0,
+	// 					8: 0,
+	// 					9: 0,
+	// 					10: 0,
+	// 					11: 0
+	// 				};
+	// 				API.patch(`/year/${userId}`, payload);
+	// 			}
+	// 		});
+	// }
 
 	//shows spinning loader after user logs in and the server
 	//is not connected
@@ -409,39 +540,39 @@ const Time = ({userId, setLoadingStyle, userName, workTime, restTime}) => {
 
 	//resets data back to 0 once user is logged in, on page load, and when day changes
 	//runs only when server is connected
-	useEffect(() => {
-		if (pomodoro === 0 && userId && dataLoaded === true) {
-			resetDay();
-			resetWeek();
-			resetMonth();
-			resetYear();
-		}
-	}, [userId, today, dataLoaded]);
+	// useEffect(() => {
+	// 	if (pomodoro === 0 && userId && dataLoaded === true) {
+	// 		resetDay();
+	// 		resetWeek();
+	// 		resetMonth();
+	// 		resetYear();
+	// 	}
+	// }, [userId, today, dataLoaded]);
 
 	//inserts userId into DB once user is logged in and fetches pomodoro total
-	useEffect(() => {
-		if (pomodoro === 0 && userId) {
-			fetchLifeTime();
-		}
-		//cleanup function for reconnecting interval 
-		//and axios connections
-		return () => {
-			source.cancel();
-			clearInterval(reconnect);
-		}
-	}, [userId]);
+	// useEffect(() => {
+	// 	if (pomodoro === 0 && userId) {
+	// 		fetchLifeTime();
+	// 	}
+	// 	//cleanup function for reconnecting interval 
+	// 	//and axios connections
+	// 	return () => {
+	// 		source.cancel();
+	// 		clearInterval(reconnect);
+	// 	}
+	// }, [userId]);
 
 	//fetches + updates data to server once pomodoro updates
 	//runs only when server is connected
-	useEffect(() => {
-		if (pomodoro >= 1 && userId && dataLoaded === true) {
-			updateLifeTime();
-			updateDay();
-			updateWeek();
-			updateMonth();
-			updateYear();
-		}
-	}, [pomodoro, dataLoaded]);
+	// useEffect(() => {
+	// 	if (pomodoro >= 1 && userId && dataLoaded === true) {
+	// 		updateLifeTime();
+	// 		updateDay();
+	// 		updateWeek();
+	// 		updateMonth();
+	// 		updateYear();
+	// 	}
+	// }, [pomodoro, dataLoaded]);
 
 	//Starts and stops timer
 	const startButton = () => {
@@ -554,9 +685,7 @@ const Time = ({userId, setLoadingStyle, userName, workTime, restTime}) => {
 	const Renderer = ({ hours, minutes, seconds, completed }) => {
 		if (completed) {
 			//Render a completed state
-			{
-				setCompletedCount(completedCount + 1);
-			}
+			setCompletedCount(completedCount + 1);
 
 			//plays a sounds
 			const audioEl = document.getElementsByClassName("audio-element")[0];

@@ -7,14 +7,11 @@ import WeekStats from './WeekStats';
 import MonthStats from './MonthStats';
 import YearStats from './YearStats';
 import ChangeTimer from './ChangeTimer';
-import Leaderboards from './Leaderboards';
 
 const App = () => {
-	const [userId, setUserId] = useState(null);
 	const [loadingStyle, setLoadingStyle] = useState("text-center loading displayNone");
-	const [userName, setUserName] = useState(null);
-	const [workTime, setWorkTime] = useState(1500000);
-	const [restTime, setRestTime] = useState(300000);
+	const [workTime, setWorkTime] = useState(1000);
+	const [restTime, setRestTime] = useState(1000);
 	const nav = useRef(null);
 
 	//hides nav when clicked outside of div
@@ -50,26 +47,26 @@ const App = () => {
 		<div>
 			<Router>
 				<Route exact path="/">
-					<Timer userId={userId} setLoadingStyle={setLoadingStyle} userName={userName} restTime={restTime} workTime={workTime} />
+					<Timer setLoadingStyle={setLoadingStyle} restTime={restTime} workTime={workTime} />
 				</Route>
 				<Route path="/stats/day">
-					<DayStats userId={userId} setLoadingStyle={setLoadingStyle} userName={userName} />
+					<DayStats setLoadingStyle={setLoadingStyle} />
 				</Route>
 				<Route path="/stats/week">
-					<WeekStats userId={userId} setLoadingStyle={setLoadingStyle} userName={userName} />
+					<WeekStats setLoadingStyle={setLoadingStyle} />
 				</Route>
 				<Route path="/stats/month">
-					<MonthStats userId={userId} setLoadingStyle={setLoadingStyle} userName={userName} />
+					<MonthStats setLoadingStyle={setLoadingStyle} />
 				</Route>
 				<Route path="/stats/year">
-					<YearStats userId={userId} setLoadingStyle={setLoadingStyle} userName={userName} />
+					<YearStats setLoadingStyle={setLoadingStyle} />
 				</Route>
 				<Route path="/changetimer">
 					<ChangeTimer setWorkTime={setWorkTime} setRestTime={setRestTime} />
 				</Route>
-				<Route path="/leaderboards">
-					<Leaderboards setLoadingStyle={setLoadingStyle} userName={userName} />
-				</Route>
+				{/* <Route path="/leaderboards">
+					<Leaderboards setLoadingStyle={setLoadingStyle} />
+				</Route> */}
 
 				<div className="mhead">
 					<img className="menu-ham" src="/img/hamburger.png" onClick={showNav} alt="" />
@@ -88,11 +85,11 @@ const App = () => {
 						<Link to="/changetimer" onClick={hideNav}>
 							<li>Change Timer</li>
 						</Link>
-						<Link to="/leaderboards" onClick={hideNav}>
+						{/* <Link to="/leaderboards" onClick={hideNav}>
 							<li>Leaderboards</li>
-						</Link>
+						</Link> */}
 						{/* <li>
-							<GoogleBtn setUserId={setUserId} userId={userId} loadingStyle={loadingStyle} setUserName={setUserName} />
+							<GoogleBtn setUserId={setUserId} loadingStyle={loadingStyle} setUserName={setUserName} />
 						</li> */}
 					</ul>
 				</div>

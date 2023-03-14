@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Line, Chart } from "react-chartjs-2";
 import API from './API';
-import {CancelToken} from 'axios';
 import StatsNavigation from "./StatsNavigation"; 
-import {CreateNewUser} from './NewUser';
 
-const MonthStats = ({userId, setLoadingStyle, userName}) => {
+
+const MonthStats = ({setLoadingStyle}) => {
 	const [chartData, setChartData] = useState({});
 	const [day, setDay] = useState({});
 	const [pointRadius, setPointRadius] = useState(4);
@@ -14,80 +13,77 @@ const MonthStats = ({userId, setLoadingStyle, userName}) => {
 	const [total, setTotal] = useState(0);
 	const [dataLoaded, setDataLoaded] = useState(false);
 	Chart.defaults.global.defaultFontColor = "#F8F9FA";
-	const source = CancelToken.source();
-	var reconnect;
 
-	function getMonthStats() {
-		API.get(`/month/${userId}`, {cancelToken: source.token})
-			.then(function (response) {
+	// function getMonthStats() {
+	// 	API.get(`/month/${userId}`, {cancelToken: source.token})
+	// 		.then(function (response) {
 
-				let getDays = response.data;
-				let getTotal = response.data.total;
+	// 			let getDays = response.data;
+	// 			let getTotal = response.data.total;
 
-				setDay(getDays);
-				setTotal(getTotal);
-				setDataLoaded(true);
-			})
-			.catch(function (error) {
-				if (error.response) {
-					CreateNewUser(userId, userName);
-					setDataLoaded(true);
-				}
-				if (error.request) {
-					console.log("Server is offline");
-					reconnect = setInterval(() => {
-						API.get(`/month/${userId}`, {cancelToken: source.token})
-							.then(function (response) {
-								let getDays = response.data;
-								let getTotal = response.data.total;
+	// 			setDay(getDays);
+	// 			setTotal(getTotal);
+	// 			setDataLoaded(true);
+	// 		})
+	// 		.catch(function (error) {
+	// 			if (error.response) {
+	// 				CreateNewUser(userId, userName);
+	// 				setDataLoaded(true);
+	// 			}
+	// 			if (error.request) {
+	// 				console.log("Server is offline");
+	// 				reconnect = setInterval(() => {
+	// 					API.get(`/month/${userId}`, {cancelToken: source.token})
+	// 						.then(function (response) {
+	// 							let getDays = response.data;
+	// 							let getTotal = response.data.total;
 
-								setDay(getDays);
-								setTotal(getTotal);
-								setDataLoaded(true);
-								clearInterval(reconnect);
-								console.log("Server is online!");
-							})
-							.catch(function (error) {
-								if (error.request) {
-									console.log("Server is still offline");
-								}
-								if (error.response) {
-									CreateNewUser(userId, userName);
-									setDataLoaded(true);
-									clearInterval(reconnect);
-								}
-							})
-					}, 3000);
-				}
-			})
-	}
+	// 							setDay(getDays);
+	// 							setTotal(getTotal);
+	// 							setDataLoaded(true);
+	// 							clearInterval(reconnect);
+	// 							console.log("Server is online!");
+	// 						})
+	// 						.catch(function (error) {
+	// 							if (error.request) {
+	// 								console.log("Server is still offline");
+	// 							}
+	// 							if (error.response) {
+	// 								CreateNewUser(userId, userName);
+	// 								setDataLoaded(true);
+	// 								clearInterval(reconnect);
+	// 							}
+	// 						})
+	// 				}, 3000);
+	// 			}
+	// 		})
+	// }
 
     //loads stats from server once user is logged in
-	useEffect(() => {
-		if (userId) {
-			getMonthStats();
-		}
-		//cleanup function for reconnecting interval 
-		//and axios connections
-		return () => {
-			source.cancel();
-			clearInterval(reconnect);
-		}
-	}, [userId]);
+	// useEffect(() => {
+	// 	if (userId) {
+	// 		getMonthStats();
+	// 	}
+	// 	//cleanup function for reconnecting interval 
+	// 	//and axios connections
+	// 	return () => {
+	// 		source.cancel();
+	// 		clearInterval(reconnect);
+	// 	}
+	// }, [userId]);
 
-	//show loading spinner when user is not logged in and data is
-	//still loading
+	//show loading spinner when data is still loading
 	useEffect(() => {
-		if (userId && dataLoaded === true) {
+		if (dataLoaded === true) {
 			setLoadingStyle("text-center loading displayNone");
 		}
-		if (userId === null || dataLoaded === false) {
+		if (dataLoaded === false) {
 			setLoadingStyle("text-center loading");
 		}
 		return () => {
 			setLoadingStyle("text-center loading displayNone");
 		}
-	}, [userId, dataLoaded])
+	}, [dataLoaded])
 	
 	const chart = () => {
 		setChartData({
@@ -261,11 +257,10 @@ const MonthStats = ({userId, setLoadingStyle, userName}) => {
 		}
 	}, [])
 
-	//updates chart once data is fetched, user is signed in, 
-	//and when screen size changes
+	//updates chart once data is fetched and when screen size changes
 	useEffect(() => {
 		chart();
-	}, [dataLoaded, pointRadius, userId]);
+	}, [dataLoaded, pointRadius]);
 
 	return (
 		<div>
