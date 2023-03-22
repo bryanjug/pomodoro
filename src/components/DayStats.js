@@ -12,79 +12,33 @@ const DayStats = ({setLoadingStyle}) => {
 	const [total, setTotal] = useState(0);
 	const [dataLoaded, setDataLoaded] = useState(false);
 	Chart.defaults.global.defaultFontColor = "#F8F9FA";
-
-	//requests server data and repeats if the server is not connected
     
-	// function getDayStats() {
-	// 	API.get(`/day/${userId}`, {cancelToken: source.token})
-	// 		.then(function (response) {
-	// 			let getHours = response.data;
-	// 			let getTotal = response.data.total;
-
-	// 			setHour(getHours);
-	// 			setTotal(getTotal);
-	// 			setDataLoaded(true);
-	// 		})
-	// 		.catch(function (error) {
-	// 			if (error.response) {
-	// 				CreateNewUser(userId, userName);
-	// 				setDataLoaded(true);
-	// 			}
-	// 			if (error.request) {
-	// 				console.log("Server is offline");
-	// 				reconnect = setInterval(() => {
-	// 					API.get(`/day/${userId}`, {cancelToken: source.token})
-	// 						.then(function (response) {
-	// 							let getHours = response.data;
-	// 							let getTotal = response.data.total;
-
-	// 							setHour(getHours);
-	// 							setTotal(getTotal);
-	// 							setDataLoaded(true);
-	// 							clearInterval(reconnect);
-	// 							console.log("Server is online!");
-	// 						})
-	// 						.catch(function (error) {
-	// 							if (error.request) {
-	// 								console.log("Server is still offline");
-	// 							}
-	// 							if (error.response) {
-	// 								CreateNewUser(userId, userName);
-	// 								setDataLoaded(true);
-	// 								clearInterval(reconnect);
-	// 							}
-	// 						})
-	// 				}, 3000);
-	// 			}
-	// 		})
-	// }
-
-    //loads stats from server once user is logged in
-	// useEffect(() => {
-	// 	if (userId) {
-	// 		getDayStats();
-	// 	}
-	// 	//cleanup function for reconnecting interval 
-	// 	//and axios connections
-	// 	return () => {
-	// 		source.cancel();
-	// 		clearInterval(reconnect);
-	// 	}
-	// }, [userId])
-
-	//show loading spinner when user is not logged in and data is
-	//still loading
-	// useEffect(() => {
-	// 	if (userId && dataLoaded === true) {
-	// 		setLoadingStyle("text-center loading displayNone");
-	// 	}
-	// 	if (userId === null || dataLoaded === false) {
-	// 		setLoadingStyle("text-center loading");
-	// 	}
-	// 	return () => {
-	// 		setLoadingStyle("text-center loading displayNone");
-	// 	}
-	// }, [userId, dataLoaded])
+    //request data from server then set data for chart
+    useEffect(() => {
+        API.get(`/day`)
+	 		.then(function (response) {
+                let getHours = response.data[0];
+                let getTotal = response.data[0].total;
+                
+                setHour(getHours);
+				setTotal(getTotal);
+				setDataLoaded(true);
+                setLoadingStyle("displayNone")
+            })
+            .catch(function (error) {
+                if (error.response) {
+                    console.log(error.response)
+                }
+                if (error.request) {
+                    console.log(error.request)
+                }
+            })
+    }, [])
+    
+    //updates chart once data is fetched and when screen size changes
+	useEffect(() => {
+		chart();
+	}, [dataLoaded, pointRadius]);
 
 	const chart = () => {
 		setChartData({
@@ -244,15 +198,6 @@ const DayStats = ({setLoadingStyle}) => {
 		}
 	}, [])
 
-	//updates chart once data is fetched and when screen size changes
-	useEffect(() => {
-		chart();
-	}, [dataLoaded, pointRadius]);
-
-    useEffect(() => {
-        // API.get(`/day/${userId}`, {cancelToken: source.token})
-    }, [])
-    
 	return (
 		<div>
 			<StatsNavigation />

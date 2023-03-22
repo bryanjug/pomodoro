@@ -6,14 +6,14 @@ V2 TODO:
 [X] remove leaderboards
 [X] remove google button login requirement from all components
 [X] reformat db.json -> pomodoros completed today, this week, this month, this year, and in total
-[] after completed pomodoro, send api response to server and add to overall count of trees
-[] spawn world total # of trees in random positions around the planet
-[] change server to only have total # of trees for all users
-[] change client to only show total # of trees data
+[X] after completed pomodoro, send api response to server and add to overall count of trees
+[X] spawn trees: total # of completed pomodoros from server
+[X] check chart requirements and send day, week, month, and year data to server
+[X] request data from server and show on charts
 [] host 
 [] put on portfolio
 
-//TODO:
+//V1 TODO:
 //(DONE) COMPLETION METHOD -> CREATE TIMER
 //(DONE) RENDER TEXT OF CURRENT ACTIVITY (RESTING OR WORKING)
 //(DONE) CREATE USEEFFECT FOR SETTING LONG BREAK + SHORT BREAK + WORK ON TIME VARIABLE BASED ON POMODORO COUNT AND ACTIVITY STATES

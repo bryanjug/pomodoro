@@ -8,8 +8,6 @@ const unityContext = new UnityContext({
 	loaderUrl: "/Pet/Build/Pet.loader.js"
 });
 
-console.log(UnityContext);
-
 const Pet = ({activity, pomodoroLifeTime, setLoadingStyle, dataLoaded, userId}) => {
 	const [isLoaded, setIsLoaded] = useState(false);
 	const [feedPet, setFeedPet] = useState(false);

@@ -17,28 +17,8 @@ const ChangeTimer = ({setWorkTime, setRestTime}) => {
         var restingSeconds = (restSeconds * 1000);
         var restingTotal = restingMinutes + restingSeconds;
 
-        if (workingTotal < 1500000) {
-            setAlertStyle("alert alert-success changeTimerAlert alert-dismissible displayInline");
-        }
-        if (workingTotal >= 1500000) {
-            setWorkTime(workingTotal);
-            setRestTime(restingTotal);
-            setConfirmedText("Times have been changed!");
-        }
-    }
-
-    function confirmSubmitTimes() {
-        var workingMinutes = (workMinutes * 60000);
-        var workingSeconds = (workSeconds * 1000);
-        var workingTotal = workingMinutes + workingSeconds;
-
-        var restingMinutes = (restMinutes * 60000);
-        var restingSeconds = (restSeconds * 1000);
-        var restingTotal = restingMinutes + restingSeconds;
-
         setWorkTime(workingTotal);
         setRestTime(restingTotal);
-        setAlertStyle("alert alert-success changeTimerAlert alert-dismissible displayNone");
         setConfirmedText("Times have been changed!");
     }
 
@@ -76,14 +56,6 @@ const ChangeTimer = ({setWorkTime, setRestTime}) => {
                         <button className="changeTimerButton setTimerButton" onClick={submitTimes}>Set Timer</button>
                     </div>
                 </div>
-            </div>
-            <div className={alertStyle}>
-                <a href="#" className="close" onClick={hideAlert}>&times;</a>
-                <span className="changeTimerText">
-                    Your working time must be 25 minutes or above in order to show your progress.
-                    <br />
-                    <button className="changeTimerButton" onClick={confirmSubmitTimes}>That's Ok</button>
-                </span>
             </div>
             <div className="col-12 confirmedTimeChange">
                 {confirmedText}

@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Line, Chart } from "react-chartjs-2";
 import API from './API';
-import {CancelToken} from 'axios';
 import StatsNavigation from "./StatsNavigation";
-import {CreateNewUser} from './NewUser';
 
 const YearStats = ({setLoadingStyle}) => {
 	const [chartData, setChartData] = useState({});
@@ -14,79 +12,33 @@ const YearStats = ({setLoadingStyle}) => {
 	const [total, setTotal] = useState(0);
 	const [dataLoaded, setDataLoaded] = useState(false);
 	Chart.defaults.global.defaultFontColor = "#F8F9FA";
-	// const source = CancelToken.source();
-	// var reconnect;
 
-	// function getYearStats() {
-	// 	API.get(`/year/${userId}`, {cancelToken: source.token})
-	// 		.then(function (response) {
-	// 			let getMonths = response.data;
-	// 			let getTotal = response.data.total;
+    //request data from server then set data for chart
+    useEffect(() => {
+        API.get(`/year`)
+            .then(function (response) {
+                let getMonths = response.data[0];
+                let getTotal = response.data[0].total;
+                
+                setMonth(getMonths);
+                setTotal(getTotal);
+                setDataLoaded(true);
+                setLoadingStyle("displayNone")
+            })
+            .catch(function (error) {
+                if (error.response) {
+                    console.log(error.response)
+                }
+                if (error.request) {
+                    console.log(error.request)
+                }
+            })
+    }, [])
 
-	// 			setMonth(getMonths);
-	// 			setTotal(getTotal);
-	// 			setDataLoaded(true);
-	// 		})
-	// 		.catch(function (error) {
-	// 			if (error.response) {
-	// 				CreateNewUser(userId, userName);
-	// 				setDataLoaded(true);
-	// 			}
-	// 			if (error.request) {
-	// 				console.log("Server is offline");
-	// 				reconnect = setInterval(() => {
-	// 					API.get(`/year/${userId}`, {cancelToken: source.token})
-	// 						.then(function (response) {
-	// 							let getMonths = response.data;
-	// 							let getTotal = response.data.total;
-
-	// 							setMonth(getMonths);
-	// 							setTotal(getTotal);
-	// 							setDataLoaded(true);
-	// 							clearInterval(reconnect);
-	// 							console.log("Server is online!");
-	// 						})
-	// 						.catch(function (error) {
-	// 							if (error.request) {
-	// 								console.log("Server is still offline");
-	// 							}
-	// 							if (error.response) {
-	// 								CreateNewUser(userId, userName);
-	// 								setDataLoaded(true);
-	// 								clearInterval(reconnect);
-	// 							}
-	// 						})
-	// 				}, 3000);
-	// 			}
-	// 		})
-	// }
-
-    //loads stats from server once user is logged in
-	// useEffect(() => {
-	// 	if (userId) {
-	// 		getYearStats();
-	// 	}
-	// 	//cleanup function for reconnecting interval 
-	// 	//and axios connections
-	// 	return () => {
-	// 		source.cancel();
-	// 		clearInterval(reconnect);
-	// 	}
-	// }, [userId]);
-
-	//show loading spinner when user is not logged in and data is
-	//still loading
-	// useEffect(() => {
-	// 	if (userId && dataLoaded === true) {
-	// 		setLoadingStyle("text-center loading displayNone");
-	// 	}
-	// 	if (userId === null || dataLoaded === false) {
-	// 		setLoadingStyle("text-center loading");
-	// 	}
-	// 	return () => {
-	// 		setLoadingStyle("text-center loading displayNone");
-	// 	}
-	// }, [userId, dataLoaded])
+    //updates chart once data is fetched and when screen size changes
+	useEffect(() => {	
+		chart();
+	}, [dataLoaded, pointRadius]);
 	
 	const chart = () => {
 		setChartData({
@@ -221,11 +173,6 @@ const YearStats = ({setLoadingStyle}) => {
 			window.removeEventListener('resize', AsyncResponsiveChart);
 		}
 	}, [])
-
-	//updates chart once data is fetched and when screen size changes
-	useEffect(() => {	
-		chart();
-	}, [dataLoaded, pointRadius]);
 
 	return (
 		<div>

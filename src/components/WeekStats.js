@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Line, Chart } from "react-chartjs-2";
 import API from './API';
-// import {CancelToken} from 'axios';
 import StatsNavigation from "./StatsNavigation";
-// import {CreateNewUser} from './NewUser';
 
 const WeekStats = ({setLoadingStyle}) => {
 	const [day, setDay] = useState({});
@@ -14,80 +12,33 @@ const WeekStats = ({setLoadingStyle}) => {
 	const [total, setTotal] = useState(0);
 	const [dataLoaded, setDataLoaded] = useState(false);
 	Chart.defaults.global.defaultFontColor = "#F8F9FA";
-	// const source = CancelToken.source();
-	// var reconnect;
 
-	//requests server data and sets state
-	// function getWeekStats() {
-	// 	API.get(`/week/${userId}`, {cancelToken: source.token})
-	// 		.then(function (response) {
-	// 			let getWeek = response.data;
-	// 			let getTotal = response.data.total;
+    //request data from server then set data for chart
+    useEffect(() => {
+        API.get(`/week`)
+	 		.then(function (response) {
+                let getWeek = response.data[0];
+                let getTotal = response.data[0].total;
+                
+                setDay(getWeek);
+				setTotal(getTotal);
+				setDataLoaded(true);
+                setLoadingStyle("displayNone")
+            })
+            .catch(function (error) {
+                if (error.response) {
+                    console.log(error.response)
+                }
+                if (error.request) {
+                    console.log(error.request)
+                }
+            })
+    }, [])
 
-	// 			setDay(getWeek);
-	// 			setTotal(getTotal);
-	// 			setDataLoaded(true);
-	// 		})
-	// 		.catch(function (error) {
-	// 			if (error.response) {
-	// 				CreateNewUser(userId, userName);
-	// 				setDataLoaded(true);
-	// 			}
-	// 			if (error.request) {
-	// 				console.log("Server is offline");
-	// 				reconnect = setInterval(() => {
-	// 					API.get(`/week/${userId}`, {cancelToken: source.token})
-	// 						.then(function (response) {
-	// 							let getWeek = response.data;
-	// 							let getTotal = response.data.total;
-
-	// 							setDay(getWeek);
-	// 							setTotal(getTotal);
-	// 							setDataLoaded(true);
-	// 							clearInterval(reconnect);
-	// 							console.log("Server is online!");
-	// 						})
-	// 						.catch(function (error) {
-	// 							if (error.request) {
-	// 								console.log("Server is still offline");
-	// 							}
-	// 							if (error.response) {
-	// 								CreateNewUser(userId, userName);
-	// 								setDataLoaded(true);
-	// 								clearInterval(reconnect);
-	// 							}
-	// 						})
-	// 				}, 3000);
-	// 			}
-	// 		})
-	// }
-
-	//loads stats from server once page loads
-	// useEffect(() => {
-	// 	if (userId) {
-	// 		getWeekStats();
-	// 	}
-	// 	//cleanup function for reconnecting interval 
-	// 	//and axios connections
-	// 	return () => {
-	// 		source.cancel();
-	// 		clearInterval(reconnect);
-	// 	}
-	// }, [userId]);
-
-	//show loading spinner when user is not logged in and data is
-	//still loading
-	// useEffect(() => {
-	// 	if (userId && dataLoaded === true) {
-	// 		setLoadingStyle("text-center loading displayNone");
-	// 	}
-	// 	if (userId === null || dataLoaded === false) {
-	// 		setLoadingStyle("text-center loading");
-	// 	}
-	// 	return () => {
-	// 		setLoadingStyle("text-center loading displayNone");
-	// 	}
-	// }, [userId, dataLoaded])
+    //updates chart once data is fetched and when screen size changes
+	useEffect(() => {
+		chart();
+	}, [dataLoaded, pointRadius]);
 
 	const chart = () => {
 		setChartData({
@@ -212,11 +163,6 @@ const WeekStats = ({setLoadingStyle}) => {
 			window.removeEventListener('resize', AsyncResponsiveChart);
 		}
 	}, [])
-
-	//updates chart once data is fetched and when screen size changes
-	useEffect(() => {
-		chart();
-	}, [dataLoaded, pointRadius]);
 
 	return (
 		<div>

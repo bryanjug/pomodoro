@@ -275,21 +275,27 @@ input[type=number] {
 .menu ul {
     padding-left: 0;
     margin-top: 35% !important;
-    width: 100%;
+    box-shadow: none !important;
 }
 
-.menu li {
+.menu button {
+    width: 100%;
     list-style: none;
     text-decoration-style: none;
     line-height: 170%;
     padding: 5% 0% 5% 5%;
     text-align: center !important;
-}
-
-.menu a li {
+    background-color: inherit;
     text-transform: uppercase;
     font-size: 16px;
     color: #E7E8EB;
+    border: none;
+    outline: none;
+}
+
+.menu button:hover {
+    background-color: #4B9C96 !important;
+    cursor: pointer;
 }
 
 a:link { text-decoration: none; }
@@ -302,11 +308,6 @@ a:hover { text-decoration: none; }
 
 
 a:active { text-decoration: none; }
-
-.menu li:hover {
-    background-color: #4B9C96 !important;
-    cursor: pointer;
-}
 
 .googleBtn {
     width: 100% !important;
