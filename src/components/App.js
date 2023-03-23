@@ -12,9 +12,9 @@ import { useNavigate } from "react-router-dom";
 
 const unityContext = new UnityContext({
     loaderUrl: "build/build.loader.js",
-    dataUrl: "build/build.data",
-    frameworkUrl: "build/build.framework.js",
-    codeUrl: "build/build.wasm",
+    dataUrl: "build/build.data.unityweb",
+    frameworkUrl: "build/build.framework.js.unityweb",
+    codeUrl: "build/build.wasm.unityweb",
 });
 
 const App = () => {
