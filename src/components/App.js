@@ -8,14 +8,13 @@ import MonthStats from './MonthStats';
 import YearStats from './YearStats';
 import ChangeTimer from './ChangeTimer';
 import Unity, { UnityContext } from "react-unity-webgl";
-import { useLocation } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 
 const unityContext = new UnityContext({
     loaderUrl: "build/WebGL Builds.loader.js",
-    dataUrl: "build/WebGL Builds.data",
-    frameworkUrl: "build/WebGL Builds.framework.js",
-    codeUrl: "build/WebGL Builds.wasm",
+    dataUrl: "build/WebGL Builds.data.unityweb",
+    frameworkUrl: "build/WebGL Builds.framework.js.unityweb",
+    codeUrl: "build/WebGL Builds.wasm.unityweb",
 });
 
 const App = () => {
@@ -23,12 +22,7 @@ const App = () => {
 	const [workTime, setWorkTime] = useState(1000); //1500000
 	const [restTime, setRestTime] = useState(1000); //300000
 	const nav = useRef(null);
-    const location = useLocation();
     const navigate = useNavigate();
-
-    useEffect(()=> {
-        
-    }, [location.pathname])
 
 	//hides nav when clicked outside of div
 	function useOutsideAlerter(ref) {

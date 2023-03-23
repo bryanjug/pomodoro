@@ -6,43 +6,10 @@ function Planet({pomodoroLifeTime, pomodoro, setLoadingStyle, unityContext}) {
     const [didError, setDidError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
-    
-
-    // useEffect(() => {
-    //     const unblock = navigator.block( async ( tx ) => {
-    //          if(isLoaded) {
-    //              await unityContext.quitUnityInstance()
-    //              await setIsLoaded(false)
-    //              tx.retry()
-    //          } else {
-    //              unblock()
-    //              tx.retry()
-    //          }
-    //      } );
-    //      return unblock;
-    // }, [navigator,isLoaded])
-
-    // useEffect(() => {
-    //     setTimeout(() => {
-    //         unityContext.quitUnityInstance()
-    //       }, "3000");
-    // }, [])
-    
-    // useEffect(() => {
-    //     window.addEventListener('locationchange', function () {
-    //         console.log('location changed!');
-    //         unityContext.quitUnityInstance()
-    //     });
-    // }, [])
-
     useEffect(() => {
 		unityContext.on("loaded", () => {
 			setIsLoaded(true);
 		});
-        
-        unityContext.on("quitted", function () {
-            unityContext.quitUnityInstance()
-        });
 
         unityContext.on("error", function (message) {
             setDidError(true);
