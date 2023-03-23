@@ -10,7 +10,9 @@ V2 TODO:
 [X] spawn trees: total # of completed pomodoros from server
 [X] check chart requirements and send day, week, month, and year data to server
 [X] request data from server and show on charts
-[] host 
+[X] host
+[X] are env files missing?
+[] any bugs? 
 [] put on portfolio
 [] make explanation pages for each project
 
