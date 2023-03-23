@@ -12,6 +12,7 @@ V2 TODO:
 [X] request data from server and show on charts
 [] host 
 [] put on portfolio
+[] make explanation pages for each project
 
 //V1 TODO:
 //(DONE) COMPLETION METHOD -> CREATE TIMER
