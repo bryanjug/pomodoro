@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext} from "react";
+import React, {useEffect, useState} from "react";
 import Unity from "react-unity-webgl";
 
 function Planet({pomodoroLifeTime, pomodoro, setLoadingStyle, unityContext}) {
@@ -14,6 +14,7 @@ function Planet({pomodoroLifeTime, pomodoro, setLoadingStyle, unityContext}) {
         unityContext.on("error", function (message) {
             setDidError(true);
             setErrorMessage(message);
+            console.log(message)
         });
 	}, [unityContext]);
 

@@ -7,7 +7,7 @@ import WeekStats from './WeekStats';
 import MonthStats from './MonthStats';
 import YearStats from './YearStats';
 import ChangeTimer from './ChangeTimer';
-import Unity, { UnityContext } from "react-unity-webgl";
+import { UnityContext } from "react-unity-webgl";
 import { useNavigate } from "react-router-dom";
 
 const unityContext = new UnityContext({
@@ -135,7 +135,7 @@ const App = () => {
                     <img src="/img/exit.png" onClick={hideNav} className="menu-exit" alt="" />
                 </div>
                 <ul>
-                    <button to="/" onClick={() => LinkToHome()}>
+                    <button onClick={() => LinkToHome()}>
                         <li>Pomodoro</li>
                     </button>
                     <button onClick={() => LinkToStats()}>
