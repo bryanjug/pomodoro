@@ -11,16 +11,16 @@ import Unity, { UnityContext } from "react-unity-webgl";
 import { useNavigate } from "react-router-dom";
 
 const unityContext = new UnityContext({
-    loaderUrl: "build/WebGL Builds.loader.js",
-    dataUrl: "build/WebGL Builds.data.unityweb",
-    frameworkUrl: "build/WebGL Builds.framework.js.unityweb",
-    codeUrl: "build/WebGL Builds.wasm.unityweb",
+    loaderUrl: "build/build.loader.js",
+    dataUrl: "build/build.data.unityweb",
+    frameworkUrl: "build/build.framework.js.unityweb",
+    codeUrl: "build/build.wasm.unityweb",
 });
 
 const App = () => {
 	const [loadingStyle, setLoadingStyle] = useState("text-center loading displayInline !important");
-	const [workTime, setWorkTime] = useState(1000); //1500000
-	const [restTime, setRestTime] = useState(1000); //300000
+	const [workTime, setWorkTime] = useState(1500000); //1500000
+	const [restTime, setRestTime] = useState(300000); //300000
 	const nav = useRef(null);
     const navigate = useNavigate();
 

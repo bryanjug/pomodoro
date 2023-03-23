@@ -31,11 +31,7 @@ function Planet({pomodoroLifeTime, pomodoro, setLoadingStyle, unityContext}) {
         }
     }, [isLoaded, pomodoro])
     
-    return didError === true ? (
-        <div>Oops, that's an error {errorMessage}</div>
-    )
-    :
-    (
+    return (
         <Unity 
             unityContext={unityContext}
             style={{
