@@ -17,6 +17,7 @@ const unityContext = new UnityContext({
     codeUrl: "build/build.wasm",
 });
 
+
 const App = () => {
 	const [loadingStyle, setLoadingStyle] = useState("text-center loading displayInline !important");
 	const [workTime, setWorkTime] = useState(1500000); //1500000
