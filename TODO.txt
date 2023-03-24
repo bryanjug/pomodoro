@@ -12,7 +12,7 @@ V2 TODO:
 [X] request data from server and show on charts
 [X] host
 [X] are env files missing?
-[] any bugs? 
+[] check if build will work on browser
 [] put on portfolio
 [] make explanation pages for each project
 
