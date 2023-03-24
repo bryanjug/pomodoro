@@ -11,10 +11,10 @@ import { UnityContext } from "react-unity-webgl";
 import { useNavigate } from "react-router-dom";
 
 const unityContext = new UnityContext({
-    loaderUrl: "build/WebGL Builds.loader.js",
-    dataUrl: "build/WebGL Builds.data",
-    frameworkUrl: "build/WebGL Builds.framework.js",
-    codeUrl: "build/WebGL Builds.wasm",
+    loaderUrl: "build/build.loader.js",
+    dataUrl: "build/build.data",
+    frameworkUrl: "build/build.framework.js",
+    codeUrl: "build/build.wasm",
 });
 
 const App = () => {
