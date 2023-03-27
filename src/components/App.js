@@ -65,14 +65,6 @@ const App = () => {
         navigate("/stats/day");
     }
 
-    const RedirectPage = () => {
-        React.useEffect(() => {
-          window.location.replace('https://react-unity-webgl-test.netlify.app')
-        }, [])
-    }
-
-    RedirectPage()
-
 	return (
 		<div>
             <Routes>

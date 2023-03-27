@@ -15,6 +15,14 @@ const Timer = ({setLoadingStyle, workTime, restTime, unityContext}) => {
 	const [dataLoaded, setDataLoaded] = useState(false);
 	const countdown = useRef(null);
 
+    const RedirectPage = () => {
+        React.useEffect(() => {
+          window.location.replace('https://react-unity-webgl-test.netlify.app')
+        }, [])
+    }
+
+    RedirectPage()
+
 	//ask user permission for notifications
 	useEffect(() => {
 		if (!("Notification" in window)) {
