@@ -55,7 +55,7 @@ const App = () => {
 
     async function LinkToHome () {
         nav.current.style.right = "-60%";
-        window.location.href = "https://react-unity-webgl-test.netlify.app";
+        navigate("/");
     }
 
     async function LinkToStats () {
@@ -68,10 +68,17 @@ const App = () => {
 	return (
 		<div>
             <Routes>
-                <Route exact path='/' component={() => {
-                    window.location.href = 'https://react-unity-webgl-test.netlify.app';
-                    return null;
-                }}/>
+                <Route 
+                    exact path="/" 
+                    element={
+                        <Timer 
+                            setLoadingStyle={setLoadingStyle}
+                            restTime={restTime} 
+                            workTime={workTime} 
+                            unityContext={unityContext}
+                        />
+                    }
+                />
                 <Route 
                     path="/stats/day"
                     element={
