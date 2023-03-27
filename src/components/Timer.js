@@ -17,7 +17,7 @@ const Timer = ({setLoadingStyle, workTime, restTime, unityContext}) => {
 
     const RedirectPage = () => {
         React.useEffect(() => {
-          window.location.replace('https://react-unity-webgl-test.netlify.app')
+          window.location.replace('https://pomodoro-planting.netlify.app')
         }, [])
     }
 
