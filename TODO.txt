@@ -12,7 +12,9 @@ V2 TODO:
 [X] request data from server and show on charts
 [X] host
 [X] are env files missing?
-[] check if build will work on browser
+[X] check if build will work on browser
+[] ask user permission for notifications at onClick
+[] add loading spinner
 [] put on portfolio
 [] make explanation pages for each project
 

@@ -55,7 +55,7 @@ const App = () => {
 
     async function LinkToHome () {
         nav.current.style.right = "-60%";
-        navigate("/");
+        window.location.href = "https://react-unity-webgl-test.netlify.app";
     }
 
     async function LinkToStats () {
@@ -65,26 +65,21 @@ const App = () => {
         navigate("/stats/day");
     }
 
-    async function LinkToChangeTimer () {
-        nav.current.style.right = "-60%";
-        await unityContext.quitUnityInstance()
-        navigate("/changetimer");
+    const RedirectPage = () => {
+        React.useEffect(() => {
+          window.location.replace('https://react-unity-webgl-test.netlify.app')
+        }, [])
     }
+
+    RedirectPage()
 
 	return (
 		<div>
             <Routes>
-                <Route 
-                    exact path="/" 
-                    element={
-                        <Timer 
-                            setLoadingStyle={setLoadingStyle}
-                            restTime={restTime} 
-                            workTime={workTime} 
-                            unityContext={unityContext}
-                        />
-                    }
-                />
+                <Route exact path='/' component={() => {
+                    window.location.href = 'https://react-unity-webgl-test.netlify.app';
+                    return null;
+                }}/>
                 <Route 
                     path="/stats/day"
                     element={
@@ -117,15 +112,6 @@ const App = () => {
                         />
                     }
                 />
-                <Route 
-                    path="/changetimer"
-                    element={
-                        <ChangeTimer 
-                            setWorkTime={setWorkTime}
-                            setRestTime={setRestTime} 
-                        />
-                    }      
-                />
             </Routes>
             <div className="mhead">
                 <img className="menu-ham" src="/img/hamburger.png" onClick={showNav} alt="" />
@@ -140,9 +126,6 @@ const App = () => {
                     </button>
                     <button onClick={() => LinkToStats()}>
                         <li>Statistics</li>
-                    </button>
-                    <button onClick={() => LinkToChangeTimer()}>
-                        <li>Change Timer</li>
                     </button>
                 </ul>
             </div>
